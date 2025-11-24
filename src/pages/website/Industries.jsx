@@ -168,7 +168,7 @@ const Industries = () => {
           }}></div>
         </div>
         
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <motion.div
             initial="initial"
             animate="animate"
@@ -223,7 +223,7 @@ const Industries = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
             {industries.map((industry, index) => (
               <motion.div
                 key={index}
@@ -232,7 +232,7 @@ const Industries = () => {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
                 whileHover={{ y: -10 }}
-                className="bg-white rounded-2xl shadow-xl hover:shadow-2xl border border-gray-100 p-4 sm:p-6 lg:p-8 transition-all duration-300 group"
+                className="bg-white rounded-xl sm:rounded-2xl shadow-xl hover:shadow-2xl border border-gray-100 p-3 sm:p-4 md:p-6 lg:p-8 transition-all duration-300 group"
               >
                 <div className={`w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r ${industry.color} rounded-2xl flex items-center justify-center text-white mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300`}>
                   {industry.icon}
@@ -242,27 +242,10 @@ const Industries = () => {
                 
                 <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed">{industry.description}</p>
 
-                <div className="mb-6 flex gap-4">
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-gray-800 mb-3">Key Services:</h4>
-                    <div className="grid grid-cols-1 gap-2">
-                      {industry.services.map((service, serviceIndex) => (
-                        <motion.div
-                          key={serviceIndex}
-                          initial={{ opacity: 0, x: -20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.4, delay: serviceIndex * 0.1 }}
-                          viewport={{ once: true }}
-                          className="flex items-center space-x-2"
-                        >
-                          <CheckCircle className="w-4 h-4 text-[#ae0c81] flex-shrink-0" />
-                          <span className="text-gray-700 text-sm">{service}</span>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
+                {/* Mobile Layout */}
+                <div className="block sm:hidden mb-6 border-none">
                   {industry.image && (
-                    <div className="w-100 rounded-lg overflow-hidden flex-shrink-0">
+                    <div className="w-full h-48 rounded-lg overflow-hidden mb-4">
                       <img 
                         src={industry.image} 
                         alt={industry.title}
@@ -270,9 +253,58 @@ const Industries = () => {
                       />
                     </div>
                   )}
+                  <h4 className="font-semibold text-gray-800 mb-3">Key Services:</h4>
+                  <div className="grid grid-cols-1 gap-2">
+                    {industry.services.map((service, serviceIndex) => (
+                      <motion.div
+                        key={serviceIndex}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.4, delay: serviceIndex * 0.1 }}
+                        viewport={{ once: true }}
+                        className="flex items-center space-x-2"
+                      >
+                        <CheckCircle className="w-4 h-4 text-[#ae0c81] flex-shrink-0" />
+                        <span className="text-gray-700 text-sm">{service}</span>
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="flex justify-between items-center pt-4 border-t border-gray-200">
+                {/* Desktop Layout */}
+                <div className="hidden sm:block mb-6">
+                  <div className="flex gap-4">
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-gray-800 mb-3">Key Services:</h4>
+                      <div className="grid grid-cols-1 gap-2">
+                        {industry.services.map((service, serviceIndex) => (
+                          <motion.div
+                            key={serviceIndex}
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.4, delay: serviceIndex * 0.1 }}
+                            viewport={{ once: true }}
+                            className="flex items-center space-x-2"
+                          >
+                            <CheckCircle className="w-4 h-4 text-[#ae0c81] flex-shrink-0" />
+                            <span className="text-gray-700 text-sm">{service}</span>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                    {industry.image && (
+                      <div className="w-24 h-18 sm:w-28 sm:h-20 md:w-32 md:h-24 rounded-lg overflow-hidden flex-shrink-0">
+                        <img 
+                          src={industry.image} 
+                          alt={industry.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center pt-4  border-gray-200">
                   <span className="text-[#870481] font-semibold">{industry.projects}</span>
                   <motion.div
                     whileHover={{ scale: 1.05 }}
@@ -465,7 +497,7 @@ const Industries = () => {
                 className="border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-8 py-4 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2"
               >
                 <Mail className="w-5 h-5" />
-                <span>Email: jyadavst@gmail.com</span>
+                <span>Email: info@triveniinframech.com</span>
               </Link>
             </div>
           </motion.div>

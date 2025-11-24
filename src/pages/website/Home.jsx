@@ -1,6 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import suzlonLogo from '../../assets/Suzlon.png'
+import geeco from '../../assets/geeco.jpg'
+import  TEFUGEN from '../../assets/TEFGUN.jpg'
 import { 
   ArrowRight, 
   Play, 
@@ -119,9 +122,9 @@ const Home = () => {
 
   // Clients from PDF
   const clients = [
-    { name: 'SUZLON', logo: 'SUZLON', description: 'Powering a Greener Tomorrow' },
-    { name: 'GEECO', logo: 'GEECO', description: 'General Electrical & Engineering Co.' },
-    { name: 'TEFUGEN', logo: 'TEFUGEN', description: 'Technologies for Future Generation' }
+    { name: 'SUZLON', logo: suzlonLogo, description: 'Powering a Greener Tomorrow' },
+    { name: 'GEECO', logo: geeco, description: 'General Electrical & Engineering Co.' },
+    { name: 'TEFUGEN', logo: TEFUGEN, description: 'Technologies for Future Generation' }
   ];
 
   // Stats from PDF
@@ -143,7 +146,7 @@ const Home = () => {
           }}></div>
         </div>
 
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Hero Content */}
             <motion.div
@@ -162,34 +165,34 @@ const Home = () => {
 
               <motion.h1
                 variants={fadeInUp}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-[#f2ecf7] font-bold leading-tight mb-6"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-[#f2ecf7] font-bold leading-tight mb-4 sm:mb-6"
               >
                 TRIVENI
-                <span className="text-[#da880f] block">INFRAMECH<br className="hidden sm:block"/>PVT LTD</span>
+                <span className="text-[#da880f] block">INFRAMECH<br className="hidden sm:block"/> PVT LTD</span>
               </motion.h1>
 
               <motion.p
                 variants={fadeInUp}
-                className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 leading-relaxed"
+                className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 mb-4 sm:mb-6 md:mb-8 leading-relaxed px-2 sm:px-0"
               >
-                At TRIVENI INFRA MECH PVT LTD, we specialize in delivering innovative and high-quality 
+                At TRIVENI INFRAMECH PVT LTD, we specialize in delivering innovative and high-quality 
                 construction services tailored to meet the diverse needs of industrial and structural sectors.
               </motion.p>
 
               <motion.div
                 variants={fadeInUp}
-                className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8"
+                className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8 px-2 sm:px-0"
               >
                 <Link
                   to="/contact"
-                  className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold px-8 py-4 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center justify-center space-x-2"
+                  className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center justify-center space-x-2"
                 >
                   <span>Get Free Quote</span>
                   <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link
                   to="/about"
-                  className="border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-8 py-4 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
+                  className="border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
                 >
                   <span>Learn More</span>
                   <ArrowRight className="w-5 h-5" />
@@ -248,7 +251,7 @@ const Home = () => {
                 We Are <span className="text-[#870481]">Different</span>
               </h2>
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                At TRIVENI INFRA MECH PVT LTD, we specialize in delivering innovative and high-quality 
+                At TRIVENI INFRAMECH PVT LTD, we specialize in delivering innovative and high-quality 
                 construction services tailored to meet the diverse needs of the industrial and structural sectors. 
                 With a commitment to precision, safety, and efficiency, we are a one-stop solution for all 
                 fabrication, erection, and maintenance projects.
@@ -291,39 +294,35 @@ const Home = () => {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="grid grid-cols-2 gap-4"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4"
             >
-              <div className="space-y-4">
-                <div className="bg-yellow-500 rounded-2xl p-6 h-48 flex flex-col justify-center">
-                  <Target className="w-8 h-8 text-white mb-3" />
-                  <h3 className="text-white font-bold text-lg mb-2">Our Vision</h3>
-                  <p className="text-yellow-100 text-sm">
-                    To become a leading name in the construction industry by delivering world-class solutions.
-                  </p>
-                </div>
-                <div className="bg-[#561b5a] rounded-2xl p-6 h-48 flex flex-col justify-center">
-                  <Eye className="w-8 h-8 text-white mb-3" />
-                  <h3 className="text-white font-bold text-lg mb-2">Our Mission</h3>
-                  <p className="text-gray-300 text-sm">
-                    Construction services with focus on innovation, safety, and client satisfaction.
-                  </p>
-                </div>
+              <div className="bg-yellow-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 h-40 sm:h-48 flex flex-col justify-center">
+                <Target className="w-6 h-6 sm:w-8 sm:h-8 text-white mb-2 sm:mb-3" />
+                <h3 className="text-white font-bold text-base sm:text-lg mb-1 sm:mb-2">Our Vision</h3>
+                <p className="text-yellow-100 text-xs sm:text-sm leading-tight">
+                  To become a leading name in the construction industry by delivering world-class solutions.
+                </p>
               </div>
-              <div className="space-y-4 mt-8">
-                <div className="bg-[#561b5a] rounded-2xl p-6 h-48 flex flex-col justify-center">
-                  <Heart className="w-8 h-8 text-white mb-3" />
-                  <h3 className="text-white font-bold text-lg mb-2">Our Values</h3>
-                  <p className="text-gray-300 text-sm">
-                    Quality, Safety, Innovation, and Client Satisfaction drive everything we do.
-                  </p>
-                </div>
-                <div className="bg-yellow-500 rounded-2xl p-6 h-48 flex flex-col justify-center">
-                  <Star className="w-8 h-8 text-white mb-3" />
-                  <h3 className="text-white font-bold text-lg mb-2">Our Promise</h3>
-                  <p className="text-yellow-100 text-sm">
-                    Exceeding client expectations while fostering sustainable development.
-                  </p>
-                </div>
+              <div className="bg-[#561b5a] rounded-xl sm:rounded-2xl p-4 sm:p-6 h-40 sm:h-48 flex flex-col justify-center">
+                <Eye className="w-6 h-6 sm:w-8 sm:h-8 text-white mb-2 sm:mb-3" />
+                <h3 className="text-white font-bold text-base sm:text-lg mb-1 sm:mb-2">Our Mission</h3>
+                <p className="text-gray-300 text-xs sm:text-sm leading-tight">
+                  Construction services with focus on innovation, safety, and client satisfaction.
+                </p>
+              </div>
+              <div className="bg-[#561b5a] rounded-xl sm:rounded-2xl p-4 sm:p-6 h-40 sm:h-48 flex flex-col justify-center">
+                <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-white mb-2 sm:mb-3" />
+                <h3 className="text-white font-bold text-base sm:text-lg mb-1 sm:mb-2">Our Values</h3>
+                <p className="text-gray-300 text-xs sm:text-sm leading-tight">
+                  Quality, Safety, Innovation, and Client Satisfaction drive everything we do.
+                </p>
+              </div>
+              <div className="bg-yellow-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 h-40 sm:h-48 flex flex-col justify-center">
+                <Star className="w-6 h-6 sm:w-8 sm:h-8 text-white mb-2 sm:mb-3" />
+                <h3 className="text-white font-bold text-base sm:text-lg mb-1 sm:mb-2">Our Promise</h3>
+                <p className="text-yellow-100 text-xs sm:text-sm leading-tight">
+                  Exceeding client expectations while fostering sustainable development.
+                </p>
               </div>
             </motion.div>
           </div>
@@ -376,7 +375,7 @@ const Home = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
             {services.map((service, index) => (
               <motion.div
                 key={index}
@@ -385,13 +384,13 @@ const Home = () => {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
                 whileHover={{ y: -10 }}
-                className="bg-gradient-to-br from-[#631caf] via-[#8a5387] to-[#8b0389] rounded-2xl shadow-xl hover:shadow-2xl border border-gray-100 p-4 sm:p-6 lg:p-8 transition-all duration-300 group cursor-pointer"
+                className="bg-gradient-to-br from-[#631caf] via-[#8a5387] to-[#8b0389] rounded-xl sm:rounded-2xl shadow-xl hover:shadow-2xl border border-gray-100 p-3 sm:p-4 md:p-6 lg:p-8 transition-all duration-300 group cursor-pointer"
               >
                 <div className="w-16 h-16 bg-gradient-to-r bg-zinc-200 rounded-2xl flex items-center justify-center text-[#30085b] mb-6 group-hover:scale-110 transition-transform duration-300">
                   {service.icon}
                 </div>
-                <h3 className="text-lg sm:text-xl lg:text-2xl font-extrabold text-white mb-3 sm:mb-4">{service.title}</h3>
-                <p className="text-sm sm:text-base text-gray-100 mb-4 sm:mb-6 leading-relaxed">{service.description}</p>
+                <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-extrabold text-white mb-2 sm:mb-3 md:mb-4">{service.title}</h3>
+                <p className="text-xs sm:text-sm md:text-base text-gray-100 mb-3 sm:mb-4 md:mb-6 leading-relaxed">{service.description}</p>
                 <div className="space-y-2 mb-6 text-gray-200 ">
                   {service.features.map((feature, idx) => (
                     <div key={idx} className="flex items-center space-x-2 text-xlg text-gray-00">
@@ -447,7 +446,7 @@ const Home = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
             {whyChooseUs.map((item, index) => (
               <motion.div
                 key={index}
@@ -456,7 +455,7 @@ const Home = () => {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
                 whileHover={{ scale: 1.05 }}
-                className="bg-gradient-to-br from-[#631caf] via-[#8a5387] to-[#8b0389] rounded-2xl shadow-lg hover:shadow-xl border border-gray-100 p-8 transition-all duration-300 text-center"
+                className="bg-gradient-to-br from-[#631caf] via-[#8a5387] to-[#8b0389] rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl border border-gray-100 p-4 sm:p-6 md:p-8 transition-all duration-300 text-center"
               >
                 <div className="w-16 h-16 bg-[#e4e4e7] rounded-2xl flex items-center justify-center mx-auto mb-6 text-[#30085b]">
                   {item.icon}
@@ -488,7 +487,7 @@ const Home = () => {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
             {clients.map((client, index) => (
               <motion.div
                 key={index}
@@ -497,10 +496,10 @@ const Home = () => {
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 viewport={{ once: true }}
                 whileHover={{ scale: 1.05 }}
-                className="bg-gradient-to-br from-[#631caf] via-[#8a5387] to-[#8b0389] rounded-2xl p-8 text-center hover:shadow-lg transition-all duration-300"
+                className="bg-gradient-to-br from-[#631caf] via-[#8a5387] to-[#8b0389] rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 text-center hover:shadow-lg transition-all duration-300"
               >
-                <div className="w-20 h-20 bg-[#e4e4e7] rounded-2xl flex items-center justify-center mx-auto mb-6 text-[#30085b] font-bold text-xl">
-                  {client.logo.substring(0,2)}
+                <div className="w-20 h-20 bg-[#e4e4e7] rounded-2xl flex items-center justify-center mx-auto mb-6 text-[#30085b] font-bold text-xl overflow-hidden">
+                  <img src={client.logo} alt={client.name} className="w-full h-full object-contain " />
                 </div>
                 <h3 className="text-2xl font-bold text-[#e4e4e7] mb-2">{client.name}</h3>
                 <p className="text-[#f3e9cc]">{client.description}</p>
@@ -526,20 +525,20 @@ const Home = () => {
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
               Contact us today for a free consultation and quote. Let's build something great together!
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col gap-3 sm:gap-4 justify-center items-center">
               <Link
                 to="/contact"
-                className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold px-8 py-4 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2"
+                className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 w-full sm:w-auto"
               >
-                <Phone className="w-5 h-5" />
+                <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span>Call Now: +91 8292111172</span>
               </Link>
               <Link
                 to="/contact"
-                className="border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-8 py-4 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2"
+                className="border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 w-full sm:w-auto"
               >
-                <Mail className="w-5 h-5" />
-                <span>Email: jyadavst@gmail.com</span>
+                <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span>Email: info@triveniinframech.com</span>
               </Link>
             </div>
           </motion.div>

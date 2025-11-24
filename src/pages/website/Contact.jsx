@@ -54,7 +54,7 @@ const Contact = () => {
     {
       icon: <Mail className="w-6 h-6" />,
       title: "Email Address",
-      details: "jyadavst@gmail.com",
+      details: "info@triveniinframech.com",
       description: "Send us your queries anytime",
       color: "from-green-500 to-green-600",
     },
@@ -144,7 +144,7 @@ const Contact = () => {
           ></div>
         </div>
 
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <motion.div
             initial="initial"
             animate="animate"
@@ -163,14 +163,14 @@ const Contact = () => {
 
             <motion.h1
               variants={fadeInUp}
-              className="text-5xl lg:text-6xl font-bold mb-6"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6"
             >
               Contact <span className="text-yellow-400">Us</span>
             </motion.h1>
 
             <motion.p
               variants={fadeInUp}
-              className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
+              className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed px-2 sm:px-0"
             >
               Ready to start your project? Get in touch with our team for expert
               construction solutions and personalized service.
@@ -204,7 +204,7 @@ const Contact = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             {contactInfo.map((item, index) => (
               <motion.div
                 key={index}
@@ -238,7 +238,7 @@ const Contact = () => {
       {/* Contact Form & Map */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
             {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0, x: -60 }}
@@ -470,10 +470,10 @@ const Contact = () => {
                   <div className="flex items-center space-x-3">
                     <Mail className="w-5 h-5" />
                     <a
-                      href="mailto:jyadavst@gmail.com"
+                      href="mailto:info@triveniinframech.com"
                       className="font-semibold text-lg hover:underline"
                     >
-                      jyadavst@gmail.com
+                      info@triveniinframech.com
                     </a>
                   </div>
                 </div>
@@ -515,20 +515,20 @@ const Contact = () => {
               Contact us now for a free consultation and project estimate. Let's
               build something great together!
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
               <a
                 href="tel:+918292111172"
-                className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold px-8 py-4 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 cursor-pointer"
+                className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 cursor-pointer"
               >
                 <Phone className="w-5 h-5" />
                 <span>Call Now: +91 8292111172</span>
               </a>
               <a
-                href="mailto:jyadavst@gmail.com"
-                className="border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-8 py-4 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 cursor-pointer"
+                href="mailto:info@triveniinframech.com"
+                className="border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 cursor-pointer"
               >
                 <Mail className="w-5 h-5" />
-                <span>Email: jyadavst@gmail.com</span>
+                <span>Email: info@triveniinframech.com</span>
               </a>
             </div>
           </motion.div>

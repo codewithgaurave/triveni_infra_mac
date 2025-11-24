@@ -38,7 +38,7 @@ const OurTeam = () => {
     {
       name: 'Jitendra Yadav',
       position: 'Director & Founder',
-      description: 'Leading TRIVENI INFRA MECH PVT LTD with 15+ years of expertise in industrial construction, fabrication, and project management. Visionary leader with a focus on innovation and client satisfaction.',
+      description: 'Leading TRIVENI INFRAMECH PVT LTD with 15+ years of expertise in industrial construction, fabrication, and project management. Visionary leader with a focus on innovation and client satisfaction.',
       experience: '15+ Years Experience',
       specialization: 'Industrial Construction & Project Management',
       email: 'jyadavst@gmail.com',
@@ -214,7 +214,7 @@ const OurTeam = () => {
 
               <div className="space-y-6 text-lg text-gray-600 leading-relaxed mb-8">
                 <p>
-                  <strong>Jitendra Yadav</strong> leads TRIVENI INFRA MECH PVT LTD with a vision 
+                  <strong>Jitendra Yadav</strong> leads TRIVENI INFRAMECH PVT LTD with a vision 
                   to deliver world-class construction services that exceed client expectations. 
                   With over <strong>15 years of hands-on experience</strong> in the industrial 
                   construction sector, he brings unparalleled expertise and commitment to every project.
@@ -231,8 +231,8 @@ const OurTeam = () => {
               <div className="space-y-4 mb-8">
                 <div className="flex items-center space-x-3 text-gray-700">
                   <Mail className="w-5 h-5 text-yellow-500" />
-                  <a href="mailto:jyadavst@gmail.com" className="hover:text-yellow-600 transition-colors">
-                    jyadavst@gmail.com
+                  <a href="mailto:info@triveniinframech.com" className="hover:text-yellow-600 transition-colors">
+                    info@triveniinframech.com
                   </a>
                 </div>
                 <div className="flex items-center space-x-3 text-gray-700">
@@ -441,7 +441,7 @@ const OurTeam = () => {
                 className="border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-8 py-4 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2"
               >
                 <Mail className="w-5 h-5" />
-                <span>Email: jyadavst@gmail.com</span>
+                <span>Email: info@triveniinframech.com</span>
               </Link>
             </div>
           </motion.div>

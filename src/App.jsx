@@ -24,6 +24,7 @@ import CareerManage from './pages/admin/CareerManage';
 import ContactManage from './pages/admin/ContactManage';
 import Certification from './pages/website/Certification.jsx';
 import BlogPages from './components/website/BlogPages.jsx';
+import Gallery from './pages/website/Gallery.jsx';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -59,6 +60,7 @@ function App() {
             <Route path="certification" element={<Certification />} />
             <Route path="projects" element={<Projects />} />
             <Route path="blog" element={<Blog />} />
+            <Route path="gallery" element={<Gallery />} />
             <Route path="blog/:id" element={<BlogPages />} />
             <Route path="career" element={<Career />} />
             <Route path="contact" element={<Contact />} />

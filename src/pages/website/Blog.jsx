@@ -149,7 +149,7 @@ const Blog = () => {
               className="inline-flex items-center space-x-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full px-4 py-2 mb-6"
             >
               <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-              <span className="text-yellow-500 text-sm font-semibold">TCS Insights</span>
+              <span className="text-yellow-500 text-sm font-semibold">Triveni Inframech Insights</span>
             </motion.div>
 
             <motion.h1
@@ -163,7 +163,7 @@ const Blog = () => {
               variants={fadeInUp}
               className="text-xl text-gray-300 leading-relaxed mb-8"
             >
-              Expert insights, industry trends, and technical knowledge from TRIVENI INFRA MECH PVT LTD - 
+              Expert insights, industry trends, and technical knowledge from TRIVENI INFRAMECH PVT LTD - 
               Your trusted partner in industrial construction and engineering excellence.
             </motion.p>
 
@@ -534,7 +534,7 @@ const Blog = () => {
                       type="email"
                       placeholder="Enter your email"
                       required
-                      className="w-full px-4 py-3 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-500 text-sm"
+                      className="w-full px-4 py-3 rounded-xl text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-100 text-sm"
                     />
                     <motion.button
                       whileHover={{ scale: 1.02 }}

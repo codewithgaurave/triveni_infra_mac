@@ -16,7 +16,7 @@ import {
   X
 } from 'lucide-react';
 
-const Navbar = () => {
+const Navbar = ({ onMobileMenuToggle }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
@@ -61,6 +61,7 @@ const Navbar = () => {
     { name: 'certification & Awards', path: '/certification' },
     { name: 'Projects', path: '/projects' },
     { name: 'Blog', path: '/blog' },
+    { name: 'Gallery', path: '/gallery' },
     { name: 'Career', path: '/career' },
     { name: 'Contact', path: '/contact' },
   ];
@@ -69,27 +70,27 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Top Bar - Exactly like Nicdark */}
-      <div className="bg-gray-900 border-b border-gray-800 py-3 hidden lg:block">
+      {/* Top Bar - Mobile Responsive */}
+      <div className="bg-gray-900 border-b border-gray-800 py-2 sm:py-3 hidden md:block">
         <div className="container mx-auto px-6">
           <div className="flex justify-between items-center">
             {/* Left Side - Contact Info */}
-            <div className="flex items-center space-x-6 text-sm">
+            <div className="flex items-center space-x-2 sm:space-x-4 md:space-x-6 text-xs sm:text-sm">
               {/* phone */}
               <div className="flex items-center space-x-2 text-gray-300">
-                <a href="tel:+918292111172" style={{ background: "#da880f", padding: "10px 20px", color: "white", borderRadius: "8px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px" }}>
-                  <Phone size={14} className="text-yellow-100" />
+                <a href="tel:+918292111172" style={{ background: "#da880f", padding: "6px 12px", color: "white", borderRadius: "6px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                  <Phone size={12} className="text-yellow-100" />
                 </a>
-                <a href="tel:+918292111172" className="hover:text-yellow-400 cursor-pointer transition-colors">+91 8292111172</a>
+                <a href="tel:+918292111172" className="hover:text-yellow-400 cursor-pointer transition-colors hidden sm:inline">+91 8292111172</a>
               </div>
 
               {/* email */}
               <div className="flex items-center space-x-2 text-gray-300">
-                <a href="jyadavst@gmail.com"
+                <a href="mailto:info@triveniinframech.com"
                   style={{ background: "#da880f", padding: "10px 20px", color: "white", borderRadius: "8px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px" }}>
                   <Mail size={14} className="text-yellow-100" />
                 </a>
-                <a href="jyadavst@gmail.com" className="hover:text-yellow-400 cursor-pointer transition-colors">jyadavst@gmail.com</a>
+                <a href="mailto:info@triveniinframech.com" className="hover:text-yellow-400 cursor-pointer transition-colors">info@triveniinframech.com</a>
               </div>
 
               {/* location */}
@@ -194,25 +195,32 @@ const Navbar = () => {
 
             {/* Mobile Menu Button */}
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 sm:p-3 rounded-lg bg-gray-100 hover:bg-gray-200 transition-all duration-300"
+              onClick={() => {
+                const newState = !isMobileMenuOpen;
+                setIsMobileMenuOpen(newState);
+                onMobileMenuToggle?.(newState);
+              }}
+              className="lg:hidden p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-all duration-300"
             >
-              {isMobileMenuOpen ? <X size={20} className="sm:w-6 sm:h-6" /> : <Menu size={20} className="sm:w-6 sm:h-6" />}
+              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
 
           {/* Mobile Menu */}
           {isMobileMenuOpen && (
-            <div className="lg:hidden absolute top-full left-0 right-0 bg-white border-t border-gray-200 shadow-2xl">
-              <div className="container mx-auto px-6 py-6">
+            <div className="lg:hidden fixed top-[80px] left-0 right-0 bg-white border-t border-gray-200 shadow-2xl z-50 max-h-[calc(100vh-80px)] overflow-y-auto">
+              <div className="px-4 py-4">
                 <div className="space-y-1">
                   {navItems.map((item) => (
                     <div key={item.name} className="border-b border-gray-100 last:border-b-0">
                       <button
-                        onClick={() => handleNavigation(item.path)}
-                        className={`block w-full text-left py-3 sm:py-4 px-3 sm:px-4 font-semibold text-base sm:text-lg transition-all duration-300 cursor-pointer ${isActive(item.path)
+                        onClick={() => {
+                          handleNavigation(item.path);
+                          onMobileMenuToggle?.(false);
+                        }}
+                        className={`block w-full text-left py-3 px-4 font-semibold text-base transition-all duration-300 cursor-pointer ${isActive(item.path)
                           ? 'text-yellow-600 bg-yellow-50 rounded-lg'
-                          : 'text-gray-800 hover:text-yellow-600'
+                          : 'text-gray-800 hover:text-yellow-600 hover:bg-gray-50'
                           }`}
                       >
                         {item.name}
