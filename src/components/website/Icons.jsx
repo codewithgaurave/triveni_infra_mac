@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaWhatsapp } from "react-icons/fa6";
+import { FaWhatsapp } from "react-icons/fa";
 import { Phone } from 'lucide-react';
 
 const Icons = ({ isMobileMenuOpen }) => {
