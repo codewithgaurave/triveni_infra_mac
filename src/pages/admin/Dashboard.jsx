@@ -48,7 +48,6 @@ const Dashboard = () => {
         setDashboardData(res.data.data);
       }
     } catch (error) {
-      console.error('Error fetching dashboard data:', error);
       toast.error('Failed to load dashboard data');
     } finally {
       setLoading(false);
@@ -105,28 +104,28 @@ const Dashboard = () => {
     {
       title: 'Add New Blog Post',
       description: 'Create and publish new content',
-      icon: <Plus className="w-5 h-5" />,
+      icon: <Plus className="w-5 h-5 text-black" />,
       link: '/admin/manegeblog',
       color: 'bg-blue-500 hover:bg-blue-600'
     },
     {
       title: 'View Applications',
       description: `Check ${dashboardData?.counts?.applications?.new || 0} new applications`,
-      icon: <Users className="w-5 h-5" />,
+      icon: <Users className="w-5 h-5 text-yellow-800" />,
       link: '/admin/managecareer',
       color: 'bg-green-500 hover:bg-green-600'
     },
     {
       title: 'Manage Contacts',
       description: `View ${dashboardData?.counts?.contacts?.new || 0} new messages`,
-      icon: <Mail className="w-5 h-5" />,
+      icon: <Mail className="w-5 h-5 text-green-800" />,
       link: '/admin/contactus',
       color: 'bg-purple-500 hover:bg-purple-600'
     },
     {
       title: 'View Analytics',
       description: 'Detailed performance report',
-      icon: <BarChart3 className="w-5 h-5" />,
+      icon: <BarChart3 className="w-5 h-5 text-purple-900" />,
       link: '#',
       color: 'bg-orange-500 hover:bg-orange-600',
       onClick: () => toast.info('Analytics dashboard coming soon!')

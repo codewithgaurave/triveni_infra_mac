@@ -1,28 +1,58 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import {
-	ArrowRight,
-	CheckCircle,
-	Building2,
-	Wrench,
-	Hammer,
-	Zap,
-	PaintBucket,
-	Users,
-	Cog,
-	Shield,
-	Calendar,
-	MapPin,
-	Target,
-	Star,
-	Phone,
-	Mail,
-	Filter
-} from 'lucide-react';
+import { Eye, X, ZoomIn } from 'lucide-react';
+
+// Import images
+import construction from '../../assets/construction.jpg';
+import construction2 from '../../assets/construction2.jpg';
+import chemical from '../../assets/chemical.jpg';
+import manufacture from '../../assets/manufacture.jpg';
+import powerEnergy from '../../assets/power-energy.jpg';
+import welding from '../../assets/welding.jpg';
 
 const Gallery = () => {
-	const [activeFilter, setActiveFilter] = useState('all');
+	const [selectedImage, setSelectedImage] = useState(null);
+	const [isFullscreen, setIsFullscreen] = useState(false);
+
+	// Gallery images data
+	const galleryImages = [
+		{
+			id: 1,
+			src: construction,
+			title: 'Construction Works',
+			description: 'Industrial construction and structural works'
+		},
+		{
+			id: 2,
+			src: construction2,
+			title: 'Infrastructure Development',
+			description: 'Large-scale infrastructure projects'
+		},
+		{
+			id: 3,
+			src: chemical,
+			title: 'Chemical Industry',
+			description: 'Chemical plant construction and maintenance'
+		},
+		{
+			id: 4,
+			src: manufacture,
+			title: 'Manufacturing Facilities',
+			description: 'Manufacturing plant setup and equipment'
+		},
+		{
+			id: 5,
+			src: powerEnergy,
+			title: 'Power & Energy',
+			description: 'Power generation and energy infrastructure'
+		},
+		{
+			id: 6,
+			src: welding,
+			title: 'Welding Services',
+			description: 'Professional welding and fabrication'
+		}
+	];
 
 	// Animation variants
 	const fadeInUp = {
@@ -39,191 +69,18 @@ const Gallery = () => {
 		}
 	};
 
-	// Gallery categories based on PDF services
-	const GalleryCategories = [
-		{ id: 'all', name: 'All Gallerys', count: 12 },
-		{ id: 'structural', name: 'Structural Works', count: 5 },
-		{ id: 'piping', name: 'Piping Systems', count: 4 },
-		{ id: 'mechanical', name: 'Mechanical', count: 3 },
-		{ id: 'electrical', name: 'Electrical', count: 4 }
-	];
+	// Fullscreen handlers
+	const openFullscreen = (image) => {
+		setSelectedImage(image);
+		setIsFullscreen(true);
+		document.body.style.overflow = 'hidden';
+	};
 
-	// Gallerys data based on PDF content and clients
-	const Gallerys = [
-		{
-			id: 1,
-			title: 'SUZLON Wind Energy Infrastructure',
-			client: 'SUZLON',
-			category: 'structural',
-			description: 'Structural fabrication and erection for wind turbine foundations and support structures in renewable energy Gallery.',
-			services: ['Structural Fabrication', 'Erection Works', 'Heavy Structures'],
-			duration: '6 Months',
-			location: 'Gujarat, India',
-			status: 'Completed',
-			year: '2023',
-			image: 'suzlon-Gallery',
-			achievements: [
-				'50+ Structures Fabricated',
-				'Zero Safety Incidents',
-				'On-time Delivery',
-				'Client Satisfaction: 100%'
-			],
-			color: 'from-green-500 to-green-600'
-		},
-		{
-			id: 2,
-			title: 'GEECO Industrial Piping System',
-			client: 'GEECO',
-			category: 'piping',
-			description: 'Complete piping fabrication and installation for industrial plant including big-bore and small-bore systems.',
-			services: ['Piping Fabrication', 'Pipeline Installation', 'Quality Testing'],
-			duration: '4 Months',
-			location: 'Maharashtra, India',
-			status: 'Completed',
-			year: '2023',
-			image: 'geeco-Gallery',
-			achievements: [
-				'5000+ Meters Piping',
-				'Precision Welding',
-				'Leak-proof Installation',
-				'Industry Standards Compliant'
-			],
-			color: 'from-blue-500 to-blue-600'
-		},
-		{
-			id: 3,
-			title: 'TEFUGEN ESP Commissioning',
-			client: 'TEFUGEN',
-			category: 'mechanical',
-			description: 'Erection, commissioning and troubleshooting of Electrostatic Precipitators for advanced technology facility.',
-			services: ['ESP Erection', 'Commissioning', 'Technical Support'],
-			duration: '3 Months',
-			location: 'Gujarat, India',
-			status: 'Completed',
-			year: '2023',
-			image: 'tefugen-Gallery',
-			achievements: [
-				'Advanced ESP Systems',
-				'Efficient Commissioning',
-				'24/7 Technical Support',
-				'Performance Optimization'
-			],
-			color: 'from-purple-500 to-purple-600'
-		},
-		{
-			id: 4,
-			title: 'Industrial Electrical Works',
-			client: 'Multiple Clients',
-			category: 'electrical',
-			description: 'Comprehensive electrical works including cable laying, cable tray setup and support structure installation.',
-			services: ['Cable Laying', 'Cable Trays', 'Support Structures'],
-			duration: '5 Months',
-			location: 'Various Locations',
-			status: 'Completed',
-			year: '2023',
-			image: 'electrical-Gallery',
-			achievements: [
-				'Safe Installation',
-				'Code Compliance',
-				'Efficient Power Distribution',
-				'Reliable Systems'
-			],
-			color: 'from-yellow-500 to-yellow-600'
-		},
-		{
-			id: 5,
-			title: 'Heavy Structural Fabrication',
-			client: 'Industrial Client',
-			category: 'structural',
-			description: 'Fabrication and erection of heavy structural components for large-scale industrial facility.',
-			services: ['Heavy Structures', 'Precision Engineering', 'Quality Control'],
-			duration: '8 Months',
-			location: 'Rajasthan, India',
-			status: 'Completed',
-			year: '2023',
-			image: 'structural-Gallery',
-			achievements: [
-				'Heavy-duty Structures',
-				'Precision Engineering',
-				'Quality Certified',
-				'Timely Completion'
-			],
-			color: 'from-orange-500 to-orange-600'
-		},
-		{
-			id: 6,
-			title: 'HDPE Fabrication Gallery',
-			client: 'Chemical Industry',
-			category: 'piping',
-			description: 'Custom HDPE fabrication with precision cutting, welding and shaping for chemical processing plant.',
-			services: ['HDPE Fabrication', 'Custom Solutions', 'Precision Work'],
-			duration: '2 Months',
-			location: 'Gujarat, India',
-			status: 'Completed',
-			year: '2023',
-			image: 'hdpe-Gallery',
-			achievements: [
-				'Custom Fabrication',
-				'Chemical Resistance',
-				'Precision Work',
-				'Durable Solutions'
-			],
-			color: 'from-teal-500 to-teal-600'
-		}
-	];
-
-	// Filtered Gallerys
-	const filteredGallerys = activeFilter === 'all'
-		? Gallerys
-		: Gallerys.filter(Gallery => Gallery.category === activeFilter);
-
-	// Gallery statistics
-	const GalleryStats = [
-		{
-			number: '50+',
-			title: 'Gallerys Completed',
-			description: 'Successful Gallery deliveries'
-		},
-		{
-			number: '15+',
-			title: 'Expert Engineers',
-			description: 'Skilled professionals'
-		},
-		{
-			number: '100%',
-			title: 'Client Satisfaction',
-			description: 'Exceeding expectations'
-		},
-		{
-			number: '24/7',
-			title: 'Gallery Support',
-			description: 'Round-the-clock service'
-		}
-	];
-
-	// Gallery process
-	const GalleryProcess = [
-		{
-			step: '01',
-			title: 'Consultation',
-			description: 'Understanding client requirements and Gallery scope'
-		},
-		{
-			step: '02',
-			title: 'Planning',
-			description: 'Detailed Gallery planning and resource allocation'
-		},
-		{
-			step: '03',
-			title: 'Execution',
-			description: 'Precise implementation with quality control'
-		},
-		{
-			step: '04',
-			title: 'Delivery',
-			description: 'Timely completion and client handover'
-		}
-	];
+	const closeFullscreen = () => {
+		setIsFullscreen(false);
+		setSelectedImage(null);
+		document.body.style.overflow = 'unset';
+	};
 
 	return (
 		<div className="overflow-hidden">
@@ -247,28 +104,28 @@ const Gallery = () => {
 							className="inline-flex items-center space-x-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full px-4 py-2 mb-6"
 						>
 							<span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-							<span className="text-yellow-500 text-sm font-semibold">Our Gallerys</span>
+							<span className="text-yellow-500 text-sm font-semibold">Our Gallery</span>
 						</motion.div>
 
 						<motion.h1
 							variants={fadeInUp}
 							className="text-5xl lg:text-6xl font-bold mb-6"
 						>
-							Our <span className="text-yellow-400">Gallerys</span>
+							Our <span className="text-yellow-400">Gallery</span>
 						</motion.h1>
 
 						<motion.p
 							variants={fadeInUp}
 							className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
 						>
-							Showcasing our successful construction Gallerys with precision engineering,
+							Showcasing our successful construction projects with precision engineering,
 							quality workmanship, and client satisfaction across various industrial sectors.
 						</motion.p>
 					</motion.div>
 				</div>
 			</section>
 
-			{/* Gallery Statistics */}
+			{/* Gallery Section */}
 			<section className="py-20 bg-white">
 				<div className="container mx-auto px-6">
 					<motion.div
@@ -280,254 +137,88 @@ const Gallery = () => {
 					>
 						<div className="inline-flex items-center space-x-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full px-4 py-2 mb-4">
 							<span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-							<span className="text-yellow-500 text-sm font-semibold">By The Numbers</span>
+							<span className="text-yellow-500 text-sm font-semibold">Industrial Projects</span>
 						</div>
 						<h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-							Gallery <span className="text-[#870481]">Success</span>
-						</h2>
-					</motion.div>
-
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-						{GalleryStats.map((stat, index) => (
-							<motion.div
-								key={index}
-								initial={{ opacity: 0, y: 40 }}
-								whileInView={{ opacity: 1, y: 0 }}
-								transition={{ duration: 0.6, delay: index * 0.1 }}
-								viewport={{ once: true }}
-								whileHover={{ scale: 1.05 }}
-								className="bg-gradient-to-br from-[#631caf] via-[#8a5387] to-[#8b0389] rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-all duration-300"
-							>
-								<div className="w-20 h-20 bg-zinc-200 rounded-2xl flex items-center justify-center mx-auto mb-6 text-[#30085b] text-2xl font-bold">
-									{stat.number}
-								</div>
-								<h3 className="text-2xl font-bold text-white mb-4">{stat.title}</h3>
-								<p className="text-gray-100 leading-relaxed">{stat.description}</p>
-							</motion.div>
-						))}
-					</div>
-				</div>
-			</section>
-
-			{/* Gallery Filters */}
-			<section className="py-12 bg-gradient-to-br from-[#631caf] via-[#8a5387] to-[#8b0389]">
-				<div className="container mx-auto px-6">
-					<motion.div
-						initial={{ opacity: 0, y: 40 }}
-						whileInView={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.6 }}
-						viewport={{ once: true }}
-						className="text-center mb-8"
-					>
-						<div className="flex items-center justify-center space-x-2 mb-4">
-							<Filter className="w-5 h-5 text-yellow-400" />
-							<span className="text-lg font-semibold text-white">Filter Gallerys</span>
-						</div>
-
-						<div className="flex flex-wrap justify-center gap-4">
-							{GalleryCategories.map((category) => (
-								<motion.button
-									key={category.id}
-									whileHover={{ scale: 1.05 }}
-									whileTap={{ scale: 0.95 }}
-									onClick={() => setActiveFilter(category.id)}
-									className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 cursor-pointer ${activeFilter === category.id
-										? 'bg-gradient-to-r from-[#631caf] to-[#8b0389] text-white shadow-lg'
-										: 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-[#631caf] hover:to-[#8b0389] hover:text-white shadow-sm'
-										}`}
-								>
-									{category.name} ({category.count})
-								</motion.button>
-							))}
-						</div>
-					</motion.div>
-				</div>
-			</section>
-
-			{/* Gallerys Grid */}
-			<section className="py-20 bg-white">
-				<div className="container mx-auto px-6">
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-						{filteredGallerys.map((Gallery, index) => (
-							<motion.div
-								key={Gallery.id}
-								initial={{ opacity: 0, y: 60 }}
-								whileInView={{ opacity: 1, y: 0 }}
-								transition={{ duration: 0.6, delay: index * 0.1 }}
-								viewport={{ once: true }}
-								whileHover={{ y: -10 }}
-								className="bg-white rounded-2xl shadow-xl hover:shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 group"
-							>
-								{/* Gallery Image */}
-								<div className="relative h-48 bg-gradient-to-br from-gray-800 to-gray-900 overflow-hidden">
-									<div className="absolute inset-0 flex items-center justify-center">
-										<div className={`w-16 h-16 bg-gradient-to-r ${Gallery.color} rounded-2xl flex items-center justify-center text-white`}>
-											<Building2 className="w-8 h-8" />
-										</div>
-									</div>
-									<div className="absolute top-4 right-4 bg-yellow-500 text-gray-900 px-3 py-1 rounded-full text-sm font-semibold">
-										{Gallery.status}
-									</div>
-									<div className="absolute bottom-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
-										{Gallery.year}
-									</div>
-								</div>
-
-								{/* Gallery Content */}
-								<div className="p-6">
-									<div className="flex items-center justify-between mb-3">
-										<span className="text-[#870481] font-semibold text-sm">{Gallery.client}</span>
-										<span className="text-gray-500 text-sm flex items-center">
-											<Calendar className="w-4 h-4 mr-1" />
-											{Gallery.duration}
-										</span>
-									</div>
-
-									<h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-yellow-600 transition-colors">
-										{Gallery.title}
-									</h3>
-
-									<p className="text-gray-600 text-sm mb-4 leading-relaxed">
-										{Gallery.description}
-									</p>
-
-									<div className="flex items-center text-gray-500 text-sm mb-4">
-										<MapPin className="w-4 h-4 mr-1" />
-										{Gallery.location}
-									</div>
-
-									{/* Services */}
-									<div className="mb-4">
-										<h4 className="font-semibold text-gray-800 text-sm mb-2">Services:</h4>
-										<div className="flex flex-wrap gap-2">
-											{Gallery.services.map((service, serviceIndex) => (
-												<span
-													key={serviceIndex}
-													className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-medium"
-												>
-													{service}
-												</span>
-											))}
-										</div>
-									</div>
-
-									{/* Achievements */}
-									<div className="space-y-2 mb-4">
-										{Gallery.achievements.slice(0, 2).map((achievement, achievementIndex) => (
-											<div key={achievementIndex} className="flex items-center space-x-2">
-												<CheckCircle className="w-4 h-4 text-[#c410bb] flex-shrink-0" />
-												<span className="text-gray-700 text-xs">{achievement}</span>
-											</div>
-										))}
-									</div>
-
-									<motion.div
-										whileHover={{ scale: 1.05 }}
-										whileTap={{ scale: 0.95 }}
-										className="flex justify-between items-center pt-4 border-t border-gray-200"
-									>
-										<Link
-											to={`/Gallerys/${Gallery.id}`}
-											className="inline-flex items-center space-x-1 text-yellow-400 hover:text-yellow-500 font-semibold text-sm transition-colors duration-200"
-										>
-											<span>View Details</span>
-											<ArrowRight className="w-4 h-4" />
-										</Link>
-										<div className="flex items-center space-x-1">
-											{[...Array(5)].map((_, i) => (
-												<Star key={i} className="w-4 h-4 text-yellow-500 fill-current" />
-											))}
-										</div>
-									</motion.div>
-								</div>
-							</motion.div>
-						))}
-					</div>
-				</div>
-			</section>
-
-			{/* Gallery Process */}
-			<section className="py-20 bg-gray-50">
-				<div className="container mx-auto px-6">
-					<motion.div
-						initial={{ opacity: 0, y: 40 }}
-						whileInView={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.6 }}
-						viewport={{ once: true }}
-						className="text-center mb-16"
-					>
-						<div className="inline-flex items-center space-x-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full px-4 py-2 mb-4">
-							<span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-							<span className="text-yellow-500 text-sm font-semibold">Our Process</span>
-						</div>
-						<h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-							Gallery <span className="text-[#870481]">Process</span>
+							Project <span className="text-[#870481]">Gallery</span>
 						</h2>
 						<p className="text-xl text-gray-600 max-w-2xl mx-auto">
-							Systematic approach to ensure successful Gallery delivery from concept to completion
+							Explore our diverse portfolio of industrial construction projects
 						</p>
 					</motion.div>
 
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-						{GalleryProcess.map((process, index) => (
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+						{galleryImages.map((image, index) => (
 							<motion.div
-								key={index}
+								key={image.id}
 								initial={{ opacity: 0, y: 40 }}
 								whileInView={{ opacity: 1, y: 0 }}
 								transition={{ duration: 0.6, delay: index * 0.1 }}
 								viewport={{ once: true }}
-								className="text-center relative"
+								whileHover={{ y: -5 }}
+								className="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
 							>
-								<div className="w-20 h-20 bg-gradient-to-r from-[#631caf] to-[#8b0389] rounded-2xl flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
-									{process.step}
+								<div className="relative h-64 overflow-hidden rounded-t-2xl">
+									<img
+										src={image.src}
+										alt={image.title}
+										className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+										loading="lazy"
+									/>
+									<div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">
+										<button
+											onClick={() => openFullscreen(image)}
+											className="opacity-0 group-hover:opacity-100 bg-white text-gray-900 p-3 rounded-full hover:bg-yellow-400 transition-all duration-300 transform hover:scale-110"
+										>
+											<ZoomIn className="w-6 h-6" />
+										</button>
+									</div>
 								</div>
-								<h3 className="text-2xl font-bold text-gray-900 mb-4">{process.title}</h3>
-								<p className="text-gray-600 leading-relaxed">{process.description}</p>
-
-								{index < 3 && (
-									<div className="hidden lg:block absolute top-10 -right-4 w-8 h-0.5 bg-yellow-300"></div>
-								)}
+								<div className="p-6">
+									<h3 className="text-xl font-bold text-gray-900 mb-2">{image.title}</h3>
+									<p className="text-gray-600 text-sm mb-4">{image.description}</p>
+									<button
+										onClick={() => openFullscreen(image)}
+										className="flex items-center space-x-2 text-[#870481] hover:text-yellow-500 font-semibold transition-colors duration-300"
+									>
+										<Eye className="w-4 h-4" />
+										<span>View Full Image</span>
+									</button>
+								</div>
 							</motion.div>
 						))}
 					</div>
 				</div>
 			</section>
 
-			{/* CTA Section */}
-			<section className="py-20 bg-[#35105e]">
-				<div className="container mx-auto px-6">
+			{/* Fullscreen Modal */}
+			{isFullscreen && selectedImage && (
+				<div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center p-4">
 					<motion.div
-						initial={{ opacity: 0, y: 40 }}
-						whileInView={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.6 }}
-						viewport={{ once: true }}
-						className="text-center text-white"
+						initial={{ opacity: 0, scale: 0.8 }}
+						animate={{ opacity: 1, scale: 1 }}
+						exit={{ opacity: 0, scale: 0.8 }}
+						className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center"
 					>
-						<h2 className="text-4xl lg:text-5xl font-bold mb-6">
-							Start Your <span className="text-yellow-400">Gallery</span>
-						</h2>
-						<p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-							Ready to begin your construction Gallery? Contact us for a detailed consultation and Gallery proposal.
-						</p>
-						<div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-							<Link
-								to="/contact"
-								className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold px-8 py-4 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2"
-							>
-								<Phone className="w-5 h-5" />
-								<span>Call: +91 8292111172</span>
-							</Link>
-							<Link
-								to="/contact"
-								className="border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-8 py-4 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2"
-							>
-								<Mail className="w-5 h-5" />
-								<span>Email: jyadavst@gmail.com</span>
-							</Link>
+						<button
+							onClick={closeFullscreen}
+							className="absolute top-4 right-4 z-10 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-2 rounded-full transition-all duration-300"
+						>
+							<X className="w-6 h-6" />
+						</button>
+						<img
+							src={selectedImage.src}
+							alt={selectedImage.title}
+							className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+							onClick={closeFullscreen}
+						/>
+						<div className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white p-4 rounded-lg">
+							<h3 className="text-xl font-bold mb-1">{selectedImage.title}</h3>
+							<p className="text-gray-300">{selectedImage.description}</p>
 						</div>
 					</motion.div>
 				</div>
-			</section>
+			)}
 		</div>
 	);
 };

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { 
-  LayoutDashboard, 
-  FileText, 
-  Briefcase, 
-  Mail, 
+import Swal from 'sweetalert2';
+import logo from '../../assets/logo2.jpg'
+import {
+  LayoutDashboard,
+  FileText,
+  Briefcase,
+  Mail,
   LogOut,
   Menu,
   X,
@@ -21,12 +23,24 @@ const AdminLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+  //handle logout
   const handleLogout = () => {
-    logout();
-    navigate('/admin/login');
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will be logged out of the admin panel',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, logout'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logout();
+        navigate('/admin/login');
+      }
+    });
   };
-
+  //handle navigation
   const navigationItems = [
     {
       path: '/admin',
@@ -62,7 +76,7 @@ const AdminLayout = () => {
     <div className="min-h-screen bg-gray-50 flex">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
@@ -79,13 +93,8 @@ const AdminLayout = () => {
         {/* Sidebar Header */}
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center space-x-3 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center">
-              <Shield className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">TCS Admin</h1>
-              <p className="text-sm text-gray-600">Triveni Construction</p>
-            </div>
+            <img src={logo} alt="" className='w-40 h-15 text-center' />
+
           </div>
 
           {/* User Info */}
@@ -208,7 +217,7 @@ const AdminLayout = () => {
         {/* Footer */}
         <footer className="bg-white border-t border-gray-200 py-4 px-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between text-sm text-gray-600">
-            <p>© 2023 TRIVENI INFRA MECH PVT LTD. All rights reserved.</p>
+            <p>© 2025 TRIVENI INFRAMECH PVT LTD. All rights reserved.</p>
             <p className="mt-2 lg:mt-0">
               Admin Panel v1.0 • Secure Access
             </p>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-//import logo from assets
-import logo2 from '../../assets/logo3.png';
+import logo2 from '../../assets/logo2.jpg';
+import { useNavigation } from '../../context/NavigationContext';
 
 import {
   Phone,
@@ -30,10 +30,12 @@ const Navbar = ({ onMobileMenuToggle }) => {
     });
   };
 
-  // Handle navigation with smooth scroll
+  const { allowNavigation } = useNavigation();
+
   const handleNavigation = (path) => {
+    allowNavigation(path);
     if (location.pathname !== path) {
-      navigate(path);
+      navigate(path, { state: { fromNavbar: true } });
       setTimeout(() => {
         scrollToTop();
       }, 100);
@@ -144,23 +146,11 @@ const Navbar = ({ onMobileMenuToggle }) => {
 
             {/* Logo */}
             <NavLink to="/" className="flex items-center space-x-3">
-              {/*<div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center shadow-lg">
-                  <span className="text-white font-bold text-lg">TCS</span>
-                </div>
-              </div>
-              <div className="flex flex-col">
-                <h1 className="text-2xl font-bold text-gray-900 leading-tight">
-                  TRIVENI
-                </h1>
-                <p className="text-sm text-gray-600 font-medium tracking-wider">
-                  INFRA MECH PVT LTD
-                </p>
-              </div>*/}
+              
               <div className="flex items-center">
                 <img src={logo2} alt="Logo" className={`object-contain transition-all duration-500 ${isScrolled
                   ? 'h-12 w-24 sm:h-14 sm:w-28 lg:h-16 lg:w-32 ml-[-8px] sm:ml-[-10px]'
-                  : 'h-16 w-28 sm:h-20 sm:w-32 lg:h-25 lg:w-40 ml-[-10px] sm:ml-[-15px]'
+                  : 'h-16 w-28 sm:h-20 sm:w-32 lg:h-25 lg:w-50 ml-[-10px] sm:ml-[-15px]'
                   }`} />
               </div>
             </NavLink>
@@ -171,7 +161,7 @@ const Navbar = ({ onMobileMenuToggle }) => {
                 <button
                   key={item.name}
                   onClick={() => handleNavigation(item.path)}
-                  className={`flex items-center space-x-1 px-2 py-3 font-semibold transition-all duration-300 relative group cursor-pointer ${isActive(item.path)
+                  className={`flex items-center space-x-1 px-3 py-3 font-semibold transition-all duration-300 relative group cursor-pointer ${isActive(item.path)
                     ? 'text-yellow-600'
                     : 'text-gray-800 hover:text-yellow-600'
                     }`}
@@ -184,13 +174,7 @@ const Navbar = ({ onMobileMenuToggle }) => {
                 </button>
               ))}
 
-              {/* CTA Button */}
-              {/* <Link 
-                to="/contact"
-                className="ml-4 bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-3 rounded-lg font-bold hover:shadow-xl transform hover:scale-105 transition-all duration-300 shadow-lg"
-              >
-                Free Quote
-              </Link> */}
+         
             </div>
 
             {/* Mobile Menu Button */}
@@ -218,7 +202,7 @@ const Navbar = ({ onMobileMenuToggle }) => {
                           handleNavigation(item.path);
                           onMobileMenuToggle?.(false);
                         }}
-                        className={`block w-full text-left py-3 px-4 font-semibold text-base transition-all duration-300 cursor-pointer ${isActive(item.path)
+                        className={`block w-full text-center py-3 px-4 font-semibold text-base transition-all duration-300 cursor-pointer ${isActive(item.path)
                           ? 'text-yellow-600 bg-yellow-50 rounded-lg'
                           : 'text-gray-800 hover:text-yellow-600 hover:bg-gray-50'
                           }`}

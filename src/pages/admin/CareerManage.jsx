@@ -81,7 +81,6 @@ function CareerManage() {
         setJobs(res.data.data);
       }
     } catch (error) {
-      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -89,13 +88,10 @@ function CareerManage() {
   const fetctApplication = async () => {
     try {
       const res = await axios.get(`applications`);
-      console.log(res);
-
       if (res.data.success) {
         setApplications(res.data.data);
       }
     } catch (error) {
-      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -335,7 +331,6 @@ function CareerManage() {
         resetJobForm();
       }
     } catch (error) {
-      console.log(error);
     }
   };
 

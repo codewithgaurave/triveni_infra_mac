@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import logo from '../../assets/logo2.jpg'
 import { 
   Lock, 
   Mail, 
@@ -68,20 +69,20 @@ const AdminLogin = () => {
         {/* Login Card */}
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-yellow-500 to-orange-500 p-8 text-center">
+          <div className="bg-gradient-to-r from-[#631caf] via-[#8a5387] to-[#8b0389] p-8 text-center">
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg"
             >
-              <Shield className="w-10 h-10 text-yellow-600" />
+          <img src={logo} alt="" />
             </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-2xl font-bold text-gray-900 mb-2"
+              className="text-2xl font-bold text-gray-100 mb-2"
             >
               Admin Portal
             </motion.h1>
@@ -89,9 +90,9 @@ const AdminLogin = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="text-yellow-900 font-medium"
+              className="text-yellow-100 font-bold"
             >
-              TRIVENI INFRA MECH PVT LTD
+              TRIVENI INFRAMECH PVT LTD
             </motion.p>
           </div>
 
@@ -121,7 +122,7 @@ const AdminLogin = () => {
               {/* Email Field */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  <Mail className="w-4 h-4 inline mr-1 text-yellow-600" />
+                  <Mail className="w-4 h-4 inline mr-1 text-purple-600" />
                   Email Address
                 </label>
                 <div className="relative">
@@ -130,7 +131,7 @@ const AdminLogin = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full px-4 py-3 pl-11 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300"
+                    className="w-full px-4 py-3 pl-11 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
                     placeholder="admin@tcs.com"
                   />
                   <Mail className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
@@ -140,7 +141,7 @@ const AdminLogin = () => {
               {/* Password Field */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  <Lock className="w-4 h-4 inline mr-1 text-yellow-600" />
+                  <Lock className="w-4 h-4 inline mr-1 text-purple-600" />
                   Password
                 </label>
                 <div className="relative">
@@ -149,7 +150,7 @@ const AdminLogin = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="w-full px-4 py-3 pl-11 pr-11 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300"
+                    className="w-full px-4 py-3 pl-11 pr-11 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300"
                     placeholder="Enter your password"
                   />
                   <Lock className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
@@ -172,7 +173,7 @@ const AdminLogin = () => {
                 className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center space-x-2 ${
                   isLoading
                     ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-gray-900 shadow-lg hover:shadow-xl'
+                    : 'bg-gradient-to-r from-[#631caf] via-[#8a5387] to-[#8b0389] text-gray-100 shadow-lg hover:shadow-xl cursor-pointer'
                 }`}
               >
                 {isLoading ? (
@@ -182,7 +183,7 @@ const AdminLogin = () => {
                   </>
                 ) : (
                   <>
-                    <Shield className="w-5 h-5" />
+                   
                     <span>Sign In to Dashboard</span>
                   </>
                 )}
@@ -210,7 +211,7 @@ const AdminLogin = () => {
           className="text-center mt-8"
         >
           <p className="text-sm text-gray-400">
-            © 2023 TRIVENI INFRA MECH PVT LTD. All rights reserved.
+            © 2025 TRIVENI INFRAMECH PVT LTD. All rights reserved.
           </p>
         </motion.div>
       </motion.div>

@@ -97,10 +97,10 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     console.log(formData);
-    
+
     const res = await axiosInstance.post(`/contact`, formData);
     console.log(res);
-    if(res.data.success){
+    if (res.data.success) {
       setIsSubmitting(false);
       toast.success(res.data.message)
       setIsSubmitted(true);
@@ -112,23 +112,9 @@ const Contact = () => {
         subject: "",
         message: "",
       });
-      
-    }
-    
 
-    // // Simulate form submission
-    // setTimeout(() => {
-    //   setIsSubmitting(false);
-    //   setIsSubmitted(true);
-    //   setFormData({
-    //     name: "",
-    //     email: "",
-    //     company: "",
-    //     phone: "",
-    //     subject: "",
-    //     message: "",
-    //   });
-    // }, 2000);
+    }
+
   };
 
   return (
@@ -245,7 +231,7 @@ const Contact = () => {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="bg-zinc-200 rounded-2xl shadow-xl p-8"
+              className="bg-white rounded-2xl shadow-xl p-8"
             >
               <div className="flex items-center space-x-3 mb-8">
                 <MessageCircle className="w-8 h-8 text-yellow-500" />
@@ -386,11 +372,10 @@ const Contact = () => {
                     disabled={isSubmitting}
                     whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
                     whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                    className={`w-full py-4 px-6 rounded-lg font-bold text-lg transition-all duration-300 flex items-center justify-center space-x-2 cursor-pointer ${
-                      isSubmitting
+                    className={`w-full py-4 px-6 rounded-lg font-bold text-lg transition-all duration-300 flex items-center justify-center space-x-2 cursor-pointer ${isSubmitting
                         ? "bg-gray-400 cursor-not-allowed"
                         : "bg-yellow-400 hover:bg-yellow-500 text-gray-900"
-                    }`}
+                      }`}
                   >
                     {isSubmitting ? (
                       <>

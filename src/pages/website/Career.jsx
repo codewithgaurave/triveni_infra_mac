@@ -12,6 +12,10 @@ import {
   Clock,
   DollarSign,
   Briefcase,
+  Eye,
+  X,
+  GraduationCap,
+  Award,
 } from "lucide-react";
 import { toast } from "react-toastify";
 import axiosInstance from "../../../axiosInstance";
@@ -30,70 +34,622 @@ const Career = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [showJobDetails, setShowJobDetails] = useState(false);
 
   const jobPositions = [
+    // Management & Engineering
     {
-      title: "Structural Engineer",
-      salary: "8-12 LPA",
-      location: "Mumbai",
-      experience: "3-5 years",
+      title: "Project Manager",
+      category: "Management & Engineering",
+      salary: "₹15,00,000 - ₹25,00,000",
+      location: "Multiple Locations",
+      experience: "5-10 years",
       timing: "Full-time",
-      description: "Design and analyze structural systems for industrial projects including steel structures and foundations."
+      description: "Lead construction projects from planning to completion, manage teams and ensure timely delivery.",
+      detailedDescription: "We are looking for an experienced Project Manager to lead our construction projects. You'll be responsible for project planning, execution, and delivery while managing cross-functional teams.",
+      responsibilities: ["Plan and execute construction projects", "Manage project budgets and schedules", "Lead multidisciplinary teams", "Ensure quality and safety compliance", "Communicate with clients and stakeholders", "Risk management and issue resolution"],
+      requirements: ["Bachelor's degree in Engineering/Construction Management", "5-10 years of project management experience", "PMP certification preferred", "Strong leadership and communication skills", "Knowledge of construction processes", "Proficiency in project management software"],
+      benefits: ["Executive compensation package", "Comprehensive health benefits", "Leadership development programs", "Performance bonuses", "Company vehicle allowance"]
+    },
+    {
+      title: "Project Engineer",
+      category: "Management & Engineering",
+      salary: "₹8,00,000 - ₹15,00,000",
+      location: "Multiple Locations",
+      experience: "3-7 years",
+      timing: "Full-time",
+      description: "Support project management activities, coordinate engineering tasks and ensure technical compliance.",
+      detailedDescription: "Join our team as a Project Engineer to support project execution and coordinate various engineering activities across multiple disciplines.",
+      responsibilities: ["Support project planning and execution", "Coordinate engineering activities", "Review technical drawings and specifications", "Monitor project progress", "Ensure technical compliance", "Assist in problem-solving"],
+      requirements: ["Bachelor's degree in Engineering", "3-7 years of project engineering experience", "Knowledge of engineering principles", "Strong analytical skills", "Good communication abilities", "Proficiency in engineering software"],
+      benefits: ["Competitive salary package", "Health insurance coverage", "Professional development", "Performance bonuses", "Career growth opportunities"]
+    },
+    {
+      title: "Construction Engineer",
+      category: "Management & Engineering",
+      salary: "₹6,00,000 - ₹12,00,000",
+      location: "Project Sites",
+      experience: "2-6 years",
+      timing: "Full-time",
+      description: "Oversee construction activities, ensure quality standards and coordinate with site teams.",
+      detailedDescription: "We are seeking a Construction Engineer to oversee construction activities and ensure projects are executed according to specifications and quality standards.",
+      responsibilities: ["Oversee construction activities", "Ensure quality standards", "Coordinate with site teams", "Monitor construction progress", "Resolve technical issues", "Maintain construction documentation"],
+      requirements: ["Bachelor's degree in Civil Engineering", "2-6 years of construction experience", "Knowledge of construction methods", "Understanding of quality standards", "Strong problem-solving skills", "Site management experience"],
+      benefits: ["Competitive salary", "Site allowances", "Health insurance", "Skill development", "Performance incentives"]
     },
     {
       title: "Piping Engineer",
-      salary: "6-10 LPA",
-      location: "Pune",
-      experience: "2-4 years",
+      category: "Management & Engineering",
+      salary: "₹6,00,000 - ₹12,00,000",
+      location: "Mumbai/Pune",
+      experience: "2-5 years",
       timing: "Full-time",
-      description: "Design piping systems, create isometric drawings, and ensure compliance with industry standards."
+      description: "Design piping systems, create isometric drawings, and ensure compliance with industry standards.",
+      detailedDescription: "Join our team as a Piping Engineer to design and develop piping systems for industrial facilities. You'll work on challenging projects involving complex piping networks.",
+      responsibilities: ["Design piping systems for industrial plants", "Create piping isometric drawings and P&IDs", "Perform stress analysis and hydraulic calculations", "Coordinate with process and mechanical engineers", "Review vendor drawings and specifications", "Support construction and commissioning activities"],
+      requirements: ["Bachelor's degree in Mechanical/Chemical Engineering", "2-5 years of piping design experience", "Proficiency in AutoCAD, PDMS/E3D, Caesar II", "Knowledge of ASME, API standards", "Understanding of process engineering principles", "Strong attention to detail"],
+      benefits: ["Attractive compensation package", "Medical insurance for family", "Training and certification programs", "Annual performance bonuses", "Work-life balance initiatives"]
     },
     {
-      title: "Project Manager",
-      salary: "15-20 LPA",
-      location: "Delhi",
-      experience: "5-8 years",
+      title: "Structural Engineer",
+      category: "Management & Engineering",
+      salary: "₹8,00,000 - ₹15,00,000",
+      location: "Delhi/Mumbai",
+      experience: "3-7 years",
       timing: "Full-time",
-      description: "Lead construction projects from planning to completion, manage teams and ensure timely delivery."
+      description: "Design and analyze structural systems for industrial projects including steel structures and foundations.",
+      detailedDescription: "We are seeking an experienced Structural Engineer to join our dynamic team. The role involves designing, analyzing, and overseeing the construction of structural systems for various industrial projects.",
+      responsibilities: ["Design structural systems for industrial buildings", "Perform structural analysis using STAAD Pro, ETABS", "Prepare detailed drawings and specifications", "Coordinate with other engineering disciplines", "Conduct site inspections and quality checks", "Ensure compliance with building codes"],
+      requirements: ["Bachelor's degree in Civil/Structural Engineering", "3-7 years of structural design experience", "Proficiency in AutoCAD, STAAD Pro, ETABS", "Knowledge of IS codes and international standards", "Strong analytical and problem-solving skills", "Excellent communication and teamwork abilities"],
+      benefits: ["Competitive salary package", "Health insurance coverage", "Professional development opportunities", "Performance-based bonuses", "Flexible working hours"]
     },
     {
       title: "Mechanical Engineer",
-      salary: "5-8 LPA",
-      location: "Chennai",
-      experience: "1-3 years",
+      category: "Management & Engineering",
+      salary: "₹5,00,000 - ₹10,00,000",
+      location: "Chennai/Bangalore",
+      experience: "2-5 years",
       timing: "Full-time",
-      description: "Design mechanical systems, equipment selection, and maintenance planning for industrial facilities."
+      description: "Design mechanical systems, equipment selection, and maintenance planning for industrial facilities.",
+      detailedDescription: "Join our mechanical engineering team to work on diverse industrial projects. You'll be involved in designing mechanical systems and equipment for various applications.",
+      responsibilities: ["Design mechanical systems and equipment", "Perform equipment selection and sizing", "Prepare technical specifications", "Support installation and commissioning", "Develop maintenance procedures", "Troubleshoot mechanical issues"],
+      requirements: ["Bachelor's degree in Mechanical Engineering", "2-5 years of relevant experience", "Proficiency in AutoCAD, SolidWorks", "Knowledge of mechanical systems", "Understanding of manufacturing processes", "Good analytical skills"],
+      benefits: ["Competitive salary package", "Health and dental insurance", "Skill development programs", "Annual increment and bonuses", "Flexible work arrangements"]
     },
     {
-      title: "Safety Officer",
-      salary: "4-6 LPA",
-      location: "Bangalore",
+      title: "Electrical Engineer",
+      category: "Management & Engineering",
+      salary: "₹5,00,000 - ₹10,00,000",
+      location: "Multiple Locations",
+      experience: "2-5 years",
+      timing: "Full-time",
+      description: "Design electrical systems, power distribution, and control systems for industrial projects.",
+      detailedDescription: "We are looking for an Electrical Engineer to design and implement electrical systems for our industrial construction projects.",
+      responsibilities: ["Design electrical systems", "Prepare electrical drawings", "Select electrical equipment", "Coordinate with other disciplines", "Ensure electrical safety compliance", "Support commissioning activities"],
+      requirements: ["Bachelor's degree in Electrical Engineering", "2-5 years of electrical design experience", "Knowledge of electrical codes and standards", "Proficiency in AutoCAD Electrical", "Understanding of power systems", "Strong technical skills"],
+      benefits: ["Competitive salary", "Health insurance", "Professional development", "Performance bonuses", "Career growth"]
+    },
+    {
+      title: "Instrumentation Engineer",
+      category: "Management & Engineering",
+      salary: "₹6,00,000 - ₹11,00,000",
+      location: "Industrial Sites",
+      experience: "2-5 years",
+      timing: "Full-time",
+      description: "Design and implement instrumentation and control systems for industrial processes.",
+      detailedDescription: "Join our team as an Instrumentation Engineer to work on advanced control and instrumentation systems for industrial facilities.",
+      responsibilities: ["Design instrumentation systems", "Develop control strategies", "Prepare instrument specifications", "Support system commissioning", "Troubleshoot control issues", "Maintain documentation"],
+      requirements: ["Bachelor's degree in Instrumentation/Electronics Engineering", "2-5 years of instrumentation experience", "Knowledge of control systems", "Proficiency in instrumentation software", "Understanding of process control", "Strong analytical skills"],
+      benefits: ["Attractive salary package", "Health benefits", "Technical training", "Performance incentives", "Career advancement"]
+    },
+    {
+      title: "Civil Engineer",
+      category: "Management & Engineering",
+      salary: "₹4,00,000 - ₹8,00,000",
+      location: "Project Sites",
+      experience: "1-5 years",
+      timing: "Full-time",
+      description: "Plan and oversee civil construction activities including foundations, structures, and infrastructure.",
+      detailedDescription: "We are seeking a Civil Engineer to handle various civil construction activities and ensure quality execution of civil works.",
+      responsibilities: ["Plan civil construction activities", "Oversee foundation and structural work", "Ensure quality standards", "Coordinate with contractors", "Monitor construction progress", "Prepare progress reports"],
+      requirements: ["Bachelor's degree in Civil Engineering", "1-5 years of civil construction experience", "Knowledge of construction methods", "Understanding of building codes", "Good project management skills", "Site supervision experience"],
+      benefits: ["Competitive salary", "Site benefits", "Health insurance", "Skill development", "Growth opportunities"]
+    },
+    {
+      title: "MEP Engineer",
+      category: "Management & Engineering",
+      salary: "₹6,00,000 - ₹12,00,000",
+      location: "Multiple Locations",
+      experience: "3-6 years",
+      timing: "Full-time",
+      description: "Design and coordinate Mechanical, Electrical, and Plumbing systems for construction projects.",
+      detailedDescription: "Join our MEP team to design integrated mechanical, electrical, and plumbing systems for industrial and commercial projects.",
+      responsibilities: ["Design MEP systems", "Coordinate between disciplines", "Prepare MEP drawings", "Ensure system integration", "Support installation activities", "Conduct system testing"],
+      requirements: ["Bachelor's degree in Mechanical/Electrical Engineering", "3-6 years of MEP experience", "Knowledge of MEP systems", "Proficiency in MEP software", "Understanding of building services", "Good coordination skills"],
+      benefits: ["Competitive package", "Health benefits", "Professional training", "Performance bonuses", "Career growth"]
+    },
+    {
+      title: "HVAC Engineer",
+      category: "Management & Engineering",
+      salary: "₹5,00,000 - ₹9,00,000",
+      location: "Multiple Locations",
+      experience: "2-5 years",
+      timing: "Full-time",
+      description: "Design heating, ventilation, and air conditioning systems for industrial and commercial buildings.",
+      detailedDescription: "We are looking for an HVAC Engineer to design efficient heating, ventilation, and air conditioning systems for our projects.",
+      responsibilities: ["Design HVAC systems", "Perform load calculations", "Select HVAC equipment", "Prepare HVAC drawings", "Support installation", "Conduct system commissioning"],
+      requirements: ["Bachelor's degree in Mechanical Engineering", "2-5 years of HVAC experience", "Knowledge of HVAC principles", "Proficiency in HVAC software", "Understanding of energy efficiency", "Good technical skills"],
+      benefits: ["Competitive salary", "Health insurance", "Technical training", "Performance incentives", "Professional growth"]
+    },
+    {
+      title: "Planning Engineer",
+      category: "Management & Engineering",
+      salary: "₹6,00,000 - ₹11,00,000",
+      location: "Project Sites",
+      experience: "3-6 years",
+      timing: "Full-time",
+      description: "Develop project schedules, monitor progress, and ensure timely completion of construction activities.",
+      detailedDescription: "Join our planning team to develop comprehensive project schedules and monitor project progress to ensure timely delivery.",
+      responsibilities: ["Develop project schedules", "Monitor project progress", "Update project plans", "Coordinate with teams", "Prepare progress reports", "Identify critical paths"],
+      requirements: ["Bachelor's degree in Engineering", "3-6 years of planning experience", "Proficiency in Primavera/MS Project", "Knowledge of construction processes", "Strong analytical skills", "Good communication abilities"],
+      benefits: ["Attractive salary", "Health benefits", "Professional development", "Performance bonuses", "Career advancement"]
+    },
+    {
+      title: "Project Coordinator",
+      category: "Management & Engineering",
+      salary: "₹4,00,000 - ₹7,00,000",
+      location: "Office/Site",
       experience: "2-4 years",
       timing: "Full-time",
-      description: "Ensure workplace safety compliance, conduct safety audits, and implement safety protocols."
+      description: "Coordinate project activities, facilitate communication, and support project management functions.",
+      detailedDescription: "We are seeking a Project Coordinator to support project management activities and ensure smooth coordination between various project stakeholders.",
+      responsibilities: ["Coordinate project activities", "Facilitate team communication", "Maintain project documentation", "Schedule meetings", "Track project milestones", "Support project managers"],
+      requirements: ["Bachelor's degree in Engineering/Management", "2-4 years of coordination experience", "Good organizational skills", "Strong communication abilities", "Proficiency in MS Office", "Project management knowledge"],
+      benefits: ["Competitive salary", "Health insurance", "Skill development", "Performance incentives", "Growth opportunities"]
+    },
+    // Site & Technical Staff
+    {
+      title: "Site Incharge",
+      category: "Site & Technical Staff",
+      salary: "₹6,00,000 - ₹10,00,000",
+      location: "Project Sites",
+      experience: "5-8 years",
+      timing: "Full-time",
+      description: "Overall responsibility for site operations, safety, and project execution at construction sites.",
+      detailedDescription: "We are looking for an experienced Site Incharge to take overall responsibility for site operations and ensure successful project execution.",
+      responsibilities: ["Manage overall site operations", "Ensure safety compliance", "Coordinate with all teams", "Monitor quality standards", "Manage site resources", "Report to project management"],
+      requirements: ["Bachelor's degree in Engineering", "5-8 years of site management experience", "Strong leadership skills", "Knowledge of safety protocols", "Good decision-making abilities", "Site management experience"],
+      benefits: ["Competitive package", "Site allowances", "Health insurance", "Leadership development", "Performance bonuses"]
     },
     {
-      title: "Quality Control Inspector",
-      salary: "3-5 LPA",
-      location: "Hyderabad",
+      title: "Site Supervisor",
+      category: "Site & Technical Staff",
+      salary: "₹4,00,000 - ₹7,00,000",
+      location: "Project Sites",
+      experience: "3-6 years",
+      timing: "Full-time",
+      description: "Supervise construction activities, ensure quality standards and coordinate with various teams on site.",
+      detailedDescription: "We are looking for an experienced Site Supervisor to oversee daily construction activities and ensure project execution as per specifications and timelines.",
+      responsibilities: ["Supervise daily construction activities", "Ensure safety and quality compliance", "Coordinate with contractors and workers", "Monitor progress and report issues", "Resolve on-site technical problems", "Maintain site documentation"],
+      requirements: ["Diploma/Bachelor's in Civil/Mechanical Engineering", "3-6 years of site supervision experience", "Knowledge of construction processes", "Strong leadership skills", "Ability to work in challenging conditions", "Problem-solving abilities"],
+      benefits: ["Competitive salary", "Site allowances", "Health insurance", "Career growth", "Performance incentives"]
+    },
+    {
+      title: "Mechanical Technician",
+      category: "Site & Technical Staff",
+      salary: "₹3,00,000 - ₹5,00,000",
+      location: "Project Sites",
+      experience: "2-4 years",
+      timing: "Full-time",
+      description: "Install, maintain, and repair mechanical equipment and systems at construction sites.",
+      detailedDescription: "Join our technical team as a Mechanical Technician to handle installation, maintenance, and repair of mechanical equipment.",
+      responsibilities: ["Install mechanical equipment", "Perform maintenance activities", "Troubleshoot mechanical issues", "Follow safety procedures", "Maintain equipment records", "Support commissioning activities"],
+      requirements: ["ITI/Diploma in Mechanical Engineering", "2-4 years of mechanical experience", "Knowledge of mechanical systems", "Good troubleshooting skills", "Safety awareness", "Hands-on experience"],
+      benefits: ["Competitive salary", "Site benefits", "Health insurance", "Skill development", "Overtime opportunities"]
+    },
+    {
+      title: "Plumbing Technician",
+      category: "Site & Technical Staff",
+      salary: "₹2,50,000 - ₹4,00,000",
+      location: "Project Sites",
+      experience: "2-4 years",
+      timing: "Full-time",
+      description: "Install and maintain plumbing systems, pipes, and fixtures in construction projects.",
+      detailedDescription: "We are seeking skilled Plumbing Technicians to handle installation and maintenance of plumbing systems in our construction projects.",
+      responsibilities: ["Install plumbing systems", "Maintain pipes and fixtures", "Repair plumbing issues", "Follow plumbing codes", "Work with various materials", "Ensure quality workmanship"],
+      requirements: ["ITI/Certification in Plumbing", "2-4 years of plumbing experience", "Knowledge of plumbing systems", "Good manual skills", "Understanding of plumbing codes", "Physical fitness"],
+      benefits: ["Competitive wages", "Site allowances", "Health coverage", "Skill training", "Overtime pay"]
+    },
+    {
+      title: "ESP Fitter",
+      category: "Site & Technical Staff",
+      salary: "₹3,50,000 - ₹6,00,000",
+      location: "Industrial Sites",
+      experience: "3-5 years",
+      timing: "Full-time",
+      description: "Install, maintain, and repair Electrostatic Precipitator systems in industrial facilities.",
+      detailedDescription: "Join our specialized team as an ESP Fitter to work on advanced Electrostatic Precipitator systems for industrial applications.",
+      responsibilities: ["Install ESP systems", "Perform maintenance work", "Troubleshoot ESP issues", "Follow safety protocols", "Maintain system records", "Support commissioning"],
+      requirements: ["ITI/Diploma in Electrical/Mechanical", "3-5 years of ESP experience", "Knowledge of ESP systems", "Good technical skills", "Safety consciousness", "Specialized training"],
+      benefits: ["Attractive salary", "Specialized allowances", "Health insurance", "Technical training", "Career growth"]
+    },
+    {
+      title: "Fabricator",
+      category: "Site & Technical Staff",
+      salary: "₹3,00,000 - ₹5,00,000",
+      location: "Workshop/Site",
+      experience: "2-5 years",
+      timing: "Full-time",
+      description: "Fabricate structural components, piping, and equipment as per engineering drawings and specifications.",
+      detailedDescription: "We are looking for skilled Fabricators to create structural components and equipment according to engineering specifications.",
+      responsibilities: ["Fabricate structural components", "Work with various materials", "Follow engineering drawings", "Ensure quality standards", "Operate fabrication equipment", "Maintain workshop safety"],
+      requirements: ["ITI in Welding/Fabrication", "2-5 years of fabrication experience", "Ability to read drawings", "Knowledge of materials", "Good manual skills", "Safety awareness"],
+      benefits: ["Competitive salary", "Workshop benefits", "Health insurance", "Skill development", "Performance incentives"]
+    },
+    {
+      title: "Welder",
+      category: "Site & Technical Staff",
+      salary: "₹3,00,000 - ₹5,50,000",
+      location: "Workshop/Site",
+      experience: "2-5 years",
+      timing: "Full-time",
+      description: "Perform welding operations for structural fabrication and construction activities.",
+      detailedDescription: "Join our welding team to perform high-quality welding operations for various construction and fabrication projects.",
+      responsibilities: ["Perform welding operations", "Follow welding procedures", "Ensure weld quality", "Maintain welding equipment", "Follow safety protocols", "Work with different materials"],
+      requirements: ["ITI in Welding", "2-5 years of welding experience", "Welding certifications", "Knowledge of welding techniques", "Good hand-eye coordination", "Safety consciousness"],
+      benefits: ["Competitive wages", "Welding allowances", "Health coverage", "Certification support", "Overtime opportunities"]
+    },
+    {
+      title: "Argon Welder",
+      category: "Site & Technical Staff",
+      salary: "₹3,50,000 - ₹6,00,000",
+      location: "Workshop/Site",
+      experience: "3-6 years",
+      timing: "Full-time",
+      description: "Perform specialized argon welding for high-quality joints in critical applications.",
+      detailedDescription: "We are seeking skilled Argon Welders for specialized welding operations requiring high precision and quality.",
+      responsibilities: ["Perform argon welding", "Ensure high-quality joints", "Follow specialized procedures", "Maintain welding equipment", "Work on critical applications", "Ensure safety compliance"],
+      requirements: ["ITI in Welding with Argon certification", "3-6 years of argon welding experience", "Specialized welding skills", "Knowledge of gas welding", "Precision and attention to detail", "Safety awareness"],
+      benefits: ["Premium salary", "Specialized allowances", "Health insurance", "Advanced training", "Performance bonuses"]
+    },
+    {
+      title: "Rigger",
+      category: "Site & Technical Staff",
+      salary: "₹2,50,000 - ₹4,50,000",
+      location: "Project Sites",
+      experience: "2-4 years",
+      timing: "Full-time",
+      description: "Handle rigging operations for lifting and moving heavy equipment and materials safely.",
+      detailedDescription: "Join our rigging team to handle safe lifting and moving operations for heavy equipment and structural components.",
+      responsibilities: ["Perform rigging operations", "Ensure safe lifting practices", "Inspect rigging equipment", "Follow safety procedures", "Coordinate with crane operators", "Maintain rigging gear"],
+      requirements: ["Rigging certification", "2-4 years of rigging experience", "Knowledge of lifting techniques", "Understanding of load calculations", "Physical fitness", "Safety consciousness"],
+      benefits: ["Competitive salary", "Safety allowances", "Health coverage", "Safety training", "Overtime pay"]
+    },
+    {
+      title: "Rigging Supervisor",
+      category: "Site & Technical Staff",
+      salary: "₹4,00,000 - ₹7,00,000",
+      location: "Project Sites",
+      experience: "4-7 years",
+      timing: "Full-time",
+      description: "Supervise rigging operations and ensure safe lifting practices across construction sites.",
+      detailedDescription: "We are looking for an experienced Rigging Supervisor to oversee all rigging operations and ensure safety compliance.",
+      responsibilities: ["Supervise rigging operations", "Ensure safety compliance", "Train rigging personnel", "Plan lifting operations", "Inspect rigging equipment", "Coordinate with project teams"],
+      requirements: ["Advanced rigging certification", "4-7 years of rigging supervision experience", "Strong leadership skills", "Knowledge of safety regulations", "Good planning abilities", "Training experience"],
+      benefits: ["Attractive salary", "Supervision allowances", "Health insurance", "Leadership training", "Performance incentives"]
+    },
+    {
+      title: "Scaffolding Supervisor",
+      category: "Site & Technical Staff",
+      salary: "₹3,50,000 - ₹6,00,000",
+      location: "Project Sites",
+      experience: "3-6 years",
+      timing: "Full-time",
+      description: "Supervise scaffolding erection, maintenance, and dismantling operations at construction sites.",
+      detailedDescription: "Join our team as a Scaffolding Supervisor to oversee safe and efficient scaffolding operations across our projects.",
+      responsibilities: ["Supervise scaffolding operations", "Ensure structural integrity", "Train scaffolding teams", "Inspect scaffolding systems", "Follow safety standards", "Coordinate with site teams"],
+      requirements: ["Scaffolding supervisor certification", "3-6 years of scaffolding experience", "Knowledge of scaffolding systems", "Understanding of safety regulations", "Leadership skills", "Physical fitness"],
+      benefits: ["Competitive salary", "Site allowances", "Health insurance", "Safety training", "Career advancement"]
+    },
+    {
+      title: "Scaffolder",
+      category: "Site & Technical Staff",
+      salary: "₹2,50,000 - ₹4,00,000",
+      location: "Project Sites",
+      experience: "1-4 years",
+      timing: "Full-time",
+      description: "Erect, maintain, and dismantle scaffolding systems for construction and maintenance work.",
+      detailedDescription: "We are seeking skilled Scaffolders to handle scaffolding operations safely and efficiently at our construction sites.",
+      responsibilities: ["Erect scaffolding systems", "Maintain scaffolding structures", "Dismantle scaffolding safely", "Follow safety procedures", "Inspect scaffolding components", "Work at heights safely"],
+      requirements: ["Scaffolding certification", "1-4 years of scaffolding experience", "Knowledge of scaffolding systems", "Physical fitness", "Height comfort", "Safety awareness"],
+      benefits: ["Competitive wages", "Height allowances", "Health coverage", "Safety training", "Skill development"]
+    },
+    {
+      title: "Crane Operator",
+      category: "Site & Technical Staff",
+      salary: "₹4,00,000 - ₹7,00,000",
+      location: "Project Sites",
+      experience: "3-6 years",
+      timing: "Full-time",
+      description: "Operate cranes safely and efficiently for lifting and moving materials and equipment.",
+      detailedDescription: "Join our team as a Crane Operator to handle safe and efficient crane operations for our construction projects.",
+      responsibilities: ["Operate cranes safely", "Perform pre-operation inspections", "Follow lifting procedures", "Coordinate with riggers", "Maintain crane equipment", "Ensure safety compliance"],
+      requirements: ["Crane operator license", "3-6 years of crane operation experience", "Knowledge of crane operations", "Good hand-eye coordination", "Understanding of load charts", "Safety consciousness"],
+      benefits: ["Attractive salary", "Operator allowances", "Health insurance", "Equipment training", "Performance bonuses"]
+    },
+    {
+      title: "Forklift Operator",
+      category: "Site & Technical Staff",
+      salary: "₹2,50,000 - ₹4,00,000",
+      location: "Project Sites",
       experience: "1-3 years",
       timing: "Full-time",
-      description: "Inspect construction work quality, ensure adherence to specifications and maintain quality standards."
+      description: "Operate forklifts for material handling and warehouse operations at construction sites.",
+      detailedDescription: "We are looking for skilled Forklift Operators to handle material movement and warehouse operations efficiently.",
+      responsibilities: ["Operate forklifts safely", "Handle material movement", "Maintain equipment", "Follow safety procedures", "Coordinate with warehouse team", "Perform equipment checks"],
+      requirements: ["Forklift operator license", "1-3 years of forklift experience", "Knowledge of material handling", "Good spatial awareness", "Physical fitness", "Safety consciousness"],
+      benefits: ["Competitive salary", "Equipment allowances", "Health coverage", "Training opportunities", "Overtime pay"]
+    },
+    {
+      title: "Heavy Equipment Operator",
+      category: "Site & Technical Staff",
+      salary: "₹3,50,000 - ₹6,00,000",
+      location: "Project Sites",
+      experience: "3-6 years",
+      timing: "Full-time",
+      description: "Operate heavy construction equipment including excavators, bulldozers, and other machinery.",
+      detailedDescription: "Join our equipment team to operate various heavy construction machinery for earthwork and construction activities.",
+      responsibilities: ["Operate heavy equipment", "Perform equipment maintenance", "Follow safety procedures", "Coordinate with site teams", "Conduct pre-operation checks", "Maintain equipment logs"],
+      requirements: ["Heavy equipment operator license", "3-6 years of equipment operation experience", "Knowledge of construction equipment", "Good mechanical understanding", "Safety awareness", "Physical fitness"],
+      benefits: ["Attractive salary", "Equipment allowances", "Health insurance", "Equipment training", "Performance incentives"]
+    },
+    {
+      title: "AutoCAD Draughtsman",
+      category: "Site & Technical Staff",
+      salary: "₹3,00,000 - ₹5,50,000",
+      location: "Office/Site",
+      experience: "2-5 years",
+      timing: "Full-time",
+      description: "Prepare technical drawings and documentation using AutoCAD software for construction projects.",
+      detailedDescription: "We are seeking skilled AutoCAD Draughtsmen to prepare accurate technical drawings and documentation for our projects.",
+      responsibilities: ["Prepare technical drawings", "Create detailed plans", "Update drawing revisions", "Coordinate with engineers", "Maintain drawing standards", "Support project documentation"],
+      requirements: ["Diploma in Engineering/Drafting", "2-5 years of AutoCAD experience", "Proficiency in AutoCAD software", "Knowledge of drafting standards", "Attention to detail", "Good technical understanding"],
+      benefits: ["Competitive salary", "Software training", "Health insurance", "Skill development", "Career growth"]
+    },
+    {
+      title: "Surveyor",
+      category: "Site & Technical Staff",
+      salary: "₹3,00,000 - ₹5,00,000",
+      location: "Project Sites",
+      experience: "2-5 years",
+      timing: "Full-time",
+      description: "Conduct land surveys, set construction benchmarks, and ensure accurate positioning of structures.",
+      detailedDescription: "Join our surveying team to conduct accurate land surveys and provide essential positioning data for construction projects.",
+      responsibilities: ["Conduct land surveys", "Set construction benchmarks", "Prepare survey reports", "Use surveying instruments", "Maintain survey records", "Support construction layout"],
+      requirements: ["Diploma in Civil Engineering/Surveying", "2-5 years of surveying experience", "Knowledge of surveying instruments", "Understanding of survey techniques", "Good mathematical skills", "Attention to accuracy"],
+      benefits: ["Competitive salary", "Field allowances", "Health insurance", "Equipment training", "Professional development"]
+    },
+    // Quality, Safety & Support
+    {
+      title: "Safety Officer",
+      category: "Quality, Safety & Support",
+      salary: "₹4,00,000 - ₹8,00,000",
+      location: "Project Sites",
+      experience: "2-5 years",
+      timing: "Full-time",
+      description: "Ensure workplace safety compliance, conduct safety audits, and implement safety protocols.",
+      detailedDescription: "We are seeking a dedicated Safety Officer to ensure the highest safety standards across our construction sites. You'll play a crucial role in protecting our workforce and maintaining compliance.",
+      responsibilities: ["Develop and implement safety policies", "Conduct regular safety inspections", "Provide safety training to workers", "Investigate accidents and incidents", "Ensure compliance with safety regulations", "Maintain safety documentation"],
+      requirements: ["Diploma/Bachelor's in Safety Engineering", "2-5 years of safety experience in construction", "NEBOSH/IOSH certification preferred", "Knowledge of safety regulations", "Strong communication and training skills", "Attention to detail and proactive approach"],
+      benefits: ["Competitive salary package", "Health insurance coverage", "Safety certification support", "Performance incentives", "Career advancement opportunities"]
+    },
+    {
+      title: "HSE Supervisor",
+      category: "Quality, Safety & Support",
+      salary: "₹5,00,000 - ₹9,00,000",
+      location: "Project Sites",
+      experience: "3-6 years",
+      timing: "Full-time",
+      description: "Supervise Health, Safety, and Environmental activities across construction sites and ensure compliance.",
+      detailedDescription: "Join our HSE team as a Supervisor to oversee comprehensive health, safety, and environmental programs across our projects.",
+      responsibilities: ["Supervise HSE activities", "Ensure regulatory compliance", "Conduct HSE training", "Monitor environmental impact", "Investigate incidents", "Prepare HSE reports"],
+      requirements: ["Bachelor's degree in Safety/Environmental Engineering", "3-6 years of HSE supervision experience", "Advanced safety certifications", "Knowledge of environmental regulations", "Strong leadership skills", "Training and mentoring abilities"],
+      benefits: ["Attractive salary package", "HSE allowances", "Health insurance", "Advanced certifications", "Leadership development"]
+    },
+    {
+      title: "HSE Assistant",
+      category: "Quality, Safety & Support",
+      salary: "₹3,00,000 - ₹5,00,000",
+      location: "Project Sites",
+      experience: "1-3 years",
+      timing: "Full-time",
+      description: "Assist in implementing health, safety, and environmental programs at construction sites.",
+      detailedDescription: "We are looking for an HSE Assistant to support our health, safety, and environmental initiatives across construction projects.",
+      responsibilities: ["Assist in HSE implementation", "Conduct safety inspections", "Maintain HSE records", "Support training programs", "Monitor compliance", "Prepare documentation"],
+      requirements: ["Diploma in Safety/Environmental studies", "1-3 years of HSE experience", "Basic safety certifications", "Knowledge of safety procedures", "Good documentation skills", "Attention to detail"],
+      benefits: ["Competitive salary", "Safety training", "Health insurance", "Certification support", "Career growth"]
+    },
+    {
+      title: "QA/QC Inspector",
+      category: "Quality, Safety & Support",
+      salary: "₹3,50,000 - ₹6,00,000",
+      location: "Project Sites",
+      experience: "2-5 years",
+      timing: "Full-time",
+      description: "Inspect construction work quality and ensure adherence to specifications and quality standards.",
+      detailedDescription: "Join our quality team as a QA/QC Inspector to ensure the highest standards of construction quality across our projects.",
+      responsibilities: ["Conduct quality inspections", "Verify compliance with specifications", "Prepare inspection reports", "Coordinate with contractors", "Monitor quality standards", "Support quality audits"],
+      requirements: ["Diploma/Bachelor's in Civil/Mechanical Engineering", "2-5 years of QA/QC experience", "Knowledge of quality standards", "Understanding of construction methods", "Good documentation skills", "Attention to detail"],
+      benefits: ["Competitive salary", "Quality allowances", "Health insurance", "Quality training", "Professional development"]
+    },
+    {
+      title: "Quality Assurance Engineer",
+      category: "Quality, Safety & Support",
+      salary: "₹5,00,000 - ₹9,00,000",
+      location: "Project Sites",
+      experience: "3-6 years",
+      timing: "Full-time",
+      description: "Develop and implement quality assurance programs to ensure project quality standards.",
+      detailedDescription: "We are seeking a Quality Assurance Engineer to develop comprehensive quality programs and ensure excellence in project delivery.",
+      responsibilities: ["Develop QA programs", "Implement quality procedures", "Conduct quality audits", "Train quality personnel", "Monitor quality metrics", "Prepare quality reports"],
+      requirements: ["Bachelor's degree in Engineering", "3-6 years of QA experience", "Knowledge of quality systems", "Understanding of ISO standards", "Strong analytical skills", "Training and leadership abilities"],
+      benefits: ["Attractive salary package", "Quality certifications", "Health insurance", "Professional training", "Career advancement"]
+    },
+    {
+      title: "Quality Control Engineer",
+      category: "Quality, Safety & Support",
+      salary: "₹4,50,000 - ₹8,00,000",
+      location: "Project Sites",
+      experience: "2-5 years",
+      timing: "Full-time",
+      description: "Monitor and control quality during construction activities to ensure compliance with standards.",
+      detailedDescription: "Join our QC team to monitor construction quality and ensure all work meets specified standards and requirements.",
+      responsibilities: ["Monitor construction quality", "Conduct quality tests", "Review quality documentation", "Coordinate with teams", "Implement corrective actions", "Maintain quality records"],
+      requirements: ["Bachelor's degree in Engineering", "2-5 years of QC experience", "Knowledge of testing procedures", "Understanding of quality standards", "Good analytical skills", "Attention to detail"],
+      benefits: ["Competitive salary", "Testing allowances", "Health insurance", "Quality training", "Professional growth"]
+    },
+    {
+      title: "Document Controller",
+      category: "Quality, Safety & Support",
+      salary: "₹3,00,000 - ₹5,50,000",
+      location: "Office/Site",
+      experience: "2-4 years",
+      timing: "Full-time",
+      description: "Manage project documentation, maintain document control systems, and ensure proper document flow.",
+      detailedDescription: "We are looking for a Document Controller to manage comprehensive project documentation and maintain efficient document control systems.",
+      responsibilities: ["Manage project documents", "Maintain document control systems", "Ensure document accuracy", "Coordinate document flow", "Prepare document reports", "Support project teams"],
+      requirements: ["Bachelor's degree in any discipline", "2-4 years of document control experience", "Knowledge of document management systems", "Good organizational skills", "Attention to detail", "Proficiency in MS Office"],
+      benefits: ["Competitive salary", "Office benefits", "Health insurance", "System training", "Career development"]
+    },
+    {
+      title: "Procurement Officer",
+      category: "Quality, Safety & Support",
+      salary: "₹4,00,000 - ₹7,00,000",
+      location: "Office",
+      experience: "3-5 years",
+      timing: "Full-time",
+      description: "Handle procurement activities, vendor management, and ensure timely material supply for projects.",
+      detailedDescription: "Join our procurement team to manage vendor relationships and ensure efficient material supply for our construction projects.",
+      responsibilities: ["Handle procurement activities", "Manage vendor relationships", "Negotiate contracts", "Ensure timely deliveries", "Monitor procurement costs", "Maintain procurement records"],
+      requirements: ["Bachelor's degree in Engineering/Commerce", "3-5 years of procurement experience", "Knowledge of procurement processes", "Good negotiation skills", "Understanding of contracts", "Vendor management experience"],
+      benefits: ["Attractive salary", "Procurement incentives", "Health insurance", "Professional training", "Performance bonuses"]
+    },
+    {
+      title: "Materials Controller",
+      category: "Quality, Safety & Support",
+      salary: "₹3,00,000 - ₹5,00,000",
+      location: "Project Sites",
+      experience: "2-4 years",
+      timing: "Full-time",
+      description: "Control material inventory, track material usage, and ensure proper material management at sites.",
+      detailedDescription: "We are seeking a Materials Controller to manage material inventory and ensure efficient material utilization across our projects.",
+      responsibilities: ["Control material inventory", "Track material usage", "Maintain material records", "Coordinate with suppliers", "Monitor material quality", "Prepare material reports"],
+      requirements: ["Diploma/Bachelor's in Engineering/Commerce", "2-4 years of materials management experience", "Knowledge of inventory systems", "Good organizational skills", "Understanding of materials", "Computer proficiency"],
+      benefits: ["Competitive salary", "Site allowances", "Health insurance", "Inventory training", "Career growth"]
+    },
+    {
+      title: "Storekeeper",
+      category: "Quality, Safety & Support",
+      salary: "₹2,50,000 - ₹4,00,000",
+      location: "Project Sites",
+      experience: "1-3 years",
+      timing: "Full-time",
+      description: "Manage site stores, maintain inventory records, and ensure proper storage of materials and equipment.",
+      detailedDescription: "Join our stores team to manage site inventory and ensure proper storage and distribution of materials and equipment.",
+      responsibilities: ["Manage site stores", "Maintain inventory records", "Issue materials", "Receive deliveries", "Ensure proper storage", "Prepare store reports"],
+      requirements: ["High school/Diploma", "1-3 years of store management experience", "Knowledge of inventory procedures", "Good organizational skills", "Basic computer skills", "Attention to detail"],
+      benefits: ["Competitive salary", "Store allowances", "Health coverage", "Training opportunities", "Skill development"]
+    },
+    {
+      title: "Timekeeper",
+      category: "Quality, Safety & Support",
+      salary: "₹2,00,000 - ₹3,50,000",
+      location: "Project Sites",
+      experience: "1-3 years",
+      timing: "Full-time",
+      description: "Maintain attendance records, track working hours, and prepare payroll-related documentation.",
+      detailedDescription: "We are looking for a Timekeeper to maintain accurate attendance records and support payroll activities for our project sites.",
+      responsibilities: ["Maintain attendance records", "Track working hours", "Prepare timesheets", "Monitor overtime", "Support payroll processing", "Maintain personnel records"],
+      requirements: ["High school/Commerce background", "1-3 years of timekeeping experience", "Knowledge of attendance systems", "Good numerical skills", "Basic computer knowledge", "Attention to accuracy"],
+      benefits: ["Competitive salary", "Administrative benefits", "Health coverage", "System training", "Job security"]
+    },
+    {
+      title: "Admin Assistant",
+      category: "Quality, Safety & Support",
+      salary: "₹2,50,000 - ₹4,00,000",
+      location: "Office/Site",
+      experience: "1-3 years",
+      timing: "Full-time",
+      description: "Provide administrative support, handle correspondence, and assist in office management activities.",
+      detailedDescription: "Join our administrative team to provide comprehensive support for office operations and project administration.",
+      responsibilities: ["Provide administrative support", "Handle correspondence", "Maintain office records", "Coordinate meetings", "Support project teams", "Manage office supplies"],
+      requirements: ["Bachelor's degree in any discipline", "1-3 years of administrative experience", "Good communication skills", "Proficiency in MS Office", "Organizational abilities", "Professional demeanor"],
+      benefits: ["Competitive salary", "Office benefits", "Health insurance", "Skill training", "Career development"]
+    },
+    {
+      title: "Logistics Coordinator",
+      category: "Quality, Safety & Support",
+      salary: "₹3,50,000 - ₹6,00,000",
+      location: "Office/Site",
+      experience: "2-5 years",
+      timing: "Full-time",
+      description: "Coordinate logistics activities, manage transportation, and ensure efficient material and equipment movement.",
+      detailedDescription: "We are seeking a Logistics Coordinator to manage comprehensive logistics operations and ensure efficient project support.",
+      responsibilities: ["Coordinate logistics activities", "Manage transportation", "Plan material movement", "Coordinate with vendors", "Monitor logistics costs", "Ensure timely deliveries"],
+      requirements: ["Bachelor's degree in Logistics/Supply Chain", "2-5 years of logistics experience", "Knowledge of transportation systems", "Good coordination skills", "Understanding of logistics processes", "Problem-solving abilities"],
+      benefits: ["Attractive salary", "Logistics allowances", "Health insurance", "Professional training", "Performance incentives"]
     }
   ];
 
   const positions = [
-    "Structural Engineer",
+    // Management & Engineering
+    "Project Manager",
+    "Project Engineer", 
+    "Construction Engineer",
     "Piping Engineer",
+    "Structural Engineer",
     "Mechanical Engineer",
     "Electrical Engineer",
-    "Project Manager",
+    "Instrumentation Engineer",
+    "Civil Engineer",
+    "MEP Engineer",
+    "HVAC Engineer",
+    "Planning Engineer",
+    "Project Coordinator",
+    // Site & Technical Staff
+    "Site Incharge",
     "Site Supervisor",
-    "Quality Control Inspector",
-    "Safety Officer",
-    "Welder",
+    "Mechanical Technician",
+    "Plumbing Technician",
+    "ESP Fitter",
     "Fabricator",
-    "Other",
+    "Welder",
+    "Argon Welder",
+    "Rigger",
+    "Rigging Supervisor",
+    "Scaffolding Supervisor",
+    "Scaffolder",
+    "Crane Operator",
+    "Forklift Operator",
+    "Heavy Equipment Operator",
+    "AutoCAD Draughtsman",
+    "Surveyor",
+    // Quality, Safety & Support
+    "Safety Officer",
+    "HSE Supervisor",
+    "HSE Assistant",
+    "QA/QC Inspector",
+    "Quality Assurance Engineer",
+    "Quality Control Engineer",
+    "Document Controller",
+    "Procurement Officer",
+    "Materials Controller",
+    "Storekeeper",
+    "Timekeeper",
+    "Admin Assistant",
+    "Logistics Coordinator",
+    "Other"
   ];
 
   const handleInputChange = (e) => {
@@ -137,6 +693,17 @@ const Career = () => {
       behavior: 'smooth',
       block: 'start'
     });
+  };
+
+  const openJobDetails = (job, e) => {
+    e.stopPropagation();
+    setSelectedJob(job);
+    setShowJobDetails(true);
+  };
+
+  const closeJobDetails = () => {
+    setShowJobDetails(false);
+    setSelectedJob(null);
   };
 
   return (
@@ -187,7 +754,7 @@ const Career = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-16 cursor-pointer"
           >
             <div className="inline-flex items-center space-x-2 bg-yellow-400/20 border border-yellow-400/30 rounded-full px-4 py-2 mb-4">
               <span className="w-2 h-2 bg-yellow-400 rounded-full"></span>
@@ -218,7 +785,7 @@ const Career = () => {
                 <div className="mb-4">
                   <h3 className="text-xl font-bold text-[#30085b] mb-2">{job.title}</h3>
                   <div className="flex items-center text-green-600 font-semibold mb-3">
-                    <DollarSign className="w-4 h-4 mr-1" />
+                    {/*<DollarSign className="w-4 h-4 mr-1" />*/}
                     <span>{job.salary}</span>
                   </div>
                 </div>
@@ -242,9 +809,18 @@ const Career = () => {
                   {job.description}
                 </p>
 
-                <button className="w-full bg-gradient-to-r from-[#631caf] to-[#8b0389] hover:from-[#7a1fc7] hover:to-[#a004a1] text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
-                  Apply Now
-                </button>
+                <div className="flex gap-2">
+                  <button 
+                    onClick={(e) => openJobDetails(job, e)}
+                    className="flex-1 cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2"
+                  >
+                    <Eye className="w-4 h-4" cursor-pointer />
+                    <span>View Details</span>
+                  </button>
+                  <button className="flex-1 cursor-pointer bg-gradient-to-r from-[#631caf] to-[#8b0389] hover:from-[#7a1fc7] hover:to-[#a004a1] text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                    Apply Now
+                  </button>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -259,7 +835,7 @@ const Career = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-16 cursor-pointer"
           >
             <div className="inline-flex items-center space-x-2 bg-yellow-400/20 border border-yellow-400/30 rounded-full px-4 py-2 mb-4">
               <span className="w-2 h-2 bg-yellow-400 rounded-full"></span>
@@ -281,7 +857,7 @@ const Career = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="bg-zinc-200 rounded-2xl shadow-xl p-8"
+              className="bg-white rounded-2xl shadow-2xl p-8"
             >
               {isSubmitted ? (
                 <motion.div
@@ -490,6 +1066,128 @@ const Career = () => {
           </div>
         </div>
       </section>
+
+      {/* Job Details Modal */}
+      {showJobDetails && selectedJob && (
+        <div className="fixed inset-0 backdrop-blur-sm bg-white/10 z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+          >
+            <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center">
+              <div>
+                <h2 className="text-2xl font-bold text-[#30085b]">{selectedJob.title}</h2>
+                <div className="flex items-center text-green-600 font-semibold mt-1">
+                  <DollarSign className="w-4 h-4 mr-1" />
+                  <span>{selectedJob.salary}</span>
+                </div>
+              </div>
+              <button
+                onClick={closeJobDetails}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div className="flex items-center space-x-3">
+                  <MapPin className="w-5 h-5 text-[#870481]" />
+                  <div>
+                    <p className="text-sm text-gray-500">Location</p>
+                    <p className="font-semibold">{selectedJob.location}</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Briefcase className="w-5 h-5 text-[#870481]" />
+                  <div>
+                    <p className="text-sm text-gray-500">Experience</p>
+                    <p className="font-semibold">{selectedJob.experience}</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Clock className="w-5 h-5 text-[#870481]" />
+                  <div>
+                    <p className="text-sm text-gray-500">Type</p>
+                    <p className="font-semibold">{selectedJob.timing}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-xl font-bold text-[#30085b] mb-4">Job Description</h3>
+                  <p className="text-gray-700 leading-relaxed">{selectedJob.detailedDescription}</p>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-bold text-[#30085b] mb-4 flex items-center">
+                    <FileText className="w-5 h-5 mr-2" />
+                    Key Responsibilities
+                  </h3>
+                  <ul className="space-y-2">
+                    {selectedJob.responsibilities.map((responsibility, index) => (
+                      <li key={index} className="flex items-start space-x-3">
+                        <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-700">{responsibility}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-bold text-[#30085b] mb-4 flex items-center">
+                    <GraduationCap className="w-5 h-5 mr-2" />
+                    Requirements
+                  </h3>
+                  <ul className="space-y-2">
+                    {selectedJob.requirements.map((requirement, index) => (
+                      <li key={index} className="flex items-start space-x-3">
+                        <Award className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-700">{requirement}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-bold text-[#30085b] mb-4">Benefits & Perks</h3>
+                  <ul className="space-y-2">
+                    {selectedJob.benefits.map((benefit, index) => (
+                      <li key={index} className="flex items-start space-x-3">
+                        <CheckCircle className="w-5 h-5 text-yellow-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-700">{benefit}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="mt-8 pt-6 border-t border-gray-200 flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={() => {
+                    closeJobDetails();
+                    scrollToForm(selectedJob.title);
+                  }}
+                  className="flex-1 bg-gradient-to-r from-[#631caf] to-[#8b0389] hover:from-[#7a1fc7] hover:to-[#a004a1] text-white cursor-pointer font-bold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
+                >
+                  <Send className="w-5 h-5" />
+                  <span>Apply for this Position</span>
+                </button>
+                <button
+                  onClick={closeJobDetails}
+                  className="flex-1 cursor-pointer sm:flex-none bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-4 px-6 rounded-lg transition-all duration-300"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };

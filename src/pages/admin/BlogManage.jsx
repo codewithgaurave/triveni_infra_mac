@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
+import {
   Plus,
   Edit,
   Trash2,
@@ -31,6 +31,7 @@ import {
 } from 'lucide-react';
 import axios from '../../../axiosInstance';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 const BlogManage = () => {
   const [blogs, setBlogs] = useState([]);
@@ -88,12 +89,11 @@ const BlogManage = () => {
   const fetchBlogs = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('/blogs?limit=100');
+      const res = await axios.get('/blogs?limit=100&admin=true');
       if (res.data.success) {
         setBlogs(res.data.data);
       }
     } catch (error) {
-      console.error('Error fetching blogs:', error);
       toast.error('Failed to load blogs');
     } finally {
       setLoading(false);
@@ -106,7 +106,7 @@ const BlogManage = () => {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    
+
     if (name.startsWith('seo.')) {
       const seoField = name.split('.')[1];
       setBlogData(prev => ({
@@ -135,9 +135,9 @@ const BlogManage = () => {
         }
       }));
     } else {
-      setBlogData(prev => ({ 
-        ...prev, 
-        [name]: type === 'checkbox' ? checked : value 
+      setBlogData(prev => ({
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value
       }));
     }
   };
@@ -151,67 +151,93 @@ const BlogManage = () => {
   };
 
   const handleCreateNew = () => {
-    setBlogData({
-      title: '',
-      slug: '',
-      excerpt: '',
-      content: '<h2>Start writing your amazing content here...</h2><p>You can use HTML tags for formatting.</p>',
-      category: '',
-      tags: '',
-      author: {
-        name: 'Admin',
-        email: 'admin@triveniconstruction.com',
-        bio: 'Administrator'
-      },
-      status: 'draft',
-      featuredImage: {
-        url: '',
-        alt: '',
-        caption: ''
-      },
-      readingTime: '5',
-      featured: false,
-      allowComments: true,
-      seo: {
-        metaTitle: '',
-        metaDescription: '',
-        keywords: ''
+    Swal.fire({
+      title: 'Create New Blog Post',
+      text: 'Ready to create a new blog post?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#EAB308',
+      cancelButtonColor: '#6B7280',
+      confirmButtonText: 'Yes, create it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setBlogData({
+          title: '',
+          slug: '',
+          excerpt: '',
+          content: `<h2>Start writing your amazing content here...</h2><p>You can use HTML tags for formatting.</p>`,
+          category: '',
+          tags: '',
+          author: {
+            name: 'Admin',
+            email: 'admin@triveni.com',
+            bio: 'Administrator'
+          },
+          status: 'published',
+          featuredImage: {
+            url: '',
+            alt: '',
+            caption: ''
+          },
+          readingTime: '5',
+          featured: false,
+          allowComments: true,
+          seo: {
+            metaTitle: '',
+            metaDescription: '',
+            keywords: ''
+          }
+        });
+        setEditingBlog(null);
+        setShowEditor(true);
       }
     });
-    setEditingBlog(null);
-    setShowEditor(true);
   };
 
   const handleEdit = (blog) => {
-    setBlogData({
-      title: blog.title,
-      slug: blog.slug,
-      excerpt: blog.excerpt,
-      content: blog.content || '<h2>Start writing your amazing content here...</h2>',
-      category: blog.category,
-      tags: blog.tags?.join(', ') || '',
-      author: blog.author || {
-        name: 'Admin',
-        email: 'admin@triveniconstruction.com',
-        bio: 'Administrator'
-      },
-      status: blog.status,
-      featuredImage: blog.featuredImage || {
-        url: '',
-        alt: '',
-        caption: ''
-      },
-      readingTime: blog.readingTime?.toString() || '5',
-      featured: blog.featured || false,
-      allowComments: blog.allowComments !== false,
-      seo: blog.seo || {
-        metaTitle: '',
-        metaDescription: '',
-        keywords: ''
+    Swal.fire({
+      title: 'Edit Blog Post',
+      text: `Do you want to edit "${blog.title}"?`,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#EAB308',
+      cancelButtonColor: '#6B7280',
+      confirmButtonText: 'Yes, edit it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setBlogData({
+          title: blog.title,
+          slug: blog.slug,
+          excerpt: blog.excerpt,
+          content: blog.content || '<h2>Start writing your amazing content here...</h2>',
+          category: blog.category,
+          tags: blog.tags?.join(', ') || '',
+          author: blog.author || {
+            name: 'Admin',
+            email: 'admin@triveniconstruction.com',
+            bio: 'Administrator'
+          },
+          status: blog.status,
+          featuredImage: blog.featuredImage || {
+            url: '',
+            alt: '',
+            caption: ''
+          },
+          readingTime: blog.readingTime?.toString() || '5',
+          featured: blog.featured || false,
+          allowComments: blog.allowComments !== false,
+          seo: blog.seo || {
+            metaTitle: '',
+            metaDescription: '',
+            keywords: ''
+          }
+        });
+        setEditingBlog(blog._id);
+        setShowEditor(true);
       }
     });
-    setEditingBlog(blog._id);
-    setShowEditor(true);
   };
 
   const handleSave = async () => {
@@ -230,11 +256,21 @@ const BlogManage = () => {
       if (editingBlog) {
         // Update existing blog
         response = await axios.put(`/blogs/${editingBlog}`, submitData);
-        toast.success('Blog updated successfully!');
+        Swal.fire({
+          title: 'Updated!',
+          text: 'Blog updated successfully!',
+          icon: 'success',
+          confirmButtonColor: '#EAB308'
+        });
       } else {
         // Create new blog
         response = await axios.post('/blogs', submitData);
-        toast.success('Blog created successfully!');
+        Swal.fire({
+          title: 'Created!',
+          text: 'Blog created successfully!',
+          icon: 'success',
+          confirmButtonColor: '#EAB308'
+        });
       }
 
       if (response.data.success) {
@@ -243,25 +279,74 @@ const BlogManage = () => {
         fetchBlogs(); // Refresh the list
       }
     } catch (error) {
-      console.error('Error saving blog:', error);
-      toast.error(error.response?.data?.message || 'Failed to save blog');
+      Swal.fire({
+        title: 'Error!',
+        text: error.response?.data?.message || 'Failed to save blog',
+        icon: 'error',
+        confirmButtonColor: '#EF4444'
+      });
     } finally {
       setSaving(false);
     }
   };
+  ////delete blog
+  //  const handleDelete = async (id) => {
+  //    if (window.confirm('Are you sure you want to delete this blog post? This action cannot be undone.')) {
+  //      try {
+  //        await axios.delete(`/blogs/${id}`);
+  //        toast.success('Blog deleted successfully!');
+  //        fetchBlogs(); // Refresh the list
+  //      } catch (error) {
+  //        toast.error('Failed to delete blog');
+  //      }
+  //    }
+  //  };
 
+
+  //delete blog
+
+  //delete blog
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this blog post? This action cannot be undone.')) {
-      try {
-        await axios.delete(`/blogs/${id}`);
-        toast.success('Blog deleted successfully!');
-        fetchBlogs(); // Refresh the list
-      } catch (error) {
-        console.error('Error deleting blog:', error);
-        toast.error('Failed to delete blog');
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#EF4444',
+      cancelButtonColor: '#6B7280',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const token = localStorage.getItem("token");
+
+          await axios.delete(`/blogs/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          Swal.fire({
+            title: 'Deleted!',
+            text: 'Blog has been deleted successfully.',
+            icon: 'success',
+            confirmButtonColor: '#EAB308'
+          });
+          fetchBlogs();
+        } catch (error) {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Failed to delete blog',
+            icon: 'error',
+            confirmButtonColor: '#EF4444'
+          });
+        }
       }
-    }
+    });
   };
+
+
 
   const handleStatusChange = async (id, newStatus) => {
     try {
@@ -269,7 +354,6 @@ const BlogManage = () => {
       toast.success(`Blog ${newStatus} successfully!`);
       fetchBlogs(); // Refresh the list
     } catch (error) {
-      console.error('Error updating status:', error);
       toast.error('Failed to update status');
     }
   };
@@ -280,7 +364,6 @@ const BlogManage = () => {
       toast.success(`Blog ${!currentFeatured ? 'added to' : 'removed from'} featured!`);
       fetchBlogs(); // Refresh the list
     } catch (error) {
-      console.error('Error toggling featured:', error);
       toast.error('Failed to update featured status');
     }
   };
@@ -288,11 +371,11 @@ const BlogManage = () => {
   // Filter blogs
   const filteredBlogs = blogs.filter(blog => {
     const matchesSearch = blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         blog.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (blog.tags && blog.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())));
+      blog.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (blog.tags && blog.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())));
     const matchesCategory = selectedCategory === 'all' || blog.category === selectedCategory;
     const matchesStatus = selectedStatus === 'all' || blog.status === selectedStatus;
-    
+
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
@@ -339,11 +422,10 @@ const BlogManage = () => {
           <div className="flex bg-gray-100 rounded-lg p-1">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-2 rounded-md transition-all duration-200 ${
-                viewMode === 'grid' 
-                  ? 'bg-white text-gray-900 shadow-sm' 
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
+              className={`p-2 rounded-md transition-all duration-200 ${viewMode === 'grid'
+                ? 'bg-white text-gray-900 shadow-sm'
+                : 'text-gray-500 hover:text-gray-700'
+                }`}
             >
               <div className="w-4 h-4 grid grid-cols-2 gap-0.5">
                 <div className="bg-current rounded-sm"></div>
@@ -354,11 +436,10 @@ const BlogManage = () => {
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-2 rounded-md transition-all duration-200 ${
-                viewMode === 'list' 
-                  ? 'bg-white text-gray-900 shadow-sm' 
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
+              className={`p-2 rounded-md transition-all duration-200 ${viewMode === 'list'
+                ? 'bg-white text-gray-900 shadow-sm'
+                : 'text-gray-500 hover:text-gray-700'
+                }`}
             >
               <div className="w-4 h-4 flex flex-col space-y-0.5">
                 <div className="bg-current h-1 rounded-sm"></div>
@@ -382,41 +463,41 @@ const BlogManage = () => {
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        <StatCard 
-          title="Total Posts" 
-          value={stats.total} 
-          icon={FileText} 
-          color="blue" 
+        <StatCard
+          title="Total Posts"
+          value={stats.total}
+          icon={FileText}
+          color="blue"
         />
-        <StatCard 
-          title="Published" 
-          value={stats.published} 
-          icon={Globe} 
-          color="green" 
+        <StatCard
+          title="Published"
+          value={stats.published}
+          icon={Globe}
+          color="green"
         />
-        <StatCard 
-          title="Drafts" 
-          value={stats.drafts} 
-          icon={BookOpen} 
-          color="yellow" 
+        <StatCard
+          title="Drafts"
+          value={stats.drafts}
+          icon={BookOpen}
+          color="yellow"
         />
-        <StatCard 
-          title="Featured" 
-          value={stats.featured} 
-          icon={Star} 
-          color="purple" 
+        <StatCard
+          title="Featured"
+          value={stats.featured}
+          icon={Star}
+          color="purple"
         />
-        <StatCard 
-          title="Total Views" 
-          value={stats.totalViews} 
-          icon={BarChart3} 
-          color="orange" 
+        <StatCard
+          title="Total Views"
+          value={stats.totalViews}
+          icon={BarChart3}
+          color="orange"
         />
-        <StatCard 
-          title="Comments" 
-          value={stats.totalComments} 
-          icon={MessageCircle} 
-          color="indigo" 
+        <StatCard
+          title="Comments"
+          value={stats.totalComments}
+          icon={MessageCircle}
+          color="indigo"
         />
       </div>
 
@@ -478,9 +559,9 @@ const BlogManage = () => {
       {viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredBlogs.map((blog) => (
-            <BlogCard 
-              key={blog._id} 
-              blog={blog} 
+            <BlogCard
+              key={blog._id}
+              blog={blog}
               onEdit={handleEdit}
               onDelete={handleDelete}
               onStatusChange={handleStatusChange}
@@ -489,7 +570,7 @@ const BlogManage = () => {
           ))}
         </div>
       ) : (
-        <BlogTableView 
+        <BlogTableView
           blogs={filteredBlogs}
           onEdit={handleEdit}
           onDelete={handleDelete}
@@ -687,8 +768,8 @@ const BlogCard = ({ blog, onEdit, onDelete, onStatusChange, onFeaturedToggle }) 
 
       {/* Close menu when clicking outside */}
       {showMenu && (
-        <div 
-          className="fixed inset-0 z-10" 
+        <div
+          className="fixed inset-0 z-10"
           onClick={() => setShowMenu(false)}
         />
       )}
@@ -714,9 +795,9 @@ const BlogTableView = ({ blogs, onEdit, onDelete, onStatusChange, onFeaturedTogg
           </thead>
           <tbody className="divide-y divide-gray-200">
             {blogs.map((blog) => (
-              <BlogTableRow 
-                key={blog._id} 
-                blog={blog} 
+              <BlogTableRow
+                key={blog._id}
+                blog={blog}
                 onEdit={onEdit}
                 onDelete={onDelete}
                 onStatusChange={onStatusChange}
@@ -803,11 +884,10 @@ const BlogTableRow = ({ blog, onEdit, onDelete, onStatusChange, onFeaturedToggle
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => onFeaturedToggle(blog._id, blog.featured)}
-            className={`p-2 rounded-lg transition-colors duration-200 ${
-              blog.featured 
-                ? 'text-yellow-600 hover:bg-yellow-50' 
-                : 'text-gray-400 hover:bg-gray-50'
-            }`}
+            className={`p-2 rounded-lg transition-colors duration-200 ${blog.featured
+              ? 'text-yellow-600 hover:bg-yellow-50'
+              : 'text-gray-400 hover:bg-gray-50'
+              }`}
             title={blog.featured ? 'Remove Featured' : 'Mark Featured'}
           >
             <Star className={`w-4 h-4 ${blog.featured ? 'fill-current' : ''}`} />
@@ -898,11 +978,10 @@ const BlogEditor = ({ blogData, editingBlog, saving, onInputChange, onSave, onCl
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-4 py-3 text-sm font-medium capitalize transition-colors duration-200 ${
-                  activeTab === tab
-                    ? 'text-yellow-600 border-b-2 border-yellow-500'
-                    : 'text-gray-500 hover:text-gray-700'
-                }`}
+                className={`px-4 py-3 text-sm font-medium capitalize transition-colors duration-200 ${activeTab === tab
+                  ? 'text-yellow-600 border-b-2 border-yellow-500'
+                  : 'text-gray-500 hover:text-gray-700'
+                  }`}
               >
                 {tab}
               </button>

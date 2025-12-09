@@ -293,7 +293,7 @@ const Industries = () => {
                       </div>
                     </div>
                     {industry.image && (
-                      <div className="w-24 h-18 sm:w-28 sm:h-20 md:w-32 md:h-24 rounded-lg overflow-hidden flex-shrink-0">
+                      <div className="w-24 h-18 sm:w-28 sm:h-20 md:w-80 md:h-60 rounded-lg overflow-hidden flex-shrink-0">
                         <img 
                           src={industry.image} 
                           alt={industry.title}

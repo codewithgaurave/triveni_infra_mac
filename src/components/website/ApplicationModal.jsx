@@ -98,7 +98,6 @@ const ApplicationModal = ({ job, isOpen, onClose }) => {
         }, 2000);
       }
     } catch (error) {
-      console.error("Application error:", error);
       if (error.response?.data?.message) {
         setMessage({ type: "error", text: error.response.data.message });
       } else if (error.response?.data?.error) {

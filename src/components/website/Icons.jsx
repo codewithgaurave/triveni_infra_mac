@@ -12,7 +12,7 @@ const Icons = ({ isMobileMenuOpen }) => {
 		window.open('tel:+918292111172', '_self');
 	};
 
-	return (
+	return ( 
 		<>
 			{/* Call icon fixed on left bottom */}
 			<button

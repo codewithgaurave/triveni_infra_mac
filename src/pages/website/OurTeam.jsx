@@ -41,7 +41,7 @@ const OurTeam = () => {
       description: 'Leading TRIVENI INFRAMECH PVT LTD with 15+ years of expertise in industrial construction, fabrication, and project management. Visionary leader with a focus on innovation and client satisfaction.',
       experience: '15+ Years Experience',
       specialization: 'Industrial Construction & Project Management',
-      email: 'jyadavst@gmail.com',
+      email: 'info@triveniinframech.com',
       phone: '+91 8292111172',
       achievements: [
         '50+ Successful Projects',

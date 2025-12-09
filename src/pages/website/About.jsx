@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import excellenceImg from '../../assets/excellence.jpeg';
 import {
   ArrowRight,
   CheckCircle,
@@ -211,14 +212,105 @@ const About = () => {
             >
               <div className="bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl p-1 transform rotate-2">
                 <div className="bg-gray-800 rounded-2xl p-6 transform -rotate-2">
-                  <div className="bg-gray-700 rounded-xl h-96 flex items-center justify-center">
-                    <div className="text-center text-white">
+                  <div 
+                    className="bg-gray-700 rounded-xl h-96 flex items-center justify-center relative overflow-hidden"
+                    style={{
+                      backgroundImage: `url(${excellenceImg})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat'
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-black/50"></div>
+                    <div className="text-center text-white relative z-10">
                       <Building2 className="w-16 h-16 mx-auto mb-4 text-yellow-500" />
                       <p className="text-lg font-semibold">Triveni Inframech</p>
-                      <p className="text-gray-400">Building Excellence Since 2023</p>
+                      <p className="text-gray-100">Building Excellence Since 2023</p>
                     </div>
                   </div>
                 </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Leadership Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl p-1 transform rotate-2">
+                <div className="bg-gray-800 rounded-2xl p-6 transform -rotate-2">
+                  <div className="bg-gray-700 rounded-xl h-96 flex items-center justify-center relative overflow-hidden">
+                    <div className="text-center text-white z-10">
+                      <div className="w-32 h-32 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-6 text-white text-4xl font-bold border-4 border-white">
+                        JY
+                      </div>
+                      <p className="text-2xl font-semibold">Jitendra Yadav</p>
+                      <p className="text-gray-400">Director & Founder</p>
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <div className="inline-flex items-center space-x-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full px-4 py-2 mb-4">
+                <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                <span className="text-yellow-500 text-sm font-semibold">Leadership</span>
+              </div>
+              
+              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+                Jitendra <span className="text-[#870481]">Yadav</span>
+              </h2>
+
+              <p className="text-yellow-600 font-semibold text-lg mb-4">
+                Director & Founder
+              </p>
+
+              <div className="space-y-6 text-lg text-gray-600 leading-relaxed mb-8">
+                <p>
+                  <strong>Jitendra Yadav</strong> leads TRIVENI INFRAMECH PVT LTD with a vision 
+                  to deliver world-class construction services that exceed client expectations. 
+                  With over <strong>15 years of hands-on experience</strong> in the industrial 
+                  construction sector, he brings unparalleled expertise and commitment to every project.
+                </p>
+                
+                <p>
+                  Under his leadership, the company has successfully completed <strong>50+ projects</strong> 
+                  across various industrial sectors, establishing a reputation for precision, 
+                  safety, and timely delivery.
+                </p>
+              </div>
+
+              {/* Achievements */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                {['50+ Successful Projects', 'Expert in Structural Fabrication', 'Client Satisfaction Focus', 'Innovation in Construction'].map((achievement, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    className="flex items-center space-x-3"
+                  >
+                    <CheckCircle className="w-5 h-5 text-[#c410bb] flex-shrink-0" />
+                    <span className="text-gray-700 font-medium">{achievement}</span>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           </div>
@@ -390,50 +482,6 @@ const About = () => {
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">{value.title}</h3>
                 <p className="text-gray-600 leading-relaxed">{value.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Leadership Team */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <div className="inline-flex items-center space-x-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full px-4 py-2 mb-4">
-              <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-              <span className="text-yellow-500 text-sm font-semibold">Our Leadership</span>
-            </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              Meet Our <span className="text-[#870481]">Director</span>
-            </h2>
-          </motion.div>
-
-          <div className="max-w-2xl mx-auto">
-            {teamMembers.map((member, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                viewport={{ once: true }}
-                className="bg-gray-50 rounded-2xl p-8 text-center"
-              >
-                <div className="w-32 h-32 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 text-white text-4xl font-bold">
-                  {member.name.split(' ').map(n => n[0]).join('')}
-                </div>
-                <h3 className="text-3xl font-bold text-gray-900 mb-2">{member.name}</h3>
-                <p className="text-yellow-600 font-semibold text-lg mb-4">{member.position}</p>
-                <p className="text-gray-600 mb-6 leading-relaxed">{member.description}</p>
-                <div className="bg-yellow-500 text-white px-4 py-2 rounded-full text-sm font-semibold inline-block">
-                  {member.experience} Experience
-                </div>
               </motion.div>
             ))}
           </div>

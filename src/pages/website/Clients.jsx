@@ -1,6 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import suzlonLogo from '../../assets/Suzlon.png';
+import geecoLogo from '../../assets/geeco.jpg';
+import tefugenLogo from '../../assets/TEFUGEN.png';
 import { 
   ArrowRight, 
   CheckCircle, 
@@ -297,8 +300,12 @@ const Clients = () => {
               >
                 {/* Client Header */}
                 <div className="text-center mb-6">
-                  <div className={`w-20 h-20 bg-gradient-to-r ${client.color} rounded-2xl flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl group-hover:scale-110 transition-transform duration-300`}>
-                    {client.logo}
+                  <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 overflow-hidden border-2 border-gray-200">
+                    <img 
+                      src={client.logo === 'SUZLON' ? suzlonLogo : client.logo === 'GEECO' ? geecoLogo : tefugenLogo} 
+                      alt={`${client.name} Logo`}
+                      className="w-16 h-16 object-contain"
+                    />
                   </div>
                   <h3 className="text-2xl font-bold text-[#30085b] mb-2">{client.name}</h3>
                   <p className="text-[#870481] font-semibold mb-1">{client.industry}</p>
@@ -519,7 +526,7 @@ const Clients = () => {
                 className="border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-8 py-4 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2"
               >
                 <Mail className="w-5 h-5" />
-                <span>Email: jyadavst@gmail.com</span>
+                <span>Email: info@triveniinframech.com</span>
               </Link>
             </div>
           </motion.div>

@@ -78,7 +78,7 @@ const Footer = () => {
                     to={link.path}
                     className="flex items-center justify-center sm:justify-start space-x-2 text-gray-900 hover:text-yellow-500 transition-colors duration-200 group"
                   >
-                    <ArrowRight size={14} className="text-yellow-500 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight size={14} className="text-yellow-500 group-hover:translate-x-1 transition-transform flex-shrink-0" />
                     <span>{link.name}</span>
                   </Link>
                 </li>
@@ -93,7 +93,7 @@ const Footer = () => {
               {services.map((service, index) => (
                 <li key={index}>
                   <a href="#" className="flex items-center justify-center sm:justify-start space-x-2 text-gray-900 hover:text-yellow-500 transition-colors duration-200 group">
-                    <ArrowRight size={14} className="text-yellow-500 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight size={14} className="text-yellow-500 group-hover:translate-x-1 transition-transform flex-shrink-0" />
                     <span>{service}</span>
                   </a>
                 </li>
@@ -144,7 +144,7 @@ const Footer = () => {
         <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6">
           <div className="flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
             <p className="text-gray-900 text-xs sm:text-sm">
-              &copy; {currentYear} TRIVENI INFRAMECH PVT LTD. All rights reserved.
+              &copy; {currentYear} TRIVENI INFRAMECH PVT LTD. | Designed by Teams DigiCoders
             </p>
             <div className="flex justify-center sm:justify-start space-x-6 mt-2 md:mt-0">
               <a href="#" className="text-gray-900 hover:text-yellow-500 text-sm transition-colors">

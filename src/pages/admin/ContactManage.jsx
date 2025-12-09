@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../../axiosInstance.jsx";
+import Swal from "sweetalert2";
 function ContactManage() {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,16 +12,52 @@ function ContactManage() {
   const fetchcontectdata = async () => {
     try {
       const res = await axiosInstance.get(`/contact`);
-      console.log(res);
       if (res.data.success) {
         setContacts(res.data.data.contacts);
       }
     } catch (error) {
-      console.log(error);
     } finally {
       setLoading(false);
     }
   };
+
+  const deleteContact = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!"
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      const res = await axiosInstance.delete(`/contact/${id}`);
+      if (res.data.success) {
+        setContacts(contacts.filter((contact) => contact._id !== id));
+        if (selectedContact?._id === id) setSelectedContact(null);
+        
+        Swal.fire({
+          title: "Deleted!",
+          text: "Contact has been deleted successfully.",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to delete contact. Please try again.",
+        icon: "error",
+        confirmButtonColor: "#3085d6"
+      });
+    }
+  };
+
 
   useEffect(() => {
     // Simulate API call
@@ -40,14 +77,7 @@ function ContactManage() {
     return matchesSearch && matchesStatus;
   });
 
-  const deleteContact = (id) => {
-    if (window.confirm("Are you sure you want to delete this contact?")) {
-      setContacts(contacts.filter((contact) => contact.id !== id));
-      if (selectedContact && selectedContact.id === id) {
-        setSelectedContact(null);
-      }
-    }
-  };
+
 
   const markAsRead = (id) => {
     setContacts(
@@ -178,11 +208,10 @@ function ContactManage() {
               filteredContacts.map((contact) => (
                 <div
                   key={contact._id}
-                  className={`border-b border-gray-100 p-4 cursor-pointer transition-colors hover:bg-gray-50 ${
-                    selectedContact?._id === contact._id
-                      ? "bg-blue-50 border-l-4 border-l-blue-500"
-                      : ""
-                  } ${contact.status === "new" ? "bg-orange-50" : ""}`}
+                  className={`border-b border-gray-100 p-4 cursor-pointer transition-colors hover:bg-gray-50 ${selectedContact?._id === contact._id
+                    ? "bg-blue-50 border-l-4 border-l-blue-500"
+                    : ""
+                    } ${contact.status === "new" ? "bg-orange-50" : ""}`}
                   onClick={() => setSelectedContact(contact)}
                 >
                   <div className="flex items-start space-x-3">
@@ -237,7 +266,7 @@ function ContactManage() {
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              deleteContact(contact.id);
+                              deleteContact(contact._id);
                             }}
                             className="text-xs bg-red-100 text-red-800 hover:bg-red-200 px-2 py-1 rounded transition-colors"
                           >
@@ -295,11 +324,10 @@ function ContactManage() {
                     </h3>
                     <div className="flex items-center space-x-2 mt-1">
                       <span
-                        className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                          selectedContact.status === "new"
-                            ? "bg-red-100 text-red-800"
-                            : "bg-green-100 text-green-800"
-                        }`}
+                        className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${selectedContact.status === "new"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-green-100 text-green-800"
+                          }`}
                       >
                         {selectedContact.status === "new"
                           ? "New Message"
@@ -368,7 +396,7 @@ function ContactManage() {
                 {/* Actions */}
                 <div className="flex space-x-3 pt-4 border-t border-gray-200">
                   <button
-                    onClick={() => deleteContact(selectedContact.id)}
+                    onClick={() => deleteContact(selectedContact._id)}
                     className="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
                   >
                     <svg

@@ -1,5 +1,6 @@
-import { BrowserRouter as Router, Routes, Route ,Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { NavigationProvider } from './context/NavigationContext';
 
 // Website Components
 import WebsiteLayout from './components/website/WebsiteLayout';
@@ -48,7 +49,8 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <Routes>
+        <NavigationProvider>
+          <Routes>
           {/* Website Routes */}
           <Route path="/" element={<WebsiteLayout />}>
             <Route index element={<Home />} />
@@ -83,7 +85,8 @@ function App() {
             <Route path="managecareer" element={<CareerManage />} />
             <Route path="contactus" element={<ContactManage />} />
           </Route>
-        </Routes>
+          </Routes>
+        </NavigationProvider>
       </Router>
       <ToastContainer />
     </AuthProvider>

@@ -1,6 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import structureImg from '../../assets/structure.jpg';
+import pipingImg from '../../assets/piping.jpg';
+import mechanicImg from '../../assets/mechanic.jpg';
+import electricityImg from '../../assets/electricity.jpg';
+import paintImg from '../../assets/paint.jpg';
+import laborImg from '../../assets/labor.jpg';
+import hdpeImg from '../../assets/hdef.jpg';
+import espImg from '../../assets/esp.jpg';
 import { 
   ArrowRight, 
   CheckCircle, 
@@ -317,13 +325,25 @@ const Services = () => {
                   >
                     <div className="bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl p-1 transform rotate-1">
                       <div className="bg-gray-800 rounded-2xl p-6 transform -rotate-1">
-                        <div className="bg-gray-700 rounded-xl h-80 flex items-center justify-center relative overflow-hidden">
-                          <div className="text-center text-white z-10">
+                        <div 
+                          className="bg-gray-700 rounded-xl h-80 flex items-center justify-center relative overflow-hidden"
+                          style={(() => {
+                            const images = [structureImg, pipingImg, mechanicImg, electricityImg, paintImg, laborImg, hdpeImg, espImg];
+                            return images[index] ? {
+                              backgroundImage: `url(${images[index]})`,
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center',
+                              backgroundRepeat: 'no-repeat'
+                            } : {};
+                          })()}
+                        >
+                          <div className="absolute inset-0 bg-black/60"></div>
+                          <div className="text-center text-white relative z-10">
                             <div className="w-20 h-20 bg-yellow-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
                               {service.icon}
                             </div>
                             <p className="text-lg font-semibold">{service.title.split(' ')[0]}</p>
-                            <p className="text-gray-400">Professional Services</p>
+                            <p className="text-gray-100">Professional Services</p>
                           </div>
                           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
                         </div>
@@ -461,7 +481,7 @@ const Services = () => {
                 className="border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-8 py-4 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2"
               >
                 <Mail className="w-5 h-5" />
-                <span>Email: jyadavst@gmail.com</span>
+                <span>Email: info@triveniinframech.com</span>
               </Link>
             </div>
           </motion.div>

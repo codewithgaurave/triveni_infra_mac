@@ -3,13 +3,15 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import suzlonLogo from '../../assets/Suzlon.png'
 import geeco from '../../assets/geeco.jpg'
-import  TEFUGEN from '../../assets/TEFGUN.jpg'
-import { 
-  ArrowRight, 
-  Play, 
-  CheckCircle, 
-  Users, 
-  Award, 
+import TEFUGEN from '../../assets/TEFGUN.jpg'
+import industry from '../../assets/industry.jpg'
+import MECH from '../../assets/mech.png'
+import {
+  ArrowRight,
+  Play,
+  CheckCircle,
+  Users,
+  Award,
   Clock,
   Building2,
   Wrench,
@@ -124,7 +126,8 @@ const Home = () => {
   const clients = [
     { name: 'SUZLON', logo: suzlonLogo, description: 'Powering a Greener Tomorrow' },
     { name: 'GEECO', logo: geeco, description: 'General Electrical & Engineering Co.' },
-    { name: 'TEFUGEN', logo: TEFUGEN, description: 'Technologies for Future Generation' }
+    { name: 'TEFUGEN', logo: TEFUGEN, description: 'Technologies for Future Generation' },
+    { name: 'POWER MECH', logo: MECH, description: 'Building Infrastructure projects  that are critical in National Building' },
   ];
 
   // Stats from PDF
@@ -138,7 +141,7 @@ const Home = () => {
   return (
     <div className="overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#880481] via-[#30085b] to-[#ad6bac] overflow-hidden">
+      <section className="relative py-8 md:py-1 lg:py-1 flex items-center justify-center bg-gradient-to-br from-[#880481] via-[#30085b] to-[#ad6bac] overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -168,14 +171,14 @@ const Home = () => {
                 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-[#f2ecf7] font-bold leading-tight mb-4 sm:mb-6"
               >
                 TRIVENI
-                <span className="text-[#da880f] block">INFRAMECH<br className="hidden sm:block"/> PVT LTD</span>
+                <span className="text-[#da880f] block">INFRAMECH<br className="hidden sm:block" /> PVT LTD</span>
               </motion.h1>
 
               <motion.p
                 variants={fadeInUp}
                 className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 mb-4 sm:mb-6 md:mb-8 leading-relaxed px-2 sm:px-0"
               >
-                At TRIVENI INFRAMECH PVT LTD, we specialize in delivering innovative and high-quality 
+                At TRIVENI INFRAMECH PVT LTD, we specialize in delivering innovative and high-quality
                 construction services tailored to meet the diverse needs of industrial and structural sectors.
               </motion.p>
 
@@ -199,7 +202,7 @@ const Home = () => {
                 </Link>
               </motion.div>
 
-              
+
             </motion.div>
 
             {/* Hero Image */}
@@ -211,11 +214,11 @@ const Home = () => {
             >
               <div className="relative bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl p-1 transform rotate-2">
                 <div className="bg-gray-800 rounded-2xl p-6 transform -rotate-2">
-                  <div className="bg-gray-700 rounded-xl h-96 flex items-center justify-center relative overflow-hidden">
-                    <div className="text-center text-white z-10">
+                  <div className="bg-gray-700 rounded-xl h-96 flex items-center justify-center relative overflow-hidden" style={{ backgroundImage: `url(${industry})`, backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(0px)' }}>
+                    <div className="text-center text-white z-9">
                       <Building2 className="w-16 h-16 mx-auto mb-4 text-yellow-500" />
                       <p className="text-lg font-semibold">Industrial Construction</p>
-                      <p className="text-gray-400">Expert Fabrication & Erection</p>
+                      <p className="text-gray-100">Expert Fabrication & Erection</p>
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
                   </div>
@@ -223,14 +226,14 @@ const Home = () => {
               </div>
 
               {/* Floating Elements */}
-              
-              
+
+
             </motion.div>
           </div>
         </div>
 
         {/* Scroll Indicator */}
-        
+
       </section>
 
       {/* About Section */}
@@ -251,16 +254,16 @@ const Home = () => {
                 We Are <span className="text-[#870481]">Different</span>
               </h2>
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                At TRIVENI INFRAMECH PVT LTD, we specialize in delivering innovative and high-quality 
-                construction services tailored to meet the diverse needs of the industrial and structural sectors. 
-                With a commitment to precision, safety, and efficiency, we are a one-stop solution for all 
+                At TRIVENI INFRAMECH PVT LTD, we specialize in delivering innovative and high-quality
+                construction services tailored to meet the diverse needs of the industrial and structural sectors.
+                With a commitment to precision, safety, and efficiency, we are a one-stop solution for all
                 fabrication, erection, and maintenance projects.
               </p>
               <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                With years of expertise and a focus on excellence, we bring a modern approach to construction 
+                With years of expertise and a focus on excellence, we bring a modern approach to construction
                 that ensures timely project delivery without compromising quality.
               </p>
-              
+
               <div className="grid grid-cols-2 gap-6 mb-8">
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="w-6 h-6 text-[#c40fbb]" />
@@ -400,7 +403,7 @@ const Home = () => {
                   ))}
                 </div>
                 <div className="flex items-center text-zinc-900 font-semibold group-hover:translate-x-2 transition-transform duration-300">
-                   
+
                 </div>
               </motion.div>
             ))}
@@ -487,7 +490,7 @@ const Home = () => {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+          <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
             {clients.map((client, index) => (
               <motion.div
                 key={index}
