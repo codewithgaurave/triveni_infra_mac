@@ -152,7 +152,7 @@ function ContactManage() {
             {contacts.some((c) => c.status === "new") && (
               <button
                 onClick={markAllAsRead}
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                className="bg-gradient-to-r from-[#880481] via-[#30085b] to-[#ad6bac] hover:from-[#9a0591] hover:via-[#3a096b] hover:to-[#bd7bbc] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-lg"
               >
                 Mark All Read
               </button>
@@ -168,13 +168,13 @@ function ContactManage() {
               placeholder="Search contacts by name, email, or subject..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
             />
           </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
           >
             <option value="all">All Status</option>
             <option value="new">New</option>
@@ -258,7 +258,7 @@ function ContactManage() {
                                 e.stopPropagation();
                                 markAsRead(contact.id);
                               }}
-                              className="text-xs bg-green-100 text-green-800 hover:bg-green-200 px-2 py-1 rounded transition-colors"
+                              className="text-xs bg-orange-100 text-orange-800 hover:bg-orange-200 px-2 py-1 rounded transition-colors"
                             >
                               Mark Read
                             </button>
@@ -418,7 +418,7 @@ function ContactManage() {
                   {selectedContact.status === "new" && (
                     <button
                       onClick={() => markAsRead(selectedContact.id)}
-                      className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
+                      className="flex-1 bg-gradient-to-r from-[#880481] via-[#30085b] to-[#ad6bac] hover:from-[#9a0591] hover:via-[#3a096b] hover:to-[#bd7bbc] text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2 shadow-lg"
                     >
                       <svg
                         className="w-5 h-5"

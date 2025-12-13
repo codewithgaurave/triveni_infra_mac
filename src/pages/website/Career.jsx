@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Phone,
@@ -36,6 +36,26 @@ const Career = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
   const [showJobDetails, setShowJobDetails] = useState(false);
+  const [apiJobs, setApiJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch jobs from API
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const response = await axiosInstance.get('/jobs/active');
+        if (response.data.success) {
+          setApiJobs(response.data.data);
+        }
+      } catch (error) {
+        console.error('Error fetching jobs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchJobs();
+  }, []);
 
   const jobPositions = [
     // Management & Engineering
@@ -664,9 +684,9 @@ const Career = () => {
     setIsSubmitting(true);
     
     try {
-      const res = await axiosInstance.post(`/career`, formData);
+      const res = await axiosInstance.post(`/applications`, formData);
       if (res.data.success) {
-        toast.success(res.data.message);
+        toast.success(res.data.message || "Application submitted successfully!");
         setIsSubmitted(true);
         setFormData({
           name: "",
@@ -681,7 +701,8 @@ const Career = () => {
         });
       }
     } catch (error) {
-      toast.error("Failed to submit application. Please try again.");
+      console.error('Application submission error:', error);
+      toast.error(error.response?.data?.message || "Failed to submit application. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -771,58 +792,141 @@ const Career = () => {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {jobPositions.map((job, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -5 }}
-                className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 cursor-pointer border border-gray-100"
-                onClick={() => scrollToForm(job.title)}
-              >
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold text-[#30085b] mb-2">{job.title}</h3>
-                  <div className="flex items-center text-green-600 font-semibold mb-3">
-                    {/*<DollarSign className="w-4 h-4 mr-1" />*/}
-                    <span>{job.salary}</span>
+            {loading ? (
+              Array.from({ length: 6 }).map((_, index) => (
+                <div key={index} className="bg-white rounded-2xl shadow-lg p-6 animate-pulse">
+                  <div className="h-6 bg-gray-200 rounded mb-4"></div>
+                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded mb-4"></div>
+                  <div className="h-20 bg-gray-200 rounded mb-4"></div>
+                  <div className="flex gap-2">
+                    <div className="flex-1 h-10 bg-gray-200 rounded"></div>
+                    <div className="flex-1 h-10 bg-gray-200 rounded"></div>
                   </div>
                 </div>
-
-                <div className="space-y-3 mb-4">
-                  <div className="flex items-center text-gray-600">
-                    <MapPin className="w-4 h-4 mr-2 text-[#870481]" />
-                    <span className="text-sm">{job.location}</span>
+              ))
+            ) : apiJobs.length > 0 ? (
+              apiJobs.map((job, index) => (
+                <motion.div
+                  key={job._id}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ y: -5 }}
+                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 cursor-pointer border border-gray-100"
+                  onClick={() => scrollToForm(job.title)}
+                >
+                  <div className="mb-4">
+                    <h3 className="text-xl font-bold text-[#30085b] mb-2">{job.title}</h3>
+                    <div className="flex items-center text-green-600 font-semibold mb-3">
+                      <span>{job.salary}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center text-gray-600">
-                    <Briefcase className="w-4 h-4 mr-2 text-[#870481]" />
-                    <span className="text-sm">{job.experience}</span>
-                  </div>
-                  <div className="flex items-center text-gray-600">
-                    <Clock className="w-4 h-4 mr-2 text-[#870481]" />
-                    <span className="text-sm">{job.timing}</span>
-                  </div>
-                </div>
 
-                <p className="text-gray-600 text-sm mb-6 leading-relaxed">
-                  {job.description}
-                </p>
+                  <div className="space-y-3 mb-4">
+                    <div className="flex items-center text-gray-600">
+                      <MapPin className="w-4 h-4 mr-2 text-[#870481]" />
+                      <span className="text-sm">{job.location}</span>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <Briefcase className="w-4 h-4 mr-2 text-[#870481]" />
+                      <span className="text-sm">{job.experience}</span>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <Clock className="w-4 h-4 mr-2 text-[#870481]" />
+                      <span className="text-sm">{job.type}</span>
+                    </div>
+                  </div>
 
-                <div className="flex gap-2">
-                  <button 
-                    onClick={(e) => openJobDetails(job, e)}
-                    className="flex-1 cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2"
-                  >
-                    <Eye className="w-4 h-4" cursor-pointer />
-                    <span>View Details</span>
-                  </button>
-                  <button className="flex-1 cursor-pointer bg-gradient-to-r from-[#631caf] to-[#8b0389] hover:from-[#7a1fc7] hover:to-[#a004a1] text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
-                    Apply Now
-                  </button>
-                </div>
-              </motion.div>
-            ))}
+                  <p className="text-gray-600 text-sm mb-6 leading-relaxed line-clamp-3">
+                    {job.description}
+                  </p>
+
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const jobDetails = {
+                          ...job,
+                          detailedDescription: job.description,
+                          responsibilities: job.requirements?.slice(0, 6) || [],
+                          requirements: job.requirements || [],
+                          benefits: [
+                            "Competitive salary package",
+                            "Health insurance coverage", 
+                            "Professional development",
+                            "Performance bonuses",
+                            "Career growth opportunities"
+                          ],
+                          timing: job.type
+                        };
+                        openJobDetails(jobDetails, e);
+                      }}
+                      className="flex-1 cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2"
+                    >
+                      <Eye className="w-4 h-4" />
+                      <span>View Details</span>
+                    </button>
+                    <button className="flex-1 cursor-pointer bg-gradient-to-r from-[#631caf] to-[#8b0389] hover:from-[#7a1fc7] hover:to-[#a004a1] text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                      Apply Now
+                    </button>
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              jobPositions.map((job, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ y: -5 }}
+                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 cursor-pointer border border-gray-100"
+                  onClick={() => scrollToForm(job.title)}
+                >
+                  <div className="mb-4">
+                    <h3 className="text-xl font-bold text-[#30085b] mb-2">{job.title}</h3>
+                    <div className="flex items-center text-green-600 font-semibold mb-3">
+                      <span>{job.salary}</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 mb-4">
+                    <div className="flex items-center text-gray-600">
+                      <MapPin className="w-4 h-4 mr-2 text-[#870481]" />
+                      <span className="text-sm">{job.location}</span>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <Briefcase className="w-4 h-4 mr-2 text-[#870481]" />
+                      <span className="text-sm">{job.experience}</span>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <Clock className="w-4 h-4 mr-2 text-[#870481]" />
+                      <span className="text-sm">{job.timing}</span>
+                    </div>
+                  </div>
+
+                  <p className="text-gray-600 text-sm mb-6 leading-relaxed">
+                    {job.description}
+                  </p>
+
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={(e) => openJobDetails(job, e)}
+                      className="flex-1 cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 px-4 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2"
+                    >
+                      <Eye className="w-4 h-4" />
+                      <span>View Details</span>
+                    </button>
+                    <button className="flex-1 cursor-pointer bg-gradient-to-r from-[#631caf] to-[#8b0389] hover:from-[#7a1fc7] hover:to-[#a004a1] text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                      Apply Now
+                    </button>
+                  </div>
+                </motion.div>
+              ))
+            )}
           </div>
         </div>
       </section>
@@ -943,11 +1047,19 @@ const Career = () => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#870481] focus:border-[#870481] transition-all duration-300"
                       >
                         <option value="">Select a position</option>
-                        {positions.map((position, index) => (
-                          <option key={index} value={position}>
-                            {position}
-                          </option>
-                        ))}
+                        {apiJobs.length > 0 ? (
+                          apiJobs.map((job) => (
+                            <option key={job._id} value={job.title}>
+                              {job.title}
+                            </option>
+                          ))
+                        ) : (
+                          positions.map((position, index) => (
+                            <option key={index} value={position}>
+                              {position}
+                            </option>
+                          ))
+                        )}
                       </select>
                     </div>
                   </div>

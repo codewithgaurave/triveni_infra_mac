@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { 
-  FileText, 
-  Briefcase, 
-  Mail, 
+import {
+  FileText,
+  Briefcase,
+  Mail,
   Users,
   Eye,
   MessageCircle,
@@ -43,7 +43,7 @@ const Dashboard = () => {
     try {
       setRefreshing(true);
       const res = await axios.get('/dashboard/counts');
-      
+
       if (res.data.success) {
         setDashboardData(res.data.data);
       }
@@ -167,11 +167,11 @@ const Dashboard = () => {
           <div className="flex items-center space-x-2">
             <Calendar className="w-5 h-5 text-gray-400" />
             <span className="text-sm text-gray-600">
-              {new Date().toLocaleDateString('en-US', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+              {new Date().toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
               })}
             </span>
           </div>
@@ -181,30 +181,20 @@ const Dashboard = () => {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
-          <StatCard 
-            key={index} 
-            stat={stat} 
+          <StatCard
+            key={index}
+            stat={stat}
             index={index}
           />
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Quick Actions & Additional Stats */}
-        <div className="lg:col-span-2">
-          <QuickActionsSection 
-            quickActions={quickActions} 
-            dashboardData={dashboardData}
-          />
-        </div>
-
-        {/* Recent Activities */}
-        <div className="lg:col-span-1">
-          <RecentActivitiesSection 
-            activities={dashboardData?.recentActivities || []}
-          />
-        </div>
-      </div>
+      {/* Quick Actions & Recent Activities */}
+      <QuickActionsSection
+        quickActions={quickActions}
+        dashboardData={dashboardData}
+        activities={dashboardData?.recentActivities || []}
+      />
 
       {/* Engagement Metrics */}
       <EngagementSection dashboardData={dashboardData} />
@@ -220,28 +210,27 @@ const StatCard = ({ stat, index }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       whileHover={{ y: -5 }}
-      className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-all duration-300 group"
+      className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow-lg border border-purple-100 p-6 hover:shadow-xl hover:from-purple-100 hover:to-pink-100 transition-all duration-300 group"
     >
       <Link to={stat.link}>
         <div className="flex items-center justify-between mb-4">
-          <div className={`w-12 h-12 bg-gradient-to-r ${stat.color} rounded-2xl flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300`}>
+          <div className="w-12 h-12 bg-gradient-to-br from-[#880481] to-[#ad6bac] rounded-2xl flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300 shadow-md">
             {stat.icon}
           </div>
-          <div className={`flex items-center space-x-1 text-sm font-semibold ${
-            stat.trend === 'up' ? 'text-green-500' :
-            stat.trend === 'down' ? 'text-red-500' : 'text-gray-500'
-          }`}>
+          <div className={`flex items-center space-x-1 text-sm font-semibold ${stat.trend === 'up' ? 'text-green-500' :
+              stat.trend === 'down' ? 'text-red-500' : 'text-gray-500'
+            }`}>
             {stat.trend === 'up' && <TrendingUp className="w-4 h-4" />}
             {stat.trend === 'down' && <TrendingUp className="w-4 h-4 transform rotate-180" />}
             {stat.trend === 'neutral' && <Clock className="w-4 h-4" />}
             <span>{stat.change}</span>
           </div>
         </div>
-        
-        <h3 className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</h3>
+
+        <h3 className="text-2xl font-bold bg-gradient-to-r from-[#880481] to-[#ad6bac] bg-clip-text text-transparent mb-1">{stat.value}</h3>
         <p className="text-gray-600 text-sm mb-4">{stat.title}</p>
-        
-        <div className="flex items-center text-yellow-600 text-sm font-semibold group-hover:text-yellow-700 transition-colors">
+
+        <div className="flex items-center text-purple-600 text-sm font-semibold group-hover:text-purple-700 transition-colors">
           <span>View Details</span>
           <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
         </div>
@@ -251,15 +240,31 @@ const StatCard = ({ stat, index }) => {
 };
 
 // Quick Actions Section
-const QuickActionsSection = ({ quickActions, dashboardData }) => {
+const QuickActionsSection = ({ quickActions, dashboardData, activities }) => {
+  const getActivityIcon = (type) => {
+    switch (type) {
+      case 'blog': return <FileText className="w-4 h-4" />;
+      case 'application': return <Briefcase className="w-4 h-4" />;
+      default: return <Activity className="w-4 h-4" />;
+    }
+  };
+
+  const getActivityColor = (type) => {
+    switch (type) {
+      case 'blog': return 'text-blue-500';
+      case 'application': return 'text-green-500';
+      default: return 'text-gray-500';
+    }
+  };
+
   return (
     <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-gray-900">Quick Actions</h2>
         <Activity className="w-5 h-5 text-gray-400" />
       </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {quickActions.map((action, index) => (
           <motion.div
             key={index}
@@ -308,102 +313,64 @@ const QuickActionsSection = ({ quickActions, dashboardData }) => {
         ))}
       </div>
 
-      {/* Additional Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-gray-200">
-        <div className="text-center">
-          <div className="text-2xl font-bold text-gray-900">{dashboardData?.counts?.blogs?.draft || 0}</div>
-          <div className="text-sm text-gray-600">Draft Posts</div>
+      {/* Recent Activities */}
+      <div className="pt-6 border-t border-gray-200">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold text-gray-900">Recent Activities</h2>
+          <Calendar className="w-5 h-5 text-gray-400" />
         </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-gray-900">{dashboardData?.counts?.blogs?.featured || 0}</div>
-          <div className="text-sm text-gray-600">Featured</div>
-        </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-gray-900">{dashboardData?.engagement?.totalComments || 0}</div>
-          <div className="text-sm text-gray-600">Total Comments</div>
-        </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-gray-900">{dashboardData?.engagement?.totalLikes || 0}</div>
-          <div className="text-sm text-gray-600">Total Likes</div>
-        </div>
+
+        {activities.length === 0 ? (
+          <div className="text-center py-8">
+            <AlertCircle className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+            <p className="text-gray-500 text-sm">No recent activities</p>
+          </div>
+        ) : (
+          <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
+            {activities.map((activity, index) => (
+              <motion.div
+                key={activity.id}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
+              >
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${getActivityColor(activity.type)} bg-opacity-10 flex-shrink-0`}>
+                  {getActivityIcon(activity.type)}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-sm font-semibold text-gray-900 hover:text-purple-600 transition-colors line-clamp-1">
+                    {activity.title}
+                  </h3>
+                  <p className="text-xs text-gray-600 mt-1 line-clamp-2">
+                    {activity.description}
+                  </p>
+                  <p className="text-xs text-gray-400 mt-2">
+                    {activity.time}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
+
+        <Link
+          to="/admin/manegeblog"
+          className="block text-center mt-6 py-2 text-purple-600 hover:text-purple-700 font-semibold text-sm transition-colors border border-purple-200 rounded-lg hover:bg-purple-50"
+        >
+          View All Activities
+        </Link>
       </div>
     </div>
   );
 };
 
-// Recent Activities Section
-const RecentActivitiesSection = ({ activities }) => {
-  const getActivityIcon = (type) => {
-    switch (type) {
-      case 'blog': return <FileText className="w-4 h-4" />;
-      case 'application': return <Briefcase className="w-4 h-4" />;
-      default: return <Activity className="w-4 h-4" />;
-    }
-  };
 
-  const getActivityColor = (type) => {
-    switch (type) {
-      case 'blog': return 'text-blue-500';
-      case 'application': return 'text-green-500';
-      default: return 'text-gray-500';
-    }
-  };
-
-  return (
-    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-gray-900">Recent Activities</h2>
-        <Calendar className="w-5 h-5 text-gray-400" />
-      </div>
-      
-      {activities.length === 0 ? (
-        <div className="text-center py-8">
-          <AlertCircle className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-          <p className="text-gray-500 text-sm">No recent activities</p>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {activities.map((activity, index) => (
-            <motion.div
-              key={activity.id}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
-            >
-              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${getActivityColor(activity.type)} bg-opacity-10 flex-shrink-0`}>
-                {getActivityIcon(activity.type)}
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-semibold text-gray-900 hover:text-yellow-600 transition-colors line-clamp-1">
-                  {activity.title}
-                </h3>
-                <p className="text-xs text-gray-600 mt-1 line-clamp-2">
-                  {activity.description}
-                </p>
-                <p className="text-xs text-gray-400 mt-2">
-                  {activity.time}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      )}
-
-      <Link
-        to="/admin/manegeblog"
-        className="block text-center mt-6 py-2 text-yellow-600 hover:text-yellow-700 font-semibold text-sm transition-colors border border-yellow-200 rounded-lg hover:bg-yellow-50"
-      >
-        View All Activities
-      </Link>
-    </div>
-  );
-};
 
 // Engagement Section
 const EngagementSection = ({ dashboardData }) => {
   return (
-    <div className="bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl p-6 text-white">
+    <div className="bg-gradient-to-r from-[#880481] via-[#49177a] to-[#ad6bac] rounded-2xl p-6 text-white">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
         <div className="flex-1">
           <h2 className="text-2xl font-bold mb-2">Website Performance</h2>
@@ -426,23 +393,23 @@ const EngagementSection = ({ dashboardData }) => {
           </div>
         </div>
       </div>
-      
+
       {/* Performance Indicators */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-6 border-t border-yellow-400 border-opacity-30">
         <div className="text-center">
-          <Eye className="w-6 h-6 text-green-300 mx-auto mb-1" />
+          <Eye className="w-6 h-6 text-[#e28539] mx-auto mb-1" />
           <div className="text-sm text-yellow-100">{dashboardData?.engagement?.totalViews?.toLocaleString() || 0} Views</div>
         </div>
         <div className="text-center">
-          <MessageCircle className="w-6 h-6 text-green-300 mx-auto mb-1" />
+          <MessageCircle className="w-6 h-6 text-[#e28539] mx-auto mb-1" />
           <div className="text-sm text-yellow-100">{dashboardData?.engagement?.totalComments || 0} Comments</div>
         </div>
         <div className="text-center">
-          <Heart className="w-6 h-6 text-green-300 mx-auto mb-1" />
+          <Heart className="w-6 h-6 text-[#e28539] mx-auto mb-1" />
           <div className="text-sm text-yellow-100">{dashboardData?.engagement?.totalLikes || 0} Likes</div>
         </div>
         <div className="text-center">
-          <Star className="w-6 h-6 text-green-300 mx-auto mb-1" />
+          <Star className="w-6 h-6 text-[#e28539] mx-auto mb-1" />
           <div className="text-sm text-yellow-100">{dashboardData?.counts?.blogs?.featured || 0} Featured</div>
         </div>
       </div>

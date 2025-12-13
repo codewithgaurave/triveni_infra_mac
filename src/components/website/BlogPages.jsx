@@ -24,9 +24,7 @@ import {
 import axios from '../../../axiosInstance';
 
 const BlogPages = () => {
-  const { id } = useParams();
-
-  
+  const { id: slug } = useParams();
   const navigate = useNavigate();
   const [blog, setBlog] = useState(null);
   const [relatedBlogs, setRelatedBlogs] = useState([]);
@@ -59,7 +57,7 @@ const BlogPages = () => {
   // Fetch blog data
   const fetchBlog = async () => {
     try {
-      const res = await axios.get(`/blogs/${id}`);
+      const res = await axios.get(`/blogs/${slug}`);
       if (res.data.success) {
         setBlog(res.data.data);
         setViews(res.data.data.views);
@@ -86,7 +84,7 @@ const BlogPages = () => {
 
   useEffect(() => {
     fetchBlog();
-  }, [id]);
+  }, [slug]);
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
@@ -357,17 +355,13 @@ const BlogPages = () => {
                 >
                   <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                     <img
-                      src={blog.featuredImage.url}
-                      alt={blog.featuredImage.alt}
+                      src={blog.featuredImage}
+                      alt={blog.title}
                       className="w-full h-64 md:h-96 object-cover"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
                     />
-                    {blog.featuredImage.caption && (
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                        <p className="text-white text-sm text-center italic">
-                          {blog.featuredImage.caption}
-                        </p>
-                      </div>
-                    )}
                   </div>
                 </motion.div>
               )}
@@ -380,7 +374,24 @@ const BlogPages = () => {
                 className="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-12"
               >
                 <div 
-                  className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-li:text-gray-700 prose-strong:text-gray-900 prose-a:text-yellow-600 hover:prose-a:text-yellow-700"
+                  className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-li:text-gray-700 prose-strong:text-gray-900 prose-a:text-yellow-600 hover:prose-a:text-yellow-700 prose-img:rounded-xl prose-img:shadow-lg prose-img:my-8"
+                  style={{
+                    '--tw-prose-body': 'rgb(55 65 81)',
+                    '--tw-prose-headings': 'rgb(17 24 39)',
+                    '--tw-prose-links': 'rgb(234 179 8)',
+                    '--tw-prose-bold': 'rgb(17 24 39)',
+                    '--tw-prose-counters': 'rgb(107 114 128)',
+                    '--tw-prose-bullets': 'rgb(209 213 219)',
+                    '--tw-prose-hr': 'rgb(229 231 235)',
+                    '--tw-prose-quotes': 'rgb(17 24 39)',
+                    '--tw-prose-quote-borders': 'rgb(229 231 235)',
+                    '--tw-prose-captions': 'rgb(107 114 128)',
+                    '--tw-prose-code': 'rgb(17 24 39)',
+                    '--tw-prose-pre-code': 'rgb(229 231 235)',
+                    '--tw-prose-pre-bg': 'rgb(17 24 39)',
+                    '--tw-prose-th-borders': 'rgb(209 213 219)',
+                    '--tw-prose-td-borders': 'rgb(229 231 235)'
+                  }}
                   dangerouslySetInnerHTML={{ __html: blog.content }}
                 />
 

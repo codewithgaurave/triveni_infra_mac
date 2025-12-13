@@ -45,7 +45,7 @@ const Footer = () => {
 
           {/* Company Info */}
           <div className="lg:col-span-1 text-center sm:text-left">
-            <div className="flex items-center justify-center sm:justify-start space-x-3 mb-6">
+            <div className="flex items-center justify-center sm:justify-start space-x-3 mb-6 ml-9">
               {/* logo for footer */}
               <img src={logo2} alt="" className='h-16 w-28 sm:h-20 sm:w-32 lg:h-25 lg:w-40 ml-[-10px] sm:ml-[-15px]' />
             </div>
@@ -130,10 +130,10 @@ const Footer = () => {
                   info@triveniinframech.com
                 </a>
               </div>
-              <div className="flex items-center justify-center sm:justify-start space-x-3">
+              {/*<div className="flex items-center justify-center sm:justify-start space-x-3">
                 <Clock className="text-yellow-500" size={18} />
                 <span className="text-gray-900">Mon - Sat: 8:00 - 18:00</span>
-              </div>
+              </div>*/}
             </div>
           </div>
         </div>

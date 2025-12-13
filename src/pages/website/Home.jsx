@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import suzlonLogo from '../../assets/Suzlon.png'
 import geeco from '../../assets/geeco.jpg'
 import TEFUGEN from '../../assets/TEFGUN.jpg'
@@ -141,7 +141,8 @@ const Home = () => {
   return (
     <div className="overflow-hidden">
       {/* Hero Section */}
-      <section className="relative py-8 md:py-1 lg:py-1 flex items-center justify-center bg-gradient-to-br from-[#880481] via-[#30085b] to-[#ad6bac] overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#880481] via-[#30085b] to-[#ad6bac] overflow-hidden">
+
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -149,21 +150,21 @@ const Home = () => {
           }}></div>
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10 h-full flex items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
             {/* Hero Content */}
             <motion.div
               initial="initial"
               animate="animate"
               variants={staggerContainer}
-              className="text-white"
+              className="text-white flex flex-col justify-center items-center text-center lg:text-left lg:items-start w-full"
             >
               <motion.div
                 variants={fadeInUp}
-                className="inline-flex items-center space-x-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full px-4 py-2 mb-6"
+                className="inline-flex items-center space-x-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full px-4 py-2 mb-5 mt-5"
               >
                 <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                <span className="text-yellow-500 text-sm font-semibold">Established 2023</span>
+                <span className="text-yellow-500 text-sm font-semibold ">Established 2023</span>
               </motion.div>
 
               <motion.h1
@@ -184,7 +185,7 @@ const Home = () => {
 
               <motion.div
                 variants={fadeInUp}
-                className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8 px-2 sm:px-0"
+                className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8 px-2 sm:px-0 justify-center lg:justify-start"
               >
                 <Link
                   to="/contact"
@@ -214,13 +215,13 @@ const Home = () => {
             >
               <div className="relative bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl p-1 transform rotate-2">
                 <div className="bg-gray-800 rounded-2xl p-6 transform -rotate-2">
-                  <div className="bg-gray-700 rounded-xl h-96 flex items-center justify-center relative overflow-hidden" style={{ backgroundImage: `url(${industry})`, backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(0px)' }}>
-                    <div className="text-center text-white z-9">
+                  <div className="bg-gray-700 rounded-xl h-96 flex items-center justify-center relative overflow-hidden" style={{ backgroundImage: `url(${industry})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                    <div className="text-center text-white z-10 relative">
                       <Building2 className="w-16 h-16 mx-auto mb-4 text-yellow-500" />
                       <p className="text-lg font-semibold">Industrial Construction</p>
                       <p className="text-gray-100">Expert Fabrication & Erection</p>
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/30 to-transparent"></div>
                   </div>
                 </div>
               </div>
@@ -299,28 +300,28 @@ const Home = () => {
               viewport={{ once: true }}
               className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4"
             >
-              <div className="bg-yellow-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 h-40 sm:h-48 flex flex-col justify-center">
+              <div className="bg-yellow-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 h-40 sm:h-48 flex flex-col justify-center items-center text-center">
                 <Target className="w-6 h-6 sm:w-8 sm:h-8 text-white mb-2 sm:mb-3" />
                 <h3 className="text-white font-bold text-base sm:text-lg mb-1 sm:mb-2">Our Vision</h3>
                 <p className="text-yellow-100 text-xs sm:text-sm leading-tight">
                   To become a leading name in the construction industry by delivering world-class solutions.
                 </p>
               </div>
-              <div className="bg-[#561b5a] rounded-xl sm:rounded-2xl p-4 sm:p-6 h-40 sm:h-48 flex flex-col justify-center">
+              <div className="bg-[#561b5a] rounded-xl sm:rounded-2xl p-4 sm:p-6 h-40 sm:h-48 flex flex-col justify-center items-center text-center">
                 <Eye className="w-6 h-6 sm:w-8 sm:h-8 text-white mb-2 sm:mb-3" />
                 <h3 className="text-white font-bold text-base sm:text-lg mb-1 sm:mb-2">Our Mission</h3>
                 <p className="text-gray-300 text-xs sm:text-sm leading-tight">
                   Construction services with focus on innovation, safety, and client satisfaction.
                 </p>
               </div>
-              <div className="bg-[#561b5a] rounded-xl sm:rounded-2xl p-4 sm:p-6 h-40 sm:h-48 flex flex-col justify-center">
+              <div className="bg-[#561b5a] rounded-xl sm:rounded-2xl p-4 sm:p-6 h-40 sm:h-48 flex flex-col justify-center items-center text-center">
                 <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-white mb-2 sm:mb-3" />
                 <h3 className="text-white font-bold text-base sm:text-lg mb-1 sm:mb-2">Our Values</h3>
                 <p className="text-gray-300 text-xs sm:text-sm leading-tight">
                   Quality, Safety, Innovation, and Client Satisfaction drive everything we do.
                 </p>
               </div>
-              <div className="bg-yellow-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 h-40 sm:h-48 flex flex-col justify-center">
+              <div className="bg-yellow-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 h-40 sm:h-48 flex flex-col justify-center items-center text-center">
                 <Star className="w-6 h-6 sm:w-8 sm:h-8 text-white mb-2 sm:mb-3" />
                 <h3 className="text-white font-bold text-base sm:text-lg mb-1 sm:mb-2">Our Promise</h3>
                 <p className="text-yellow-100 text-xs sm:text-sm leading-tight">
@@ -394,9 +395,9 @@ const Home = () => {
                 </div>
                 <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-extrabold text-white mb-2 sm:mb-3 md:mb-4">{service.title}</h3>
                 <p className="text-xs sm:text-sm md:text-base text-gray-100 mb-3 sm:mb-4 md:mb-6 leading-relaxed">{service.description}</p>
-                <div className="space-y-2 mb-6 text-gray-200 ">
+                <div className="space-y-2 mb-6 text-gray-100 ">
                   {service.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center space-x-2 text-xlg text-gray-00">
+                    <div key={idx} className="flex items-center space-x-2 text-xlg text-gray-200">
                       <ChevronRight className="w-4 h-4 text-yellow-400" />
                       <span>{feature}</span>
                     </div>
@@ -502,7 +503,7 @@ const Home = () => {
                 className="bg-gradient-to-br from-[#631caf] via-[#8a5387] to-[#8b0389] rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 text-center hover:shadow-lg transition-all duration-300"
               >
                 <div className="w-20 h-20 bg-[#e4e4e7] rounded-2xl flex items-center justify-center mx-auto mb-6 text-[#30085b] font-bold text-xl overflow-hidden">
-                  <img src={client.logo} alt={client.name} className="w-full h-full object-contain " />
+                  <img src={client.logo} alt={client.name} className="w-full h-full object-contain opacity-100" style={{ opacity: 1 }} />
                 </div>
                 <h3 className="text-2xl font-bold text-[#e4e4e7] mb-2">{client.name}</h3>
                 <p className="text-[#f3e9cc]">{client.description}</p>

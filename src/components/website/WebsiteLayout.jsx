@@ -10,22 +10,9 @@ import { useNavigation } from '../../context/NavigationContext';
 const WebsiteLayout = () => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { allowedPaths } = useNavigation();
-  const [shouldRedirect, setShouldRedirect] = useState(false);
-
   useEffect(() => {
     scrollToTop();
-    const currentPath = location.pathname;
-    const isAllowed = allowedPaths.has(currentPath) || currentPath === '/' || location.state?.fromNavbar;
-    
-    if (!isAllowed) {
-      setShouldRedirect(true);
-    }
-  }, [location.pathname, allowedPaths, location.state]);
-
-  if (shouldRedirect) {
-    return <Navigate to="/" replace />;
-  }
+  }, [location.pathname]);
 
   return (
     <div className="website-layout">

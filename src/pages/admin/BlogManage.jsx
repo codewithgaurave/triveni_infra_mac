@@ -156,7 +156,7 @@ const BlogManage = () => {
       text: 'Ready to create a new blog post?',
       icon: 'question',
       showCancelButton: true,
-      confirmButtonColor: '#EAB308',
+      confirmButtonColor: '#F59E0B',
       cancelButtonColor: '#6B7280',
       confirmButtonText: 'Yes, create it!',
       cancelButtonText: 'Cancel'
@@ -201,7 +201,7 @@ const BlogManage = () => {
       text: `Do you want to edit "${blog.title}"?`,
       icon: 'info',
       showCancelButton: true,
-      confirmButtonColor: '#EAB308',
+      confirmButtonColor: '#F59E0B',
       cancelButtonColor: '#6B7280',
       confirmButtonText: 'Yes, edit it!',
       cancelButtonText: 'Cancel'
@@ -260,7 +260,7 @@ const BlogManage = () => {
           title: 'Updated!',
           text: 'Blog updated successfully!',
           icon: 'success',
-          confirmButtonColor: '#EAB308'
+          confirmButtonColor: '#F59E0B'
         });
       } else {
         // Create new blog
@@ -269,7 +269,7 @@ const BlogManage = () => {
           title: 'Created!',
           text: 'Blog created successfully!',
           icon: 'success',
-          confirmButtonColor: '#EAB308'
+          confirmButtonColor: '#F59E0B'
         });
       }
 
@@ -331,7 +331,7 @@ const BlogManage = () => {
             title: 'Deleted!',
             text: 'Blog has been deleted successfully.',
             icon: 'success',
-            confirmButtonColor: '#EAB308'
+            confirmButtonColor: '#F59E0B'
           });
           fetchBlogs();
         } catch (error) {
@@ -453,7 +453,7 @@ const BlogManage = () => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleCreateNew}
-            className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold px-6 py-3 rounded-xl transition-all duration-300 flex items-center space-x-2"
+            className="bg-gradient-to-r from-[#880481] via-[#30085b] to-[#ad6bac] hover:from-[#9a0591] hover:via-[#3a096b] hover:to-[#bd7bbc] text-white font-bold px-6 py-3 rounded-xl transition-all duration-300 flex items-center space-x-2 shadow-lg"
           >
             <Plus className="w-5 h-5" />
             <span>New Post</span>
@@ -521,7 +521,7 @@ const BlogManage = () => {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300"
             >
               <option value="all">All Categories</option>
               {categories.map(category => (
@@ -535,7 +535,7 @@ const BlogManage = () => {
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300"
             >
               <option value="all">All Status</option>
               <option value="published">Published</option>
@@ -545,7 +545,7 @@ const BlogManage = () => {
 
           {/* Sort Options */}
           <div>
-            <select className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300">
+            <select className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300">
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>
               <option value="popular">Most Popular</option>
@@ -650,7 +650,15 @@ const BlogCard = ({ blog, onEdit, onDelete, onStatusChange, onFeaturedToggle }) 
 
       {/* Blog Image/Placeholder */}
       <div className="h-48 bg-gradient-to-br from-gray-800 to-gray-900 relative overflow-hidden">
-        <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+        {blog.featuredImage?.url ? (
+          <img
+            src={blog.featuredImage.url}
+            alt={blog.featuredImage.alt || blog.title}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+        )}
         <div className="absolute bottom-4 left-4">
           <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${statusColors[blog.status]}`}>
             {blog.status === 'published' ? <CheckCircle className="w-3 h-3 mr-1" /> : <AlertCircle className="w-3 h-3 mr-1" />}
@@ -823,7 +831,15 @@ const BlogTableRow = ({ blog, onEdit, onDelete, onStatusChange, onFeaturedToggle
     <tr className="hover:bg-gray-50 transition-colors duration-200">
       <td className="px-6 py-4">
         <div className="flex items-start space-x-4">
-          <div className="w-16 h-12 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex-shrink-0"></div>
+          <div className="w-16 h-12 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex-shrink-0 overflow-hidden">
+            {blog.featuredImage?.url && (
+              <img
+                src={blog.featuredImage.url}
+                alt={blog.featuredImage.alt || blog.title}
+                className="w-full h-full object-cover"
+              />
+            )}
+          </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center space-x-2 mb-1">
               <h3 className="font-semibold text-gray-900 text-sm line-clamp-1">
@@ -915,7 +931,7 @@ const EmptyState = ({ onCreateNew }) => (
     <p className="text-gray-600 mb-6">Try adjusting your search or filters</p>
     <button
       onClick={onCreateNew}
-      className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold px-6 py-3 rounded-xl transition-all duration-300 inline-flex items-center space-x-2"
+      className="bg-gradient-to-r from-[#880481] via-[#30085b] to-[#ad6bac] hover:from-[#9a0591] hover:via-[#3a096b] hover:to-[#bd7bbc] text-white font-bold px-6 py-3 rounded-xl transition-all duration-300 inline-flex items-center space-x-2 shadow-lg"
     >
       <Plus className="w-5 h-5" />
       <span>Create Your First Post</span>
@@ -1057,6 +1073,57 @@ const BlogEditor = ({ blogData, editingBlog, saving, onInputChange, onSave, onCl
 
               {/* Sidebar */}
               <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Featured Image
+                  </label>
+                  <div className="space-y-3">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          const formData = new FormData();
+                          formData.append('image', file);
+                          try {
+                            const res = await axios.post('/blogs/upload-image', formData, {
+                              headers: { 'Content-Type': 'multipart/form-data' }
+                            });
+                            if (res.data.success) {
+                              onInputChange({
+                                target: {
+                                  name: 'featuredImage.url',
+                                  value: res.data.imageUrl
+                                }
+                              });
+                              toast.success('Image uploaded successfully!');
+                            }
+                          } catch (error) {
+                            toast.error('Image upload failed');
+                          }
+                        }
+                      }}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300"
+                    />
+                    {blogData.featuredImage.url && (
+                      <img
+                        src={blogData.featuredImage.url}
+                        alt="Preview"
+                        className="w-full h-32 object-cover rounded-xl"
+                      />
+                    )}
+                    <input
+                      type="text"
+                      name="featuredImage.alt"
+                      value={blogData.featuredImage.alt}
+                      onChange={onInputChange}
+                      placeholder="Image alt text"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-300"
+                    />
+                  </div>
+                </div>
+
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Category *
@@ -1260,7 +1327,7 @@ const BlogEditor = ({ blogData, editingBlog, saving, onInputChange, onSave, onCl
               whileTap={{ scale: 0.98 }}
               onClick={onSave}
               disabled={saving || !blogData.title || !blogData.excerpt || !blogData.content || !blogData.category}
-              className="bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-400 text-gray-900 font-bold px-6 py-3 rounded-xl transition-all duration-300 flex items-center space-x-2 disabled:cursor-not-allowed"
+              className="bg-gradient-to-r from-[#880481] via-[#30085b] to-[#ad6bac] hover:from-[#9a0591] hover:via-[#3a096b] hover:to-[#bd7bbc] disabled:bg-gray-400 text-white font-bold px-6 py-3 rounded-xl transition-all duration-300 flex items-center space-x-2 disabled:cursor-not-allowed shadow-lg"
             >
               {saving ? (
                 <RefreshCw className="w-5 h-5 animate-spin" />

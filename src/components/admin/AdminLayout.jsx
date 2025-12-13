@@ -93,14 +93,14 @@ const AdminLayout = () => {
         {/* Sidebar Header */}
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center space-x-3 mb-4">
-            <img src={logo} alt="" className='w-40 h-15 text-center' />
+            <img src={logo} alt="" className='w-40 h-15 text-center ml-8' />
 
           </div>
 
           {/* User Info */}
-          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl p-4 border border-yellow-100">
+          <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-4 border border-purple-100">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-r from-[#880481] to-[#ad6bac] rounded-full flex items-center justify-center">
                 <User className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1 min-w-0">
@@ -125,8 +125,8 @@ const AdminLayout = () => {
               className={`
                 flex items-center space-x-3 p-4 rounded-2xl transition-all duration-200 group
                 ${isActive(item.path)
-                  ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg'
-                  : 'text-gray-700 hover:bg-gray-100 hover:text-yellow-600'
+                  ? 'bg-gradient-to-r from-[#880481] via-[#30085b] to-[#ad6bac] text-white shadow-lg'
+                  : 'text-gray-700 hover:bg-gray-100 hover:text-purple-600'
                 }
               `}
             >
@@ -139,7 +139,7 @@ const AdminLayout = () => {
                 <p className="font-semibold text-sm">{item.name}</p>
                 <p className={`
                   text-xs mt-1
-                  ${isActive(item.path) ? 'text-yellow-100' : 'text-gray-500'}
+                  ${isActive(item.path) ? 'text-purple-100' : 'text-gray-500'}
                 `}>
                   {item.description}
                 </p>
@@ -158,7 +158,7 @@ const AdminLayout = () => {
           {/* Back to Website */}
           <Link
             to="/"
-            className="flex items-center space-x-3 p-3 text-gray-600 hover:text-yellow-600 hover:bg-gray-50 rounded-2xl transition-all duration-200 group"
+            className="flex items-center space-x-3 p-3 text-gray-600 hover:text-purple-600 hover:bg-gray-50 rounded-2xl transition-all duration-200 group"
           >
             <Home className="w-5 h-5" />
             <span className="font-medium text-sm">Back to Website</span>
@@ -200,7 +200,7 @@ const AdminLayout = () => {
 
             {/* User Info for Mobile */}
             <div className="lg:hidden flex items-center space-x-2">
-              <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-r from-[#880481] to-[#ad6bac] rounded-full flex items-center justify-center">
                 <User className="w-4 h-4 text-white" />
               </div>
             </div>

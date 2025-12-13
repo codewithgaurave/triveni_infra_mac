@@ -165,11 +165,23 @@ function CareerManage() {
     }
   };
 
-  const deleteJob = (id) => {
+  const deleteJob = async (id) => {
     if (window.confirm("Are you sure you want to delete this job posting?")) {
-      setJobs(jobs.filter((job) => job.id !== id));
-      if (selectedJob && selectedJob.id === id) {
-        setSelectedJob(null);
+      try {
+        const res = await axios.delete(`/jobs/${id}`);
+        if (res.data.success) {
+          toast.success(res.data.message);
+          // Remove job from local state
+          setJobs(jobs.filter((job) => job._id !== id));
+          if (selectedJob && selectedJob._id === id) {
+            setSelectedJob(null);
+          }
+          // Refresh jobs list
+          fetctJobs();
+        }
+      } catch (error) {
+        console.error('Delete job error:', error);
+        toast.error(error.response?.data?.message || 'Failed to delete job');
       }
     }
   };
@@ -185,12 +197,24 @@ function CareerManage() {
     }
   };
 
-  const updateJobStatus = (id, newStatus) => {
-    setJobs(
-      jobs.map((job) => (job.id === id ? { ...job, status: newStatus } : job))
-    );
-    if (selectedJob && selectedJob.id === id) {
-      setSelectedJob({ ...selectedJob, status: newStatus });
+  const updateJobStatus = async (id, newStatus) => {
+    try {
+      const res = await axios.patch(`/jobs/${id}/status`, { status: newStatus });
+      if (res.data.success) {
+        toast.success(res.data.message);
+        // Update local state
+        setJobs(
+          jobs.map((job) => (job._id === id ? { ...job, status: newStatus } : job))
+        );
+        if (selectedJob && selectedJob._id === id) {
+          setSelectedJob({ ...selectedJob, status: newStatus });
+        }
+        // Refresh jobs list
+        fetctJobs();
+      }
+    } catch (error) {
+      console.error('Update job status error:', error);
+      toast.error(error.response?.data?.message || 'Failed to update job status');
     }
   };
 
@@ -307,30 +331,26 @@ function CareerManage() {
   const handleSaveJob = async (e) => {
     e.preventDefault();
 
-    // const jobData = {
-    //   ...jobForm,
-    //   id: editingJob ? editingJob.id : Date.now(),
-    //   posted: editingJob ? editingJob.posted : new Date().toISOString(),
-    //   applications: editingJob ? editingJob.applications : 0,
-    // };
-
-    // if (editingJob) {
-    //   setJobs(jobs.map((job) => (job.id === editingJob.id ? jobData : job)));
-    // } else {
-    //   setJobs([...jobs, jobData]);
-    // }
-
-    // setShowJobModal(false);
-    // resetJobForm();
-
     try {
-      const res = await axios.post(`/jobs`, jobForm);
+      let res;
+      if (editingJob) {
+        // Update existing job
+        res = await axios.put(`/jobs/${editingJob._id}`, jobForm);
+      } else {
+        // Create new job
+        res = await axios.post(`/jobs`, jobForm);
+      }
+      
       if (res.data.success) {
-        toast.success(res.data.message)
+        toast.success(res.data.message);
         setShowJobModal(false);
         resetJobForm();
+        // Refresh jobs list
+        fetctJobs();
       }
     } catch (error) {
+      console.error('Save job error:', error);
+      toast.error(error.response?.data?.message || 'Failed to save job');
     }
   };
 
@@ -375,7 +395,7 @@ function CareerManage() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleCreateJob}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium flex items-center space-x-2 transition-colors"
+              className="bg-gradient-to-r from-[#880481] via-[#30085b] to-[#ad6bac] hover:from-[#9a0591] hover:via-[#3a096b] hover:to-[#bd7bbc] text-white px-4 py-2 rounded-lg font-medium flex items-center space-x-2 transition-colors shadow-lg"
             >
               <Plus className="w-5 h-5" />
               <span>Create Job</span>
@@ -398,7 +418,7 @@ function CareerManage() {
               onClick={() => setActiveTab(tab.id)}
               className={`px-4 py-2 rounded-md font-medium transition-colors ${
                 activeTab === tab.id
-                  ? "bg-blue-600 text-white"
+                  ? "bg-gradient-to-r from-[#880481] via-[#30085b] to-[#ad6bac] text-white shadow-lg"
                   : "text-gray-600 hover:text-gray-900"
               }`}
             >
@@ -416,14 +436,14 @@ function CareerManage() {
                 placeholder="Search by name, email, or position..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               />
             </div>
 
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
             >
               <option value="all">All Status</option>
               <option value="new">New</option>
@@ -436,7 +456,7 @@ function CareerManage() {
             <select
               value={jobFilter}
               onChange={(e) => setJobFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
             >
               <option value="all">All Positions</option>
               {positions.map((position) => (
@@ -682,7 +702,7 @@ function CareerManage() {
                           }
                           className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                             selectedApplication.status === status
-                              ? "bg-blue-600 text-white"
+                              ? "bg-gradient-to-r from-[#880481] via-[#30085b] to-[#ad6bac] text-white shadow-lg"
                               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                           }`}
                         >
@@ -797,7 +817,7 @@ function CareerManage() {
         <tbody className="bg-white divide-y divide-gray-200">
           {sortedJobs.map((job) => (
             <tr
-              key={job.id}
+              key={job._id}
               className="hover:bg-gray-50 transition-colors"
             >
               <td className="px-4 py-4 whitespace-nowrap">
@@ -843,7 +863,7 @@ function CareerManage() {
                 </span>
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                {formatDate(job.posted)}
+                {formatDate(job.createdAt || job.posted)}
               </td>
               <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
                 <div className="flex items-center space-x-2">
@@ -857,7 +877,7 @@ function CareerManage() {
                   <button
                     onClick={() =>
                       updateJobStatus(
-                        job.id,
+                        job._id,
                         job.status === "active" ? "draft" : "active"
                       )
                     }
@@ -867,7 +887,7 @@ function CareerManage() {
                     <Eye className="w-4 h-4" />
                   </button>
                   <button
-                    onClick={() => deleteJob(job.id)}
+                    onClick={() => deleteJob(job._id)}
                     className="text-red-600 hover:text-red-900 transition-colors p-1 rounded hover:bg-red-50"
                     title="Delete"
                   >
@@ -889,7 +909,7 @@ function CareerManage() {
           </p>
           <button
             onClick={handleCreateJob}
-            className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+            className="mt-4 bg-gradient-to-r from-[#880481] via-[#30085b] to-[#ad6bac] hover:from-[#9a0591] hover:via-[#3a096b] hover:to-[#bd7bbc] text-white px-6 py-2 rounded-lg font-medium transition-colors shadow-lg"
           >
             Create Job
           </button>
@@ -922,7 +942,7 @@ function CareerManage() {
                     setShowJobModal(false);
                     resetJobForm();
                   }}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                 >
                   <X className="w-6 h-6" />
                 </button>
@@ -941,7 +961,7 @@ function CareerManage() {
                       value={jobForm.title}
                       onChange={handleJobFormChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                       placeholder="e.g., Structural Engineer"
                     />
                   </div>
@@ -957,7 +977,7 @@ function CareerManage() {
                       value={jobForm.department}
                       onChange={handleJobFormChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                       placeholder="e.g., Structural Works"
                     />
                   </div>
@@ -972,7 +992,7 @@ function CareerManage() {
                       value={jobForm.type}
                       onChange={handleJobFormChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                     >
                       <option value="Full-time">Full-time</option>
                       <option value="Part-time">Part-time</option>
@@ -992,7 +1012,7 @@ function CareerManage() {
                       value={jobForm.location}
                       onChange={handleJobFormChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                       placeholder="e.g., Ahmedabad, Gujarat"
                     />
                   </div>
@@ -1008,7 +1028,7 @@ function CareerManage() {
                       value={jobForm.experience}
                       onChange={handleJobFormChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                       placeholder="e.g., 3-5 years"
                     />
                   </div>
@@ -1024,7 +1044,7 @@ function CareerManage() {
                       value={jobForm.salary}
                       onChange={handleJobFormChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                       placeholder="e.g., Competitive"
                     />
                   </div>
@@ -1073,7 +1093,7 @@ function CareerManage() {
                       onChange={handleJobFormChange}
                       required
                       rows="4"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                       placeholder="Describe the job role and responsibilities..."
                     />
                   </div>
@@ -1096,7 +1116,7 @@ function CareerManage() {
                               handleRequirementChange(index, e.target.value)
                             }
                             required
-                            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                             placeholder={`Requirement ${index + 1}`}
                           />
                           {jobForm.requirements.length > 1 && (
@@ -1138,7 +1158,7 @@ function CareerManage() {
                             value={status}
                             checked={jobForm.status === status}
                             onChange={handleJobFormChange}
-                            className="text-blue-600 focus:ring-blue-500"
+                            className="text-orange-500 focus:ring-orange-500"
                           />
                           <span className="text-sm text-gray-700 capitalize">
                             {status}
@@ -1165,7 +1185,7 @@ function CareerManage() {
                     type="submit"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
+                    className="flex-1 bg-gradient-to-r from-[#880481] via-[#30085b] to-[#ad6bac] hover:from-[#9a0591] hover:via-[#3a096b] hover:to-[#bd7bbc] text-white py-3 px-6 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2 shadow-lg"
                   >
                     <Save className="w-5 h-5" />
                     <span>{editingJob ? "Update Job" : "Create Job"}</span>

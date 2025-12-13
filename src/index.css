@@ -157,3 +157,158 @@ input:focus {
   transform: translateX(-100%);
   transition: transform 300ms ease-in-out;
 }
+
+/* Blog Content Styles */
+.prose img {
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  margin: 2rem auto;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  opacity: 1;
+}
+
+.prose figure {
+  margin: 2rem 0;
+}
+
+.prose figcaption {
+  text-align: center;
+  font-style: italic;
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+/* Ensure Cloudinary images display properly */
+.prose p img,
+.prose div img {
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  margin: 2rem auto;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  opacity: 1;
+}
+
+/* Image opacity management for all divs */
+img {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Specific image containers */
+.bg-gray-700 img,
+.bg-gray-800 img,
+div[style*="background-image"] img {
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+/* Client logo images */
+.client-logo img,
+.logo-container img {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+/* Background image containers */
+.hero-image,
+.service-image,
+.client-image {
+  opacity: 1 !important;
+}
+
+/* Fix for background images with overlay */
+div[style*="background-image"] {
+  position: relative;
+  opacity: 1 !important;
+}
+
+div[style*="background-image"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit;
+  opacity: 1;
+  z-index: -1;
+}
+
+/* Ensure images in cards are visible */
+.card img,
+.service-card img,
+.client-card img {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Additional image visibility fixes */
+.bg-gray-700[style*="background-image"],
+.bg-gray-800[style*="background-image"] {
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+/* Overlay fixes */
+.absolute.inset-0.bg-black\/60,
+.absolute.inset-0.bg-black\/50 {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Ensure all background images are visible */
+[style*="backgroundImage"] {
+  opacity: 1 !important;
+}
+
+/* Client logo specific fixes */
+.client-logo,
+.logo-container {
+  opacity: 1 !important;
+}
+
+.client-logo img,
+.logo-container img {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  filter: none !important;
+}
+/* Global image opacity fixes */
+* img {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Background image containers */
+.hero-image-container,
+.service-image-container,
+.about-image-container {
+  opacity: 1 !important;
+}
+
+/* Specific component image fixes */
+.motion-div img,
+.motion-div [style*="background-image"] {
+  opacity: 1 !important;
+}
+
+/* Remove any unwanted filters */
+img[style*="filter"],
+div[style*="filter"] {
+  filter: none !important;
+}
+
+/* Ensure proper display for all image elements */
+img, 
+[style*="background-image"],
+[style*="backgroundImage"] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}

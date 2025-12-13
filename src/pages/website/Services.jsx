@@ -337,15 +337,14 @@ const Services = () => {
                             } : {};
                           })()}
                         >
-                          <div className="absolute inset-0 bg-black/60"></div>
-                          <div className="text-center text-white relative z-10">
+                          <div className="absolute inset-0 bg-black/30"></div>
+                          <div className="text-center text-white relative z-10 flex flex-col items-center justify-center h-full">
                             <div className="w-20 h-20 bg-yellow-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
                               {service.icon}
                             </div>
                             <p className="text-lg font-semibold">{service.title.split(' ')[0]}</p>
                             <p className="text-gray-100">Professional Services</p>
                           </div>
-                          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
                         </div>
                       </div>
                     </div>

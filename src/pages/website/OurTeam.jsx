@@ -214,14 +214,11 @@ const OurTeam = () => {
 
               <div className="space-y-6 text-lg text-gray-600 leading-relaxed mb-8">
                 <p>
-                  <strong>Jitendra Yadav</strong> leads TRIVENI INFRAMECH PVT LTD with a vision 
-                  to deliver world-class construction services that exceed client expectations. 
-                  With over <strong>15 years of hands-on experience</strong> in the industrial 
-                  construction sector, he brings unparalleled expertise and commitment to every project.
+                  <strong>Jitendra Yadav</strong> leads <strong>TRIVENI INFRAMECH PVT LTD</strong> with a clear vision to deliver world-class construction solutions that consistently exceed client expectations. His deep industry knowledge, strategic mindset, and dedication to quality ensure that every <strong>project reflects excellence, innovation, and reliability.</strong>
                 </p>
                 
                 <p>
-                  Under his leadership, the company has successfully completed <strong>50+ projects</strong> 
+                  Under his leadership, the company has successfully completed <strong>50+ projects </strong> 
                   across various industrial sectors, establishing a reputation for precision, 
                   safety, and timely delivery.
                 </p>

@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import suzlonLogo from '../../assets/Suzlon.png';
 import geecoLogo from '../../assets/geeco.jpg';
-import tefugenLogo from '../../assets/TEFUGEN.png';
+import tefugenLogo from '../../assets/TEFGUN.jpg';
+import mechLogo from '../../assets/mech.png';
 import { 
   ArrowRight, 
   CheckCircle, 
@@ -85,6 +86,22 @@ const Clients = () => {
       since: '2023',
       testimonial: 'Innovative solutions and expert technical support for our advanced technology projects.',
       color: 'from-purple-500 to-purple-600'
+    },
+    {
+      name: 'POWER MECH',
+      industry: 'Infrastructure Development',
+      description: 'Building Infrastructure projects that are critical in National Building',
+      logo: 'POWER MECH',
+      services: [
+        'Structural Fabrication',
+        'Heavy Equipment Erection',
+        'Industrial Construction',
+        'Infrastructure Development'
+      ],
+      projects: '10+ Projects',
+      since: '2023',
+      testimonial: 'Exceptional infrastructure development work with focus on national building projects.',
+      color: 'from-red-500 to-red-600'
     }
   ];
 
@@ -287,7 +304,7 @@ const Clients = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {clients.map((client, index) => (
               <motion.div
                 key={index}
@@ -302,9 +319,10 @@ const Clients = () => {
                 <div className="text-center mb-6">
                   <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 overflow-hidden border-2 border-gray-200">
                     <img 
-                      src={client.logo === 'SUZLON' ? suzlonLogo : client.logo === 'GEECO' ? geecoLogo : tefugenLogo} 
+                      src={client.logo === 'SUZLON' ? suzlonLogo : client.logo === 'GEECO' ? geecoLogo : client.logo === 'TEFUGEN' ? tefugenLogo : mechLogo} 
                       alt={`${client.name} Logo`}
-                      className="w-16 h-16 object-contain"
+                      className="w-16 h-16 object-contain opacity-100"
+                      style={{ opacity: 1 }}
                     />
                   </div>
                   <h3 className="text-2xl font-bold text-[#30085b] mb-2">{client.name}</h3>

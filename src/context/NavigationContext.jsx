@@ -12,16 +12,23 @@ export const useNavigation = () => {
 };
 
 export const NavigationProvider = ({ children }) => {
-  const [allowedPaths, setAllowedPaths] = useState(new Set(['/']));
+  const [allowedPaths, setAllowedPaths] = useState(new Set([
+    '/',
+    '/about',
+    '/team',
+    '/industries', 
+    '/services',
+    '/clients',
+    '/certification',
+    '/projects',
+    '/blog',
+    '/gallery',
+    '/career',
+    '/contact'
+  ]));
   const location = useLocation();
 
-  useEffect(() => {
-    const currentPath = location.pathname;
-    if (!allowedPaths.has(currentPath) && !currentPath.startsWith('/admin')) {
-      window.history.replaceState(null, '', '/');
-      window.location.href = '/';
-    }
-  }, [location.pathname]);
+
 
   const allowNavigation = (path) => {
     setAllowedPaths(prev => new Set([...prev, path]));

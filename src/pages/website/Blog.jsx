@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { 
-  ArrowRight, 
+import {
+  ArrowRight,
   Calendar,
   User,
   Clock,
@@ -49,7 +49,7 @@ const Blog = () => {
       if (res.data.success) {
         setBlogs(res.data.data);
         setFilteredBlogs(res.data.data);
-        
+
         // Extract unique categories
         const uniqueCategories = ['all', ...new Set(res.data.data.map(blog => blog.category))];
         setCategories(uniqueCategories);
@@ -74,7 +74,7 @@ const Blog = () => {
     }
 
     if (searchTerm) {
-      filtered = filtered.filter(blog => 
+      filtered = filtered.filter(blog =>
         blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         blog.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
         blog.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -136,7 +136,7 @@ const Blog = () => {
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
           }}></div>
         </div>
-        
+
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial="initial"
@@ -163,7 +163,7 @@ const Blog = () => {
               variants={fadeInUp}
               className="text-xl text-gray-300 leading-relaxed mb-8"
             >
-              Expert insights, industry trends, and technical knowledge from TRIVENI INFRAMECH PVT LTD - 
+              Expert insights, industry trends, and technical knowledge from TRIVENI INFRAMECH PVT LTD -
               Your trusted partner in industrial construction and engineering excellence.
             </motion.p>
 
@@ -205,18 +205,17 @@ const Blog = () => {
                     Showing {Math.min(visibleBlogs, filteredBlogs.length)} of {filteredBlogs.length} articles
                   </span>
                 </div>
-                
+
                 {/* Category Filter */}
                 <div className="flex flex-wrap gap-2">
                   {categories.map((category) => (
                     <button
                       key={category}
                       onClick={() => setSelectedCategory(category)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer ${
-                        selectedCategory === category
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer ${selectedCategory === category
                           ? 'bg-yellow-400 text-gray-900 shadow-lg'
                           : 'bg-white text-gray-700 hover:bg-gray-100 shadow-sm'
-                      }`}
+                        }`}
                     >
                       {category === 'all' ? 'All Categories' : category}
                     </button>
@@ -240,89 +239,100 @@ const Blog = () => {
                       .filter(blog => blog.featured)
                       .slice(0, 2)
                       .map((blog, index) => (
-                      <motion.article
-                        key={blog._id}
-                        initial={{ opacity: 0, y: 60 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: index * 0.2 }}
-                        whileHover={{ y: -8, scale: 1.02 }}
-                        className="bg-zinc-200 rounded-2xl shadow-xl hover:shadow-2xl overflow-hidden transition-all duration-300 group cursor-pointer"
-                      >
-                        <Link to={`/blog/${blog.slug}`}>
-                          <div className="relative h-64 bg-gradient-to-br from-gray-800 to-gray-900 overflow-hidden">
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <div className={`w-20 h-20 bg-gradient-to-r ${getCategoryColor(blog.category)} rounded-2xl flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300`}>
-                                <BookOpen className="w-10 h-10" />
+                        <motion.article
+                          key={blog._id}
+                          initial={{ opacity: 0, y: 60 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, delay: index * 0.2 }}
+                          whileHover={{ y: -8, scale: 1.02 }}
+                          className="bg-zinc-200 rounded-2xl shadow-xl hover:shadow-2xl overflow-hidden transition-all duration-300 group cursor-pointer"
+                        >
+                          <Link to={`/blog/${blog.slug}`}>
+                            <div className="relative h-64 bg-gradient-to-br from-gray-800 to-gray-900 overflow-hidden">
+                              {blog.featuredImage ? (
+                                <img
+                                  src={blog.featuredImage.url}
+                                  alt={blog.featuredImage.alt || blog.title}
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                  onError={(e) => {
+                                    e.target.style.display = 'none';
+                                    e.target.nextSibling.style.display = 'flex';
+                                  }}
+                                />
+                              ) : null}
+                              <div className="absolute inset-0 flex items-center justify-center" style={{ display: blog.featuredImage ? 'none' : 'flex' }}>
+                                <div className={`w-20 h-20 bg-gradient-to-r ${getCategoryColor(blog.category)} rounded-2xl flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300`}>
+                                  <BookOpen className="w-10 h-10" />
+                                </div>
                               </div>
-                            </div>
-                            <div className="absolute top-4 left-4">
-                              <span className="bg-yellow-500 text-gray-900 px-3 py-1 rounded-full text-sm font-semibold">
-                                Featured
-                              </span>
-                            </div>
-                            <div className="absolute bottom-4 left-4">
-                              <span className="bg-black/50 text-white px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm">
-                                {blog.category}
-                              </span>
-                            </div>
-                          </div>
-
-                          <div className="p-8">
-                            <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
-                              <div className="flex items-center space-x-1">
-                                <User className="w-4 h-4" />
-                                <span>{blog.author?.name || 'TCS Team'}</span>
-                              </div>
-                              <div className="flex items-center space-x-1">
-                                <Calendar className="w-4 h-4" />
-                                <span>{formatDate(blog.publishedAt)}</span>
-                              </div>
-                              <div className="flex items-center space-x-1">
-                                <Clock className="w-4 h-4" />
-                                <span>{blog.readingTime} min read</span>
-                              </div>
-                            </div>
-
-                            <h3 className="text-2xl font-bold text-[#30085b] mb-4 group-hover:text-[#870481] transition-colors line-clamp-2">
-                              {blog.title}
-                            </h3>
-
-                            <p className="text-gray-600 mb-6 leading-relaxed line-clamp-3">
-                              {blog.excerpt}
-                            </p>
-
-                            <div className="flex flex-wrap gap-2 mb-6">
-                              {blog.tags.slice(0, 3).map((tag, tagIndex) => (
-                                <span
-                                  key={tagIndex}
-                                  className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium"
-                                >
-                                  #{tag}
+                              <div className="absolute top-4 left-4">
+                                <span className="bg-yellow-500 text-gray-900 px-3 py-1 rounded-full text-sm font-semibold">
+                                  Featured
                                 </span>
-                              ))}
+                              </div>
+                              <div className="absolute bottom-4 left-4">
+                                <span className="bg-black/50 text-white px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm">
+                                  {blog.category}
+                                </span>
+                              </div>
                             </div>
 
-                            <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                              <div className="flex items-center space-x-4 text-sm text-gray-500">
+                            <div className="p-8">
+                              <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
                                 <div className="flex items-center space-x-1">
-                                  <Eye className="w-4 h-4" />
-                                  <span>{blog.views} views</span>
+                                  <User className="w-4 h-4" />
+                                  <span>{blog.author?.name || 'TCS Team'}</span>
                                 </div>
                                 <div className="flex items-center space-x-1">
-                                  <ThumbsUp className="w-4 h-4" />
-                                  <span>{blog.likes} likes</span>
+                                  <Calendar className="w-4 h-4" />
+                                  <span>{formatDate(blog.publishedAt)}</span>
+                                </div>
+                                <div className="flex items-center space-x-1">
+                                  <Clock className="w-4 h-4" />
+                                  <span>{blog.readingTime} min read</span>
                                 </div>
                               </div>
 
-                              <div className="flex items-center space-x-2 text-yellow-600 font-semibold group-hover:translate-x-1 transition-transform duration-200">
-                                <span>Read More</span>
-                                <ArrowRight className="w-4 h-4" />
+                              <h3 className="text-2xl font-bold text-[#30085b] mb-4 group-hover:text-[#870481] transition-colors line-clamp-2">
+                                {blog.title}
+                              </h3>
+
+                              <p className="text-gray-600 mb-6 leading-relaxed line-clamp-3">
+                                {blog.excerpt}
+                              </p>
+
+                              <div className="flex flex-wrap gap-2 mb-6">
+                                {blog.tags.slice(0, 3).map((tag, tagIndex) => (
+                                  <span
+                                    key={tagIndex}
+                                    className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium"
+                                  >
+                                    #{tag}
+                                  </span>
+                                ))}
+                              </div>
+
+                              <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                                <div className="flex items-center space-x-4 text-sm text-gray-500">
+                                  <div className="flex items-center space-x-1">
+                                    <Eye className="w-4 h-4" />
+                                    <span>{blog.views} views</span>
+                                  </div>
+                                  <div className="flex items-center space-x-1">
+                                    <ThumbsUp className="w-4 h-4" />
+                                    <span>{blog.likes} likes</span>
+                                  </div>
+                                </div>
+
+                                <div className="flex items-center space-x-2 text-yellow-600 font-semibold group-hover:translate-x-1 transition-transform duration-200">
+                                  <span>Read More</span>
+                                  <ArrowRight className="w-4 h-4" />
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </Link>
-                      </motion.article>
-                    ))}
+                          </Link>
+                        </motion.article>
+                      ))}
                   </div>
                 </motion.div>
               )}
@@ -335,7 +345,7 @@ const Blog = () => {
                 <h2 className="text-3xl font-bold text-[#870481] mb-8">
                   {selectedCategory === 'all' ? 'All Articles' : selectedCategory}
                 </h2>
-                
+
                 {filteredBlogs.length === 0 ? (
                   <div className="text-center py-16">
                     <div className="w-24 h-24 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -360,7 +370,18 @@ const Blog = () => {
                         >
                           <Link to={`/blog/${blog.slug}`}>
                             <div className="relative h-48 bg-gradient-to-br from-gray-800 to-gray-900 overflow-hidden">
-                              <div className="absolute inset-0 flex items-center justify-center">
+                              {blog.featuredImage ? (
+                                <img
+                                  src={blog.featuredImage}
+                                  alt={blog.title}
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                  onError={(e) => {
+                                    e.target.style.display = 'none';
+                                    e.target.nextSibling.style.display = 'flex';
+                                  }}
+                                />
+                              ) : null}
+                              <div className="absolute inset-0 flex items-center justify-center" style={{ display: blog.featuredImage ? 'none' : 'flex' }}>
                                 <div className={`w-16 h-16 bg-gradient-to-r ${getCategoryColor(blog.category)} rounded-2xl flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300`}>
                                   <BookOpen className="w-8 h-8" />
                                 </div>
@@ -451,25 +472,23 @@ const Blog = () => {
                         key={category}
                         whileHover={{ x: 5 }}
                         onClick={() => setSelectedCategory(category)}
-                        className={`flex items-center justify-between w-full p-3 rounded-xl transition-all duration-200 cursor-pointer ${
-                          selectedCategory === category
+                        className={`flex items-center justify-between w-full p-3 rounded-xl transition-all duration-200 cursor-pointer ${selectedCategory === category
                             ? 'bg-[#870481]/10 text-[#870481] border border-[#870481]/20'
                             : 'hover:bg-white/50 text-gray-700'
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center space-x-3">
-                          <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${
-                            selectedCategory === category 
-                              ? 'from-[#631caf] to-[#8b0389]' 
+                          <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${selectedCategory === category
+                              ? 'from-[#631caf] to-[#8b0389]'
                               : getCategoryColor(category)
-                          }`}></div>
+                            }`}></div>
                           <span className="font-medium capitalize">
                             {category === 'all' ? 'All Categories' : category}
                           </span>
                         </div>
                         <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs font-semibold">
-                          {category === 'all' 
-                            ? blogs.length 
+                          {category === 'all'
+                            ? blogs.length
                             : blogs.filter(b => b.category === category).length
                           }
                         </span>
@@ -494,27 +513,40 @@ const Blog = () => {
                       .sort((a, b) => b.views - a.views)
                       .slice(0, 5)
                       .map((blog, index) => (
-                      <motion.div
-                        key={blog._id}
-                        whileHover={{ x: 5 }}
-                        className="flex items-start space-x-3 p-3 rounded-xl hover:bg-white/50 transition-all duration-200 cursor-pointer group"
-                      >
-                        <div className={`w-12 h-12 bg-gradient-to-r ${getCategoryColor(blog.category)} rounded-xl flex items-center justify-center text-white flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
-                          <BookOpen className="w-6 h-6" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <Link to={`/blog/${blog.slug}`}>
-                            <h4 className="text-sm font-semibold text-[#30085b] line-clamp-2 group-hover:text-[#870481] transition-colors mb-1">
-                              {blog.title}
-                            </h4>
-                          </Link>
-                          <div className="flex items-center space-x-2 text-xs text-gray-500">
-                            <Eye className="w-3 h-3" />
-                            <span>{blog.views} views</span>
+                        <motion.div
+                          key={blog._id}
+                          whileHover={{ x: 5 }}
+                          className="flex items-start space-x-3 p-3 rounded-xl hover:bg-white/50 transition-all duration-200 cursor-pointer group"
+                        >
+                          <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                            {blog.featuredImage ? (
+                              <img
+                                src={blog.featuredImage}
+                                alt={blog.title}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  e.target.style.display = 'none';
+                                  e.target.nextSibling.style.display = 'flex';
+                                }}
+                              />
+                            ) : null}
+                            <div className={`w-full h-full bg-gradient-to-r ${getCategoryColor(blog.category)} flex items-center justify-center text-white`} style={{ display: blog.featuredImage ? 'none' : 'flex' }}>
+                              <BookOpen className="w-6 h-6" />
+                            </div>
                           </div>
-                        </div>
-                      </motion.div>
-                    ))}
+                          <div className="flex-1 min-w-0">
+                            <Link to={`/blog/${blog.slug}`}>
+                              <h4 className="text-sm font-semibold text-[#30085b] line-clamp-2 group-hover:text-[#870481] transition-colors mb-1">
+                                {blog.title}
+                              </h4>
+                            </Link>
+                            <div className="flex items-center space-x-2 text-xs text-gray-500">
+                              <Eye className="w-3 h-3" />
+                              <span>{blog.views} views</span>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
                   </div>
                 </motion.div>
 
@@ -534,7 +566,7 @@ const Blog = () => {
                       type="email"
                       placeholder="Enter your email"
                       required
-                      className="w-full px-4 py-3 rounded-xl text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-100 text-sm"
+                      className="w-full px-4 py-3 rounded-xl text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-100 text-sm border"
                     />
                     <motion.button
                       whileHover={{ scale: 1.02 }}

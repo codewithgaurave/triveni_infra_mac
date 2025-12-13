@@ -218,7 +218,8 @@ const About = () => {
                       backgroundImage: `url(${excellenceImg})`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
-                      backgroundRepeat: 'no-repeat'
+                      backgroundRepeat: 'no-repeat',
+                      opacity: 1
                     }}
                   >
                     <div className="absolute inset-0 bg-black/50"></div>
@@ -285,12 +286,12 @@ const About = () => {
                 <p>
                   <strong>Jitendra Yadav</strong> leads TRIVENI INFRAMECH PVT LTD with a vision 
                   to deliver world-class construction services that exceed client expectations. 
-                  With over <strong>15 years of hands-on experience</strong> in the industrial 
+                  With over {/*<strong>15 years of hands-on experience</strong>*/} in the industrial
                   construction sector, he brings unparalleled expertise and commitment to every project.
                 </p>
                 
                 <p>
-                  Under his leadership, the company has successfully completed <strong>50+ projects</strong> 
+                  Under his leadership, the company has successfully completed <strong>50+ projects </strong> 
                   across various industrial sectors, establishing a reputation for precision, 
                   safety, and timely delivery.
                 </p>
