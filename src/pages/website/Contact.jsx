@@ -81,9 +81,13 @@ const Contact = () => {
     "Mechanical Equipment Erection",
     "Electrical Works",
     "Painting Services",
-    "Labor Supply",
+    "Man Power",
     "HDPE Fabrication",
     "ESP Commissioning",
+    "Skilled labor",
+    "Expert Technicians",
+    "Reliable Supervisors",
+    "Proffesional Engineers",
   ];
 
   const handleInputChange = (e) => {
