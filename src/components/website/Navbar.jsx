@@ -60,7 +60,7 @@ const Navbar = ({ onMobileMenuToggle }) => {
     { name: 'Industries', path: '/industries' },
     { name: 'Services', path: '/services' },
     { name: 'Clients', path: '/clients' },
-    { name: 'Certification & Awards', path: '/certification' },
+    { name: 'certification & Awards', path: '/certification' },
     { name: 'Projects', path: '/projects' },
     { name: 'Blog', path: '/blog' },
     { name: 'Gallery', path: '/gallery' },

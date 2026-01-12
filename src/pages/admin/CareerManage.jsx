@@ -17,6 +17,20 @@ import {
   Save,
   ArrowUp,
   ArrowDown,
+  Mail,
+  Phone,
+  Building,
+  CheckCircle,
+  AlertCircle,
+  Clock,
+  Target,
+  XCircle,
+  UserCheck,
+  FileCheck,
+  Edit3,
+  Lock,
+  Clipboard,
+  PointingUp
 } from "lucide-react";
 import axios from "../../../axiosInstance";
 import { toast } from "react-toastify";
@@ -74,33 +88,35 @@ function CareerManage() {
     { value: "from-pink-500 to-pink-600", label: "Pink", bg: "bg-pink-500" },
   ];
 
-  const fetctJobs = async () => {
+  const fetchJobs = async () => {
     try {
       const res = await axios.get(`jobs`);
       if (res.data.success) {
         setJobs(res.data.data);
       }
     } catch (error) {
+      console.error('Error fetching jobs:', error);
     } finally {
       setLoading(false);
     }
   };
-  const fetctApplication = async () => {
+  const fetchApplication = async () => {
     try {
       const res = await axios.get(`applications`);
       if (res.data.success) {
         setApplications(res.data.data);
       }
     } catch (error) {
+      console.error('Error fetching applications:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  // Mock data - in real app, this would come from your API
+  // Fetch data from API
   useEffect(() => {
-    fetctJobs();
-    fetctApplication();
+    fetchJobs();
+    fetchApplication();
   }, []);
 
   // Get unique positions for filter
@@ -121,7 +137,7 @@ function CareerManage() {
     return matchesSearch && matchesStatus && matchesJob;
   });
 
-  // Filter jobs based on status
+  // Filter jobs based on status - show only backend jobs
   const filteredJobs = jobs.filter(
     (job) => job.status === "active" || job.status === "draft"
   );
@@ -171,13 +187,11 @@ function CareerManage() {
         const res = await axios.delete(`/jobs/${id}`);
         if (res.data.success) {
           toast.success(res.data.message);
-          // Remove job from local state
-          setJobs(jobs.filter((job) => job._id !== id));
+          // Remove job from local state immediately
+          setJobs(prevJobs => prevJobs.filter((job) => job._id !== id));
           if (selectedJob && selectedJob._id === id) {
             setSelectedJob(null);
           }
-          // Refresh jobs list
-          fetctJobs();
         }
       } catch (error) {
         console.error('Delete job error:', error);
@@ -202,15 +216,13 @@ function CareerManage() {
       const res = await axios.patch(`/jobs/${id}/status`, { status: newStatus });
       if (res.data.success) {
         toast.success(res.data.message);
-        // Update local state
-        setJobs(
-          jobs.map((job) => (job._id === id ? { ...job, status: newStatus } : job))
+        // Update local state immediately
+        setJobs(prevJobs =>
+          prevJobs.map((job) => (job._id === id ? { ...job, status: newStatus } : job))
         );
         if (selectedJob && selectedJob._id === id) {
           setSelectedJob({ ...selectedJob, status: newStatus });
         }
-        // Refresh jobs list
-        fetctJobs();
       }
     } catch (error) {
       console.error('Update job status error:', error);
@@ -250,16 +262,16 @@ function CareerManage() {
 
   const getStatusIcon = (status) => {
     const icons = {
-      new: "🆕",
-      reviewed: "📋",
-      interview: "🎯",
-      rejected: "❌",
-      hired: "✅",
-      active: "✅",
-      draft: "📝",
-      closed: "🔒",
+      new: <AlertCircle className="w-3 h-3" />,
+      reviewed: <Clipboard className="w-3 h-3" />,
+      interview: <Target className="w-3 h-3" />,
+      rejected: <XCircle className="w-3 h-3" />,
+      hired: <CheckCircle className="w-3 h-3" />,
+      active: <CheckCircle className="w-3 h-3" />,
+      draft: <Edit3 className="w-3 h-3" />,
+      closed: <Lock className="w-3 h-3" />,
     };
-    return icons[status] || "📄";
+    return icons[status] || <FileText className="w-3 h-3" />;
   };
 
   // Job form handlers
@@ -346,7 +358,7 @@ function CareerManage() {
         setShowJobModal(false);
         resetJobForm();
         // Refresh jobs list
-        fetctJobs();
+        fetchJobs();
       }
     } catch (error) {
       console.error('Save job error:', error);
@@ -459,8 +471,8 @@ function CareerManage() {
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
             >
               <option value="all">All Positions</option>
-              {positions.map((position) => (
-                <option key={position} value={position}>
+              {positions.map((position, index) => (
+                <option key={`position-${index}`} value={position}>
                   {position}
                 </option>
               ))}
@@ -485,7 +497,7 @@ function CareerManage() {
             <div className="overflow-y-auto max-h-[600px]">
               {filteredApplications.length === 0 ? (
                 <div className="text-center py-12">
-                  <div className="text-gray-400 text-6xl mb-4">📋</div>
+                  <Clipboard className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                   <p className="text-gray-500 text-lg">No applications found</p>
                   <p className="text-gray-400 text-sm mt-1">
                     {searchTerm || statusFilter !== "all" || jobFilter !== "all"
@@ -526,7 +538,7 @@ function CareerManage() {
                               {application.status}
                             </span>
                             <span className="text-xs text-gray-500">
-                              {formatDate(application.date)}
+                              {application.date ? formatDate(application.date) : formatDate(application.createdAt || new Date())}
                             </span>
                           </div>
                         </div>
@@ -536,39 +548,51 @@ function CareerManage() {
                         </p>
 
                         <div className="flex items-center space-x-4 text-sm text-gray-600 mb-2">
-                          <span>📧 {application.email}</span>
-                          <span>💼 {application.experience}</span>
-                          <span>💰 {application.expectedSalary}</span>
+                          <span className="flex items-center"><Mail className="w-3 h-3 mr-1" /> {application.email || 'N/A'}</span>
+                          <span className="flex items-center"><Briefcase className="w-3 h-3 mr-1" /> {application.experience || 'N/A'}</span>
+                          <span className="flex items-center"><DollarSign className="w-3 h-3 mr-1" /> {application.expectedSalary || 'N/A'}</span>
                         </div>
 
                         <div className="flex flex-wrap gap-1 mb-2">
-                          {application.skills
+                          {(application.skills || [])
                             .slice(0, 3)
                             .map((skill, index) => (
                               <span
-                                key={index}
+                                key={`skill-${index}`}
                                 className="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs"
                               >
                                 {skill}
                               </span>
                             ))}
-                          {application.skills.length > 3 && (
+                          {(application.skills || []).length > 3 && (
                             <span className="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
-                              +{application.skills.length - 3} more
+                              +{(application.skills || []).length - 3} more
                             </span>
                           )}
                         </div>
 
                         <div className="flex items-center justify-between">
-                          <p className="text-sm text-gray-500 truncate">
-                            📄 {application.resume}
+                          <p className="text-sm text-gray-500 truncate flex items-center">
+                            <FileText className="w-3 h-3 mr-1" /> {application.resume?.originalName || application.resume?.filename || 'No resume uploaded'}
                           </p>
 
                           <div className="flex space-x-2">
+                            {application.resume && (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  // Download resume functionality
+                                  window.open(`http://localhost:5000/api/applications/${application._id}/resume`, '_blank');
+                                }}
+                                className="text-xs bg-blue-100 text-blue-800 hover:bg-blue-200 px-2 py-1 rounded transition-colors"
+                              >
+                                Download
+                              </button>
+                            )}
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                deleteApplication(application.id);
+                                deleteApplication(application._id || application.id);
                               }}
                               className="text-xs bg-red-100 text-red-800 hover:bg-red-200 px-2 py-1 rounded transition-colors"
                             >
@@ -679,6 +703,29 @@ function CareerManage() {
                           {selectedApplication.experience}
                         </p>
                       </div>
+
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">
+                          Resume
+                        </label>
+                        <div className="flex items-center space-x-2">
+                          {selectedApplication.resume ? (
+                            <>
+                              <p className="text-gray-900">
+                                {selectedApplication.resume.originalName || selectedApplication.resume.filename}
+                              </p>
+                              <button
+                                onClick={() => window.open(`http://localhost:5000/api/applications/${selectedApplication._id}/resume`, '_blank')}
+                                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                              >
+                                Download
+                              </button>
+                            </>
+                          ) : (
+                            <p className="text-gray-500">No resume uploaded</p>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -715,7 +762,7 @@ function CareerManage() {
               </>
             ) : (
               <div className="text-center py-16">
-                <div className="text-gray-300 text-8xl mb-4">👆</div>
+                <PointingUp className="w-20 h-20 text-gray-300 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">
                   Select an Application
                 </h3>
@@ -735,15 +782,15 @@ function CareerManage() {
     <div className="p-6 border-b border-gray-200">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-gray-900">
-          Job Postings
+          Job Postings ({filteredJobs.length})
         </h2>
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2 text-sm text-gray-600">
             <span className="bg-green-100 text-green-800 px-2 py-1 rounded">
-              Active: {jobs.filter((j) => j.status === "active").length}
+              Active: {filteredJobs.filter((j) => j.status === "active").length}
             </span>
             <span className="bg-gray-100 text-gray-800 px-2 py-1 rounded">
-              Draft: {jobs.filter((j) => j.status === "draft").length}
+              Draft: {filteredJobs.filter((j) => j.status === "draft").length}
             </span>
           </div>
         </div>
@@ -900,19 +947,23 @@ function CareerManage() {
         </tbody>
       </table>
 
-      {sortedJobs.length === 0 && (
+      {filteredJobs.length === 0 && (
         <div className="text-center py-12 w-full">
-          <div className="text-gray-400 text-6xl mb-4">💼</div>
-          <p className="text-gray-500 text-lg">No job postings yet</p>
-          <p className="text-gray-400 text-sm mt-1">
-            Create your first job posting to get started
+          <Briefcase className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+          <p className="text-gray-500 text-lg">
+            {loading ? "Loading jobs..." : "No job postings found"}
           </p>
-          <button
-            onClick={handleCreateJob}
-            className="mt-4 bg-gradient-to-r from-[#880481] via-[#30085b] to-[#ad6bac] hover:from-[#9a0591] hover:via-[#3a096b] hover:to-[#bd7bbc] text-white px-6 py-2 rounded-lg font-medium transition-colors shadow-lg"
-          >
-            Create Job
-          </button>
+          <p className="text-gray-400 text-sm mt-1">
+            {loading ? "Please wait..." : "Create your first job posting to get started"}
+          </p>
+          {!loading && (
+            <button
+              onClick={handleCreateJob}
+              className="mt-4 bg-gradient-to-r from-[#880481] via-[#30085b] to-[#ad6bac] hover:from-[#9a0591] hover:via-[#3a096b] hover:to-[#bd7bbc] text-white px-6 py-2 rounded-lg font-medium transition-colors shadow-lg"
+            >
+              Create Job
+            </button>
+          )}
         </div>
       )}
     </div>

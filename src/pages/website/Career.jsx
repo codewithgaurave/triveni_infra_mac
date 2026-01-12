@@ -16,7 +16,9 @@ import {
   X,
   GraduationCap,
   Award,
+  Upload,
 } from "lucide-react";
+import { IoBagAddSharp } from "react-icons/io5";
 import { toast } from "react-toastify";
 import axiosInstance from "../../../axiosInstance";
 
@@ -32,29 +34,52 @@ const Career = () => {
     noticePeriod: "",
     message: "",
   });
+  const [resume, setResume] = useState(null);
+  const [resumeError, setResumeError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
   const [showJobDetails, setShowJobDetails] = useState(false);
   const [apiJobs, setApiJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   // Fetch jobs from API
-  useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const response = await axiosInstance.get('/jobs/active');
-        if (response.data.success) {
-          setApiJobs(response.data.data);
-        }
-      } catch (error) {
-        console.error('Error fetching jobs:', error);
-      } finally {
-        setLoading(false);
+  const fetchJobs = async (isRefresh = false) => {
+    try {
+      if (isRefresh) {
+        setRefreshing(true);
+      } else {
+        setLoading(true);
       }
-    };
-    
+      
+      const response = await axiosInstance.get('/jobs/active');
+      if (response.data.success) {
+        setApiJobs(response.data.data || []);
+        if (isRefresh) {
+          toast.success(`Found ${response.data.data?.length || 0} active jobs`);
+        }
+      } else {
+        setApiJobs([]);
+      }
+    } catch (error) {
+      console.error('Error fetching jobs:', error);
+      // If API fails, clear the jobs array to show fallback
+      setApiJobs([]);
+      if (isRefresh) {
+        toast.error('Failed to refresh jobs');
+      }
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
     fetchJobs();
+    // Set up interval to refresh jobs every 30 seconds
+    const interval = setInterval(fetchJobs, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   const jobPositions = [
@@ -679,12 +704,46 @@ const Career = () => {
     });
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // File validation
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        setResumeError("File size should be less than 5MB");
+        return;
+      }
+      if (!file.type.includes('pdf') && !file.type.includes('doc') && !file.type.includes('docx')) {
+        setResumeError("Please upload PDF or DOC file only");
+        return;
+      }
+      setResume(file);
+      setResumeError("");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
-      const res = await axiosInstance.post(`/applications`, formData);
+      const submitData = new FormData();
+      
+      // Append form data
+      Object.keys(formData).forEach(key => {
+        submitData.append(key, formData[key]);
+      });
+      
+      // Append resume file if selected
+      if (resume) {
+        submitData.append("resume", resume);
+      }
+
+      const res = await axiosInstance.post(`/applications`, submitData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      
       if (res.data.success) {
         toast.success(res.data.message || "Application submitted successfully!");
         setIsSubmitted(true);
@@ -699,6 +758,10 @@ const Career = () => {
           noticePeriod: "",
           message: "",
         });
+        setResume(null);
+        setResumeError("");
+        // Refresh jobs list after successful application
+        fetchJobs();
       }
     } catch (error) {
       console.error('Application submission error:', error);
@@ -786,9 +849,21 @@ const Career = () => {
             <h2 className="text-4xl lg:text-5xl font-bold text-[#870481] mb-4">
               Available <span className="text-yellow-400">Opportunities</span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-4">
               Explore our current job openings and find the perfect role for your career growth
             </p>
+            {!loading && (
+              <button
+                onClick={() => fetchJobs(true)}
+                disabled={refreshing}
+                className="inline-flex items-center space-x-2 bg-yellow-400/20 hover:bg-yellow-400/30 border border-yellow-400/30 rounded-full px-4 py-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <span className={`w-2 h-2 bg-yellow-400 rounded-full ${refreshing ? 'animate-pulse' : ''}`}></span>
+                <span className="text-yellow-600 text-sm font-semibold">
+                  {refreshing ? 'Refreshing...' : 'Refresh Jobs'}
+                </span>
+              </button>
+            )}
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -805,7 +880,7 @@ const Career = () => {
                   </div>
                 </div>
               ))
-            ) : apiJobs.length > 0 ? (
+            ) : (apiJobs && apiJobs.length > 0) ? (
               apiJobs.map((job, index) => (
                 <motion.div
                   key={job._id}
@@ -874,7 +949,21 @@ const Career = () => {
                   </div>
                 </motion.div>
               ))
+            ) : !loading ? (
+              <div className="col-span-full text-center py-12">
+                <div className="text-gray-400 text-6xl mb-4"><IoBagAddSharp className="mx-auto text-purple-800"/></div>
+                <p className="text-gray-500 text-lg mb-2">No active job postings available</p>
+                <p className="text-gray-400 text-sm mb-4">Check back later for new opportunities</p>
+                <button
+                  onClick={() => fetchJobs(true)}
+                  disabled={refreshing}
+                  className="bg-gradient-to-r from-[#631caf] to-[#8b0389] hover:from-[#7a1fc7] hover:to-[#a004a1] text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {refreshing ? 'Refreshing...' : 'Refresh Jobs'}
+                </button>
+              </div>
             ) : (
+              // Fallback to static jobs if API fails
               jobPositions.map((job, index) => (
                 <motion.div
                   key={index}
@@ -1047,7 +1136,7 @@ const Career = () => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#870481] focus:border-[#870481] transition-all duration-300"
                       >
                         <option value="">Select a position</option>
-                        {apiJobs.length > 0 ? (
+                        {apiJobs && apiJobs.length > 0 ? (
                           apiJobs.map((job) => (
                             <option key={job._id} value={job.title}>
                               {job.title}
@@ -1147,6 +1236,35 @@ const Career = () => {
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#870481] focus:border-[#870481] transition-all duration-300 resize-none"
                       placeholder="Tell us about yourself, your experience, and why you want to join our team..."
                     ></textarea>
+                  </div>
+
+                  {/* Resume Upload */}
+                  <div>
+                    <label className="block text-sm font-semibold text-[#30085b] mb-2">
+                      <Upload className="w-4 h-4 inline mr-1" />
+                      Upload Resume
+                    </label>
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#870481] transition-colors">
+                      <input
+                        type="file"
+                        onChange={handleFileChange}
+                        accept=".pdf,.doc,.docx"
+                        className="hidden"
+                        id="resume-upload"
+                      />
+                      <label htmlFor="resume-upload" className="cursor-pointer">
+                        <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                        <p className="text-gray-600">
+                          {resume ? resume.name : "Click to upload your resume"}
+                        </p>
+                        <p className="text-sm text-gray-500 mt-1">
+                          PDF, DOC, DOCX (Max 5MB)
+                        </p>
+                      </label>
+                    </div>
+                    {resumeError && (
+                      <p className="text-red-500 text-sm mt-2">{resumeError}</p>
+                    )}
                   </div>
 
                   <motion.button

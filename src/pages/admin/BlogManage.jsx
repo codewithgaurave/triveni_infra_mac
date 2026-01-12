@@ -657,7 +657,7 @@ const BlogCard = ({ blog, onEdit, onDelete, onStatusChange, onFeaturedToggle }) 
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+          <div className="absolute inset-0 bg- bg-opacity-20"></div>
         )}
         <div className="absolute bottom-4 left-4">
           <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${statusColors[blog.status]}`}>

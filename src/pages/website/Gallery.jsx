@@ -165,7 +165,7 @@ const Gallery = () => {
 										className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
 										loading="lazy"
 									/>
-									<div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">
+									<div className="absolute inset-0 bg- bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center">
 										<button
 											onClick={() => openFullscreen(image)}
 											className="opacity-0 group-hover:opacity-100 bg-white text-gray-900 p-3 rounded-full hover:bg-yellow-400 transition-all duration-300 transform hover:scale-110"
@@ -202,7 +202,7 @@ const Gallery = () => {
 					>
 						<button
 							onClick={closeFullscreen}
-							className="absolute top-4 right-4 z-10 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-2 rounded-full transition-all duration-300"
+							className="absolute top-4 right-4 z-10 bg-white bg-opacity-20 cursor-pointer hover:bg-opacity-30 text-black p-2 rounded-full transition-all duration-300"
 						>
 							<X className="w-6 h-6" />
 						</button>

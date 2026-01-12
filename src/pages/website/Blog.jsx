@@ -372,8 +372,8 @@ const Blog = () => {
                             <div className="relative h-48 bg-gradient-to-br from-gray-800 to-gray-900 overflow-hidden">
                               {blog.featuredImage ? (
                                 <img
-                                  src={blog.featuredImage}
-                                  alt={blog.title}
+                                  src={blog.featuredImage.url || blog.featuredImage}
+                                  alt={blog.featuredImage.alt || blog.title}
                                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                   onError={(e) => {
                                     e.target.style.display = 'none';
@@ -521,8 +521,8 @@ const Blog = () => {
                           <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                             {blog.featuredImage ? (
                               <img
-                                src={blog.featuredImage}
-                                alt={blog.title}
+                                src={blog.featuredImage.url || blog.featuredImage}
+                                alt={blog.featuredImage.alt || blog.title}
                                 className="w-full h-full object-cover"
                                 onError={(e) => {
                                   e.target.style.display = 'none';

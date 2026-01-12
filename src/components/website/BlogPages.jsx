@@ -665,7 +665,7 @@ const BlogPages = () => {
                       type="email"
                       placeholder="Enter your email address"
                       required
-                      className="w-full px-4 py-3 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-500 placeholder-gray-500 text-sm"
+                      className="w-full px-4 py-3 rounded-xl text-gray-100 focus:outline-none border focus:ring-2 focus:ring-yellow-500 placeholder-gray-100 text-sm"
                     />
                     <motion.button
                       whileHover={{ scale: 1.02 }}
