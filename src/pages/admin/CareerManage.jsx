@@ -29,8 +29,7 @@ import {
   FileCheck,
   Edit3,
   Lock,
-  Clipboard,
-  PointingUp
+  Clipboard
 } from "lucide-react";
 import axios from "../../../axiosInstance";
 import { toast } from "react-toastify";
@@ -762,7 +761,7 @@ function CareerManage() {
               </>
             ) : (
               <div className="text-center py-16">
-                <PointingUp className="w-20 h-20 text-gray-300 mx-auto mb-4" />
+                <ArrowUp className="w-20 h-20 text-gray-300 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">
                   Select an Application
                 </h3>
