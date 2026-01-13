@@ -171,11 +171,21 @@ function CareerManage() {
     });
   };
 
-  const deleteApplication = (id) => {
+  const deleteApplication = async (id) => {
     if (window.confirm("Are you sure you want to delete this application?")) {
-      setApplications(applications.filter((app) => app.id !== id));
-      if (selectedApplication && selectedApplication.id === id) {
-        setSelectedApplication(null);
+      try {
+        const res = await axios.delete(`/applications/${id}`);
+        if (res.data.success) {
+          toast.success(res.data.message);
+          // Remove application from local state immediately
+          setApplications(prevApplications => prevApplications.filter((app) => app._id !== id));
+          if (selectedApplication && selectedApplication._id === id) {
+            setSelectedApplication(null);
+          }
+        }
+      } catch (error) {
+        console.error('Delete application error:', error);
+        toast.error(error.response?.data?.message || 'Failed to delete application');
       }
     }
   };
@@ -199,14 +209,22 @@ function CareerManage() {
     }
   };
 
-  const updateStatus = (id, newStatus) => {
-    setApplications(
-      applications.map((app) =>
-        app.id === id ? { ...app, status: newStatus } : app
-      )
-    );
-    if (selectedApplication && selectedApplication.id === id) {
-      setSelectedApplication({ ...selectedApplication, status: newStatus });
+  const updateStatus = async (id, newStatus) => {
+    try {
+      const res = await axios.patch(`/applications/${id}/status`, { status: newStatus });
+      if (res.data.success) {
+        toast.success(res.data.message);
+        // Update local state immediately
+        setApplications(prevApplications =>
+          prevApplications.map((app) => (app._id === id ? { ...app, status: newStatus } : app))
+        );
+        if (selectedApplication && selectedApplication._id === id) {
+          setSelectedApplication({ ...selectedApplication, status: newStatus });
+        }
+      }
+    } catch (error) {
+      console.error('Update status error:', error);
+      toast.error(error.response?.data?.message || 'Failed to update status');
     }
   };
 
@@ -226,6 +244,38 @@ function CareerManage() {
     } catch (error) {
       console.error('Update job status error:', error);
       toast.error(error.response?.data?.message || 'Failed to update job status');
+    }
+  };
+
+  const handleDownloadResume = async (application) => {
+    if (!application.resume || !application.resume.filename) {
+      toast.error('Resume file not found');
+      return;
+    }
+
+    try {
+      // Use the actual uploaded file
+      const response = await fetch(`http://localhost:5000/uploads/resumes/${application.resume.filename}`);
+      
+      if (!response.ok) {
+        toast.error('Resume file not found on server');
+        return;
+      }
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = application.resume.originalName || `${application.name}_resume.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      toast.success('Resume downloaded successfully!');
+    } catch (error) {
+      console.error('Download error:', error);
+      toast.error('Failed to download resume');
     }
   };
 
@@ -507,9 +557,9 @@ function CareerManage() {
               ) : (
                 filteredApplications.map((application) => (
                   <div
-                    key={application.id}
+                    key={application._id}
                     className={`border-b border-gray-100 p-4 cursor-pointer transition-colors hover:bg-gray-50 ${
-                      selectedApplication?.id === application.id
+                      selectedApplication?._id === application._id
                         ? "bg-blue-50 border-l-4 border-l-blue-500"
                         : ""
                     }`}
@@ -537,7 +587,7 @@ function CareerManage() {
                               {application.status}
                             </span>
                             <span className="text-xs text-gray-500">
-                              {application.date ? formatDate(application.date) : formatDate(application.createdAt || new Date())}
+                              {formatDate(application.createdAt || new Date())}
                             </span>
                           </div>
                         </div>
@@ -580,8 +630,7 @@ function CareerManage() {
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  // Download resume functionality
-                                  window.open(`http://localhost:5000/api/applications/${application._id}/resume`, '_blank');
+                                  handleDownloadResume(application);
                                 }}
                                 className="text-xs bg-blue-100 text-blue-800 hover:bg-blue-200 px-2 py-1 rounded transition-colors"
                               >
@@ -591,7 +640,7 @@ function CareerManage() {
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                deleteApplication(application._id || application.id);
+                                deleteApplication(application._id);
                               }}
                               className="text-xs bg-red-100 text-red-800 hover:bg-red-200 px-2 py-1 rounded transition-colors"
                             >
@@ -646,7 +695,7 @@ function CareerManage() {
                             selectedApplication.status.slice(1)}
                         </span>
                         <span className="text-sm text-gray-500">
-                          Applied: {formatDate(selectedApplication.date)}
+                          Applied: {formatDate(selectedApplication.createdAt || selectedApplication.date)}
                         </span>
                       </div>
                     </div>
@@ -714,7 +763,7 @@ function CareerManage() {
                                 {selectedApplication.resume.originalName || selectedApplication.resume.filename}
                               </p>
                               <button
-                                onClick={() => window.open(`http://localhost:5000/api/applications/${selectedApplication._id}/resume`, '_blank')}
+                                onClick={() => handleDownloadResume(selectedApplication)}
                                 className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                               >
                                 Download
@@ -744,7 +793,7 @@ function CareerManage() {
                         <button
                           key={status}
                           onClick={() =>
-                            updateStatus(selectedApplication.id, status)
+                            updateStatus(selectedApplication._id, status)
                           }
                           className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                             selectedApplication.status === status

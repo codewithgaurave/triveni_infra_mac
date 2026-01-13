@@ -113,12 +113,11 @@ const BlogPages = () => {
 
   const handleLike = async () => {
     try {
-      const res = await axios.post(`/blogs/${blog._id}/like`);
+      const res = await axios.patch(`/blogs/${blog._id}/like`);
       if (res.data.success) {
-        setLiked(!liked);
         setBlog(prev => ({
           ...prev,
-          likes: liked ? prev.likes - 1 : prev.likes + 1
+          likes: res.data.likes
         }));
       }
     } catch (error) {
@@ -318,15 +317,11 @@ const BlogPages = () => {
                 </div>
                 <button
                   onClick={handleLike}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors duration-200 ${
-                    liked 
-                      ? 'bg-yellow-500/20 text-yellow-400' 
-                      : 'bg-yellow-500/10 hover:bg-yellow-500/20'
-                  }`}
+                  className="flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors duration-200 bg-yellow-500/10 hover:bg-yellow-500/20 hover:text-yellow-400"
                 >
-                  <ThumbsUp className={`w-4 h-4 ${liked ? 'fill-current' : ''}`} />
+                  <ThumbsUp className="w-4 h-4" />
                   <span className="text-sm font-medium">
-                    {blog.likes + (liked ? 1 : 0)} likes
+                    {blog.likes} likes
                   </span>
                 </button>
                 <div className="flex items-center space-x-2 bg-yellow-500/10 px-3 py-2 rounded-lg">
