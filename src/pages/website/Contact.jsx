@@ -100,10 +100,10 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    console.log(formData);
+    // console.log(formData);
 
     const res = await axiosInstance.post(`/contact`, formData);
-    console.log(res);
+    // console.log(res);
     if (res.data.success) {
       setIsSubmitting(false);
       toast.success(res.data.message)

@@ -64,7 +64,7 @@ const BlogPages = () => {
         
         // Fetch related blogs
         const relatedRes = await axios.get(`/blogs/related/${res.data.data._id}`);
-        console.log(relatedRes);
+      // console.log(relatedRes);
         if (relatedRes.data.success) {
           setRelatedBlogs(relatedRes.data.data);
         }
@@ -76,7 +76,7 @@ const BlogPages = () => {
         }
       }
     } catch (error) {
-      console.log('Error fetching blog:', error);
+      // console.log('Error fetching blog:', error);
     } finally {
       setLoading(false);
     }
@@ -100,7 +100,7 @@ const BlogPages = () => {
         });
       }
     } catch (error) {
-      console.log('Error submitting comment:', error);
+      // console.log('Error submitting comment:', error);
     }
   };
 
@@ -121,7 +121,7 @@ const BlogPages = () => {
         }));
       }
     } catch (error) {
-      console.log('Error liking blog:', error);
+      // console.log('Error liking blog:', error);
     }
   };
 

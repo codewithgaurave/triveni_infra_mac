@@ -50,13 +50,13 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      console.log('Attempting login with:', email);
+      // console.log('Attempting login with:', email);
       const res = await axiosInstance.post(`/auth/login`, {
         email: email,
         password: password,
       });
       
-      console.log('Login response:', res.data);
+      // console.log('Login response:', res.data);
       
       if (res.data.success) {
         setIsAuthenticated(true);
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
       }
       return false;
     } catch (error) {
-      console.error('Login error:', error.response?.data || error.message);
+      // console.error('Login error:', error.response?.data || error.message);
       return false;
     }
   };

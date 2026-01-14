@@ -94,7 +94,7 @@ function CareerManage() {
         setJobs(res.data.data);
       }
     } catch (error) {
-      console.error('Error fetching jobs:', error);
+      // console.error('Error fetching jobs:', error);
     } finally {
       setLoading(false);
     }
@@ -106,7 +106,7 @@ function CareerManage() {
         setApplications(res.data.data);
       }
     } catch (error) {
-      console.error('Error fetching applications:', error);
+      // console.error('Error fetching applications:', error);
     } finally {
       setLoading(false);
     }
@@ -184,7 +184,7 @@ function CareerManage() {
           }
         }
       } catch (error) {
-        console.error('Delete application error:', error);
+        // console.error('Delete application error:', error);
         toast.error(error.response?.data?.message || 'Failed to delete application');
       }
     }
@@ -203,7 +203,7 @@ function CareerManage() {
           }
         }
       } catch (error) {
-        console.error('Delete job error:', error);
+        // console.error('Delete job error:', error);
         toast.error(error.response?.data?.message || 'Failed to delete job');
       }
     }
@@ -223,7 +223,7 @@ function CareerManage() {
         }
       }
     } catch (error) {
-      console.error('Update status error:', error);
+      // console.error('Update status error:', error);
       toast.error(error.response?.data?.message || 'Failed to update status');
     }
   };
@@ -242,7 +242,7 @@ function CareerManage() {
         }
       }
     } catch (error) {
-      console.error('Update job status error:', error);
+      // console.error('Update job status error:', error);
       toast.error(error.response?.data?.message || 'Failed to update job status');
     }
   };
@@ -274,7 +274,7 @@ function CareerManage() {
       
       toast.success('Resume downloaded successfully!');
     } catch (error) {
-      console.error('Download error:', error);
+      // console.error('Download error:', error);
       toast.error('Failed to download resume');
     }
   };
@@ -410,7 +410,7 @@ function CareerManage() {
         fetchJobs();
       }
     } catch (error) {
-      console.error('Save job error:', error);
+      // console.error('Save job error:', error);
       toast.error(error.response?.data?.message || 'Failed to save job');
     }
   };

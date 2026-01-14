@@ -84,11 +84,11 @@ const AdminLayout = () => {
 
       {/* Sidebar */}
       <aside className={`
-        fixed lg:static inset-y-0 left-0 z-50
+        fixed inset-y-0 left-0 z-50
         w-80 bg-white shadow-2xl border-r border-gray-200
         transform transition-transform duration-300 ease-in-out
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-        flex flex-col
+        flex flex-col h-screen
       `}>
         {/* Sidebar Header */}
         <div className="p-6 border-b border-gray-200">
@@ -176,7 +176,7 @@ const AdminLayout = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col min-h-screen">
+      <main className="flex-1 flex flex-col min-h-screen lg:ml-80">
         {/* Top Header */}
         <header className="bg-white shadow-sm border-b border-gray-200 lg:border-none">
           <div className="flex items-center justify-between p-4 lg:p-6">

@@ -55,7 +55,7 @@ const Blog = () => {
         setCategories(uniqueCategories);
       }
     } catch (error) {
-      console.log('Error fetching blogs:', error);
+      // console.log('Error fetching blogs:', error);
     } finally {
       setLoading(false);
     }

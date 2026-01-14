@@ -63,7 +63,7 @@ const Career = () => {
         setApiJobs([]);
       }
     } catch (error) {
-      console.error('Error fetching jobs:', error);
+      // console.error('Error fetching jobs:', error);
       // If API fails, clear the jobs array to show fallback
       setApiJobs([]);
       if (isRefresh) {
@@ -764,7 +764,7 @@ const Career = () => {
         fetchJobs();
       }
     } catch (error) {
-      console.error('Application submission error:', error);
+      // console.error('Application submission error:', error);
       toast.error(error.response?.data?.message || "Failed to submit application. Please try again.");
     } finally {
       setIsSubmitting(false);
