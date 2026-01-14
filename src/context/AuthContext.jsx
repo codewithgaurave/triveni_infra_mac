@@ -50,10 +50,13 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
+      console.log('Attempting login with:', email);
       const res = await axiosInstance.post(`/auth/login`, {
         email: email,
         password: password,
       });
+      
+      console.log('Login response:', res.data);
       
       if (res.data.success) {
         setIsAuthenticated(true);
@@ -61,7 +64,9 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("adminToken", res.data.data.token);
         return true;
       }
+      return false;
     } catch (error) {
+      console.error('Login error:', error.response?.data || error.message);
       return false;
     }
   };
