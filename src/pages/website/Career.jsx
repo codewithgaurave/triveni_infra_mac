@@ -880,11 +880,17 @@ const Career = () => {
                   </div>
                 </div>
               ))
+            ) : apiJobs.length === 0 ? (
+              <div className="col-span-full text-center py-12">
+                <Briefcase className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">No Open Positions</h3>
+                <p className="text-gray-600">We don't have any open positions at the moment. Please check back later.</p>
+              </div>
             ) : (
-              // Show static jobs (fallback when API has no jobs or fails)
-              jobPositions.map((job, index) => (
+              // Show API jobs only
+              apiJobs.map((job, index) => (
                 <motion.div
-                  key={index}
+                  key={job._id}
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -911,11 +917,11 @@ const Career = () => {
                     </div>
                     <div className="flex items-center text-gray-600">
                       <Clock className="w-4 h-4 mr-2 text-[#870481]" />
-                      <span className="text-sm">{job.timing}</span>
+                      <span className="text-sm">{job.type}</span>
                     </div>
                   </div>
 
-                  <p className="text-gray-600 text-sm mb-6 leading-relaxed">
+                  <p className="text-gray-600 text-sm mb-6 leading-relaxed line-clamp-3">
                     {job.description}
                   </p>
 
@@ -1260,7 +1266,7 @@ const Career = () => {
                   <Clock className="w-5 h-5 text-[#870481]" />
                   <div>
                     <p className="text-sm text-gray-500">Type</p>
-                    <p className="font-semibold">{selectedJob.timing}</p>
+                    <p className="font-semibold">{selectedJob.type}</p>
                   </div>
                 </div>
               </div>
@@ -1268,50 +1274,25 @@ const Career = () => {
               <div className="space-y-8">
                 <div>
                   <h3 className="text-xl font-bold text-[#30085b] mb-4">Job Description</h3>
-                  <p className="text-gray-700 leading-relaxed">{selectedJob.detailedDescription}</p>
+                  <p className="text-gray-700 leading-relaxed">{selectedJob.description}</p>
                 </div>
 
-                <div>
-                  <h3 className="text-xl font-bold text-[#30085b] mb-4 flex items-center">
-                    <FileText className="w-5 h-5 mr-2" />
-                    Key Responsibilities
-                  </h3>
-                  <ul className="space-y-2">
-                    {selectedJob.responsibilities.map((responsibility, index) => (
-                      <li key={index} className="flex items-start space-x-3">
-                        <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700">{responsibility}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div>
-                  <h3 className="text-xl font-bold text-[#30085b] mb-4 flex items-center">
-                    <GraduationCap className="w-5 h-5 mr-2" />
-                    Requirements
-                  </h3>
-                  <ul className="space-y-2">
-                    {selectedJob.requirements.map((requirement, index) => (
-                      <li key={index} className="flex items-start space-x-3">
-                        <Award className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700">{requirement}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div>
-                  <h3 className="text-xl font-bold text-[#30085b] mb-4">Benefits & Perks</h3>
-                  <ul className="space-y-2">
-                    {selectedJob.benefits.map((benefit, index) => (
-                      <li key={index} className="flex items-start space-x-3">
-                        <CheckCircle className="w-5 h-5 text-yellow-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700">{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                {selectedJob.requirements && selectedJob.requirements.length > 0 && (
+                  <div>
+                    <h3 className="text-xl font-bold text-[#30085b] mb-4 flex items-center">
+                      <GraduationCap className="w-5 h-5 mr-2" />
+                      Requirements
+                    </h3>
+                    <ul className="space-y-2">
+                      {selectedJob.requirements.map((requirement, index) => (
+                        <li key={index} className="flex items-start space-x-3">
+                          <Award className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
+                          <span className="text-gray-700">{requirement}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
 
               <div className="mt-8 pt-6 border-t border-gray-200 flex flex-col sm:flex-row gap-4">
