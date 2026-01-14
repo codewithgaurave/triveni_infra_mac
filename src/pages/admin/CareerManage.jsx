@@ -33,6 +33,7 @@ import {
 } from "lucide-react";
 import axios from "../../../axiosInstance";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 function CareerManage() {
   const [applications, setApplications] = useState([]);
@@ -50,6 +51,8 @@ function CareerManage() {
     key: "date",
     direction: "desc",
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const jobsPerPage = 10;
 
   // Job form state
   const [jobForm, setJobForm] = useState({
@@ -89,7 +92,7 @@ function CareerManage() {
 
   const fetchJobs = async () => {
     try {
-      const res = await axios.get(`jobs`);
+      const res = await axios.get(`jobs?limit=1000`);
       if (res.data.success) {
         setJobs(res.data.data);
       }
@@ -136,10 +139,8 @@ function CareerManage() {
     return matchesSearch && matchesStatus && matchesJob;
   });
 
-  // Filter jobs based on status - show only backend jobs
-  const filteredJobs = jobs.filter(
-    (job) => job.status === "active" || job.status === "draft"
-  );
+  // Filter jobs based on status - show all jobs
+  const filteredJobs = jobs;
 
   // Sort jobs
   const sortedJobs = [...filteredJobs].sort((a, b) => {
@@ -161,6 +162,12 @@ function CareerManage() {
     return 0;
   });
 
+  // Pagination
+  const totalPages = Math.ceil(sortedJobs.length / jobsPerPage);
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = sortedJobs.slice(indexOfFirstJob, indexOfLastJob);
+
   const handleSort = (key) => {
     setSortConfig({
       key,
@@ -172,38 +179,62 @@ function CareerManage() {
   };
 
   const deleteApplication = async (id) => {
-    if (window.confirm("Are you sure you want to delete this application?")) {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    });
+
+    if (result.isConfirmed) {
       try {
         const res = await axios.delete(`/applications/${id}`);
         if (res.data.success) {
-          toast.success(res.data.message);
-          // Remove application from local state immediately
           setApplications(prevApplications => prevApplications.filter((app) => app._id !== id));
           if (selectedApplication && selectedApplication._id === id) {
             setSelectedApplication(null);
           }
+          Swal.fire({
+            title: "Deleted!",
+            text: "Application has been deleted.",
+            icon: "success"
+          });
         }
       } catch (error) {
-        // console.error('Delete application error:', error);
         toast.error(error.response?.data?.message || 'Failed to delete application');
       }
     }
   };
 
   const deleteJob = async (id) => {
-    if (window.confirm("Are you sure you want to delete this job posting?")) {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    });
+
+    if (result.isConfirmed) {
       try {
         const res = await axios.delete(`/jobs/${id}`);
         if (res.data.success) {
-          toast.success(res.data.message);
-          // Remove job from local state immediately
           setJobs(prevJobs => prevJobs.filter((job) => job._id !== id));
           if (selectedJob && selectedJob._id === id) {
             setSelectedJob(null);
           }
+          Swal.fire({
+            title: "Deleted!",
+            text: "Job has been deleted.",
+            icon: "success"
+          });
         }
       } catch (error) {
-        // console.error('Delete job error:', error);
         toast.error(error.response?.data?.message || 'Failed to delete job');
       }
     }
@@ -440,11 +471,11 @@ function CareerManage() {
           </div>
 
           <div className="flex items-center space-x-4 mt-4 md:mt-0">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 ">
               <span className="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">
                 Jobs: {jobs.filter((j) => j.status === "active").length}
               </span>
-              <span className="bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full">
+              <span className="bg-green-100    text-green-800 text-sm px-3 py-1 rounded-full">
                 Applications: {applications.length}
               </span>
               <span className="bg-orange-100 text-orange-800 text-sm px-3 py-1 rounded-full">
@@ -456,7 +487,7 @@ function CareerManage() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleCreateJob}
-              className="bg-gradient-to-r from-[#880481] via-[#30085b] to-[#ad6bac] hover:from-[#9a0591] hover:via-[#3a096b] hover:to-[#bd7bbc] text-white px-4 py-2 rounded-lg font-medium flex items-center space-x-2 transition-colors shadow-lg"
+              className="bg-gradient-to-r cursor-pointer from-[#880481] via-[#30085b] to-[#ad6bac] hover:from-[#9a0591] hover:via-[#3a096b] hover:to-[#bd7bbc] text-white px-4 py-2 rounded-lg font-medium flex items-center space-x-2 transition-colors shadow-lg"
             >
               <Plus className="w-5 h-5" />
               <span>Create Job</span>
@@ -465,7 +496,7 @@ function CareerManage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex space-x-1 bg-white rounded-lg p-1 border border-gray-200 w-fit">
+        <div className="flex space-x-1  bg-white rounded-lg p-1 border border-gray-200 w-fit">
           {[
             {
               id: "applications",
@@ -477,7 +508,7 @@ function CareerManage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 rounded-md font-medium transition-colors ${
+              className={`px-4 py-2 rounded-md cursor-pointer font-medium transition-colors ${
                 activeTab === tab.id
                   ? "bg-gradient-to-r from-[#880481] via-[#30085b] to-[#ad6bac] text-white shadow-lg"
                   : "text-gray-600 hover:text-gray-900"
@@ -910,7 +941,7 @@ function CareerManage() {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {sortedJobs.map((job) => (
+          {currentJobs.map((job) => (
             <tr
               key={job._id}
               className="hover:bg-gray-50 transition-colors"
@@ -964,7 +995,7 @@ function CareerManage() {
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => handleEditJob(job)}
-                    className="text-blue-600 hover:text-blue-900 transition-colors p-1 rounded hover:bg-blue-50"
+                    className="text-blue-600 cursor-pointer hover:text-blue-900 transition-colors p-1 rounded hover:bg-blue-50"
                     title="Edit"
                   >
                     <Edit className="w-4 h-4" />
@@ -976,14 +1007,14 @@ function CareerManage() {
                         job.status === "active" ? "draft" : "active"
                       )
                     }
-                    className="text-green-600 hover:text-green-900 transition-colors p-1 rounded hover:bg-green-50"
+                    className="text-green-600 cursor-pointer hover:text-green-900 transition-colors p-1 rounded hover:bg-green-50"
                     title={job.status === "active" ? "Mark as Draft" : "Mark as Active"}
                   >
                     <Eye className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => deleteJob(job._id)}
-                    className="text-red-600 hover:text-red-900 transition-colors p-1 rounded hover:bg-red-50"
+                    className="text-red-600 cursor-pointer hover:text-red-900 transition-colors p-1 rounded hover:bg-red-50"
                     title="Delete"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -1015,6 +1046,46 @@ function CareerManage() {
         </div>
       )}
     </div>
+
+    {/* Pagination */}
+    {sortedJobs.length > 0 && (
+      <div className="px-6 py-4 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="text-sm text-gray-700">
+          Showing {Math.min(indexOfFirstJob + 1, sortedJobs.length)} to {Math.min(indexOfLastJob, sortedJobs.length)} of {sortedJobs.length} jobs
+        </div>
+        {totalPages > 1 && (
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-3 py-1 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              Previous
+            </button>
+            {[...Array(totalPages)].map((_, i) => (
+              <button
+                key={i + 1}
+                onClick={() => setCurrentPage(i + 1)}
+                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                  currentPage === i + 1
+                    ? "bg-gradient-to-r from-[#880481] cursor-pointer to-[#ad6bac] text-white"
+                    : "border cursor-pointer border-gray-300 text-gray-700 hover:bg-gray-50"
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              Next
+            </button>
+          </div>
+        )}
+      </div>
+    )}
   </div>
 )}
       {/* Create/Edit Job Modal */}
@@ -1233,7 +1304,7 @@ function CareerManage() {
                     <button
                       type="button"
                       onClick={addRequirement}
-                      className="mt-2 text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center space-x-1"
+                      className="mt-2 cursor-pointer text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center space-x-1"
                     >
                       <Plus className="w-4 h-4" />
                       <span>Add Requirement</span>
@@ -1257,7 +1328,7 @@ function CareerManage() {
                             value={status}
                             checked={jobForm.status === status}
                             onChange={handleJobFormChange}
-                            className="text-orange-500 focus:ring-orange-500"
+                            className="text-orange-500 cursor-pointer focus:ring-orange-500"
                           />
                           <span className="text-sm text-gray-700 capitalize">
                             {status}
@@ -1276,7 +1347,7 @@ function CareerManage() {
                       setShowJobModal(false);
                       resetJobForm();
                     }}
-                    className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                    className="flex-1 px-6 cursor-pointer py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
                   >
                     Cancel
                   </button>
@@ -1284,7 +1355,7 @@ function CareerManage() {
                     type="submit"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="flex-1 bg-gradient-to-r from-[#880481] via-[#30085b] to-[#ad6bac] hover:from-[#9a0591] hover:via-[#3a096b] hover:to-[#bd7bbc] text-white py-3 px-6 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2 shadow-lg"
+                    className="flex-1 cursor-pointer bg-gradient-to-r from-[#880481] via-[#30085b] to-[#ad6bac] hover:from-[#9a0591] hover:via-[#3a096b] hover:to-[#bd7bbc] text-white py-3 px-6 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2 shadow-lg"
                   >
                     <Save className="w-5 h-5" />
                     <span>{editingJob ? "Update Job" : "Create Job"}</span>
